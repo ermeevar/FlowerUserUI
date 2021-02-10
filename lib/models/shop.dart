@@ -20,18 +20,18 @@ class Shop{
   Shop(){}
 
   Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+      var map = new Map<String, dynamic>();
 
-    map["id"] = _id;
-    map["address"] = _address;
-    map["storeId"] = _storeId;
+      map["id"] = _id;
+      map["address"] = _address;
+      map["storeId"] = _storeId;
 
-    return map;
-  }
+      return map;
+    }
 
-  Shop.fromObject(dynamic object){
-    this._id = object["id"];
-    this._address = object["address"];
-    this._storeId = object["storeId"];
+    Shop.fromObject(dynamic object){
+      this._id = object["id"];
+      this._address = object["address"];
+      this._storeId = object["storeId"];
   }
 }
