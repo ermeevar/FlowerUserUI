@@ -9,11 +9,19 @@ class WebApiServices{
     'Accept': 'application/json',
   };
 
-  static String _storeUrl = "https://127.0.0.1:5001/stores/";
-  static String _shopUrl = "https://10.0.2.2:5001/shops/";
+  static String _accountUrl = "https://127.0.0.1:5001/accounts/";
+  static String _bouquetUrl = "https://10.0.2.2:5001/bouquets/";
+  static String _bouquetProductUrl = "https://10.0.2.2:5001/bouquetproducts/";
   static String _categoryUrl = "https://10.0.2.2:5001/categories/";
-  static String _storeProductUrl = "https://10.0.2.2:5001/storeproducts/";
+  static String _orderUrl = "https://10.0.2.2:5001/orders/";
+  static String _orderStatusUrl = "https://10.0.2.2:5001/orderstatuses/";
+  static String _shopUrl = "https://10.0.2.2:5001/shops/";
   static String _shopProductUrl = "https://10.0.2.2:5001/shopproducts/";
+  static String _storeUrl = "https://10.0.2.2:5001/stores/";
+  static String _storeProductUrl = "https://10.0.2.2:5001/storeproducts/";
+  static String _templateCategoryUrl = "https://10.0.2.2:5001/templatecategories/";
+  static String _templateUrl = "https://10.0.2.2:5001/templates/";
+  static String _userUrl = "https://10.0.2.2:5001/users/";
 
   static Future fetchStore() async{
     return await http.get(_storeUrl);
