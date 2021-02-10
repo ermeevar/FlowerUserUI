@@ -39,6 +39,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - resources/
+    - resources/images/
   fonts:
     - family: Philosopher
       fonts:

@@ -27,23 +27,121 @@ class MainMenuContent extends StatelessWidget {
       body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/bulb.jpg"),
+              image: AssetImage("resources/images/background.menu.jpg"),
               fit: BoxFit.cover,
             ),
           ),
-          child: null,
-    );
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _accountInfo(context),
+              _bouquetCards(context),
+              Container(height: 100,)
+            ],
+          )
+      ));
   }
-
   Widget _accountInfo(context){
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(account.login, style: Theme.of(context).textTheme.body1),
-        CircleAvatar(
-          radius: 10,
-          backgroundImage: NetworkImage("https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"),
-          backgroundColor: Colors.transparent)
+        Padding(
+            padding: EdgeInsets.only(top:30, left: 10, right: 10),
+            child:Row(
+                children: [
+                  Text(account.login, style: Theme.of(context).textTheme.body1),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage("https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"),
+                        backgroundColor: Colors.transparent),
+                  )
+                ])
+        )
       ],
     );
   }
+  Widget _bouquetCards(context){
+    return Container(
+      padding: EdgeInsets.zero,
+      height: 335,
+      //color: Colors.amber,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left:30),
+            height: 300,
+            width: 230,
+            child: Card(
+              color: Colors.white54,
+              elevation: 10,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image(
+                    image: AssetImage("resources/images/bouquet.add.jpg"),
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
+                    height: 280),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text("Новый букет", style: Theme.of(context).textTheme.subtitle),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left:30),
+            height: 300,
+            width: 230,
+            child: Card(
+              color: Colors.white54,
+              elevation: 10,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image(
+                    image: AssetImage("resources/images/template.add.jpg"),
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
+                    height: 280),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text("Заказать по шаблону", style: Theme.of(context).textTheme.subtitle),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left:30, right: 70),
+            height: 300,
+            width: 230,
+            child: Card(
+              color: Colors.white54,
+              elevation: 10,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image(
+                    image: AssetImage("resources/images/random.add.jpg"),
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
+                    height: 280),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text("Случайный букет", style: Theme.of(context).textTheme.subtitle),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flower_user_ui/screens/main.menu/main.menu.content.dart';
 import 'package:flutter/material.dart';
 
 class MyHttpOverrides extends HttpOverrides{
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
               )
           )
       ),
-      home: StoreMainMenu(),
+      home: MainMenuContent(),
     );
   }
 }
