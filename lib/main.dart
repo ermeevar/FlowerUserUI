@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flower_user_ui/screens/main.menu/main.menu.content.dart';
+import 'package:flower_user_ui/screens/navigation.menu.dart';
 import 'package:flutter/material.dart';
 
 class MyHttpOverrides extends HttpOverrides{
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
               )
           )
       ),
-      home: MainMenuContent(),
+      home: NavigationMenu(),
     );
   }
 }

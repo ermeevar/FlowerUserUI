@@ -23,22 +23,14 @@ class MainMenuContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("resources/images/background.menu.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _accountInfo(context),
-              _bouquetCards(context),
-              Container(height: 100,)
-            ],
-          )
+      backgroundColor: Colors.transparent,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _accountInfo(context),
+          _bouquetCards(context),
+          Container(height: 10,)
+        ],
       ));
   }
   Widget _accountInfo(context){
