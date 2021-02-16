@@ -1,65 +1,55 @@
-class Order{
-  int _id;
-  DateTime _start;
-  DateTime _finish;
-  bool _isRandom;
-  int _orderStatusId;
-  int _bouquetId;
-  int _templateId;
+import 'dart:convert';
+import 'package:flower_user_ui/models/shop.dart';
 
-  Order();
+List<Order> orderFromJson(String str) => List<Order>.from(json.decode(str).map((x) => Order.fromJson(x)));
 
-  int get id => _id;
-  DateTime get start => _start;
-  DateTime get finish => _finish;
-  bool get isRandom => _isRandom;
-  int get orderStatusId => _orderStatusId;
-  int get bouquetId => _bouquetId;
-  int get templateId => _templateId;
+String orderToJson(List<Order> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  set id(int id){
-    _id = id;
-  }
-  set start(DateTime start){
-    _start = start;
-  }
-  set finish(DateTime finish){
-    _finish = finish;
-  }
-  set isRandom(bool isRandom){
-    _isRandom = isRandom;
-  }
-  set orderStatusId(int orderStatusId){
-    _orderStatusId = orderStatusId;
-  }
-  set bouquetId(int bouquetId){
-    _bouquetId = bouquetId;
-  }
-  set templateId(int templateId){
-    _templateId = templateId;
-  }
 
-  Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+class Order {
+  Order({
+    this.id,
+    this.start,
+    this.finish,
+    this.isRandom,
+    this.orderStatusId,
+    this.userId,
+    this.bouquetId,
+    this.templateId,
+    this.shopId,
+  });
 
-    map["id"] = _id;
-    map["start"] = _start;
-    map["finish"] = _finish;
-    map["isRandom"] = _isRandom;
-    map["orderStatusId"] = _orderStatusId;
-    map["bouquetId"] = _bouquetId;
-    map["templateId"] = _templateId;
+  int id;
+  DateTime start;
+  DateTime finish;
+  bool isRandom;
+  int orderStatusId;
+  int userId;
+  int bouquetId;
+  int templateId;
+  int shopId;
 
-    return map;
-  }
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+    id: json["id"],
+    start: DateTime.parse(json["start"]),
+    finish: DateTime.parse(json["finish"]),
+    isRandom: json["isRandom"],
+    orderStatusId: json["orderStatusId"],
+    userId: json["userId"],
+    bouquetId: json["bouquetId"],
+    templateId: json["templateId"],
+    shopId: json["shopId"],
+  );
 
-  Order.fromObject(dynamic object){
-    this._id = object["id"];
-    this._start = object["start"];
-    this._finish = object["finish"];
-    this._isRandom = object["isRandom"];
-    this._orderStatusId = object["orderStatusId"];
-    this._bouquetId = object["bouquetId"];
-    this._templateId = object["templateId"];
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "start": start.toIso8601String(),
+    "finish": finish.toIso8601String(),
+    "isRandom": isRandom,
+    "orderStatusId": orderStatusId,
+    "userId": userId,
+    "bouquetId": bouquetId,
+    "templateId": templateId,
+    "shopId": shopId,
+  };
 }

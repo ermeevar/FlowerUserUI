@@ -1,51 +1,37 @@
-class Bouquet{
-  int _id;
-  String _name;
-  double _cost;
-  int _storeId;
-  int _userId;
+import 'dart:convert';
 
-  Bouquet();
+List<Bouquet> bouquetFromJson(String str) => List<Bouquet>.from(json.decode(str).map((x) => Bouquet.fromJson(x)));
 
-  int get id => _id;
-  String get name => _name;
-  double get cost => _cost;
-  int get storeId => _storeId;
-  int get userId => _userId;
+String bouquetToJson(List<Bouquet> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  set id(int id){
-    _id = id;
-  }
-  set name(String name){
-    _name = name;
-  }
-  set cost(double cost){
-    _cost = cost;
-  }
-  set storeId(int storeId){
-    _storeId = storeId;
-  }
-  set userId(int userId){
-    _userId = userId;
-  }
+class Bouquet {
+  Bouquet({
+    this.id,
+    this.name,
+    this.cost,
+    this.storeId,
+    this.userId,
+  });
 
-  Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+  int id;
+  String name;
+  double cost;
+  int storeId;
+  int userId;
 
-    map["id"] = _id;
-    map["name"] = _name;
-    map["cost"] = _cost;
-    map["storeId"] = _storeId;
-    map["userId"] = _userId;
+  factory Bouquet.fromJson(Map<String, dynamic> json) => Bouquet(
+    id: json["id"],
+    name: json["name"],
+    cost: json["cost"].toDouble(),
+    storeId: json["storeId"],
+    userId: json["userId"],
+  );
 
-    return map;
-  }
-
-  Bouquet.fromObject(dynamic object){
-    this._id = object["id"];
-    this._name = object["name"];
-    this._cost = object["cost"];
-    this._storeId = object["storeId"];
-    this._userId = object["userId"];
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "cost": cost,
+    "storeId": storeId,
+    "userId": userId,
+  };
 }

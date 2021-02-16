@@ -1,24 +1,47 @@
+import 'package:flower_user_ui/models/account.dart';
+import 'package:flower_user_ui/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'main.menu/main.menu.content.dart';
+import 'orders.observe/orders.observe.main.dart';
 
 class NavigationMenu extends StatefulWidget{
+  User user;
+  Account account;
+
+  NavigationMenu(){
+    user = User();
+    user.id = 1;
+    user.name = "Рината";
+    user.surname = "Завойская";
+    user.phone = "8(927)880-67-82";
+    user.accountId = 3;
+
+    account = Account();
+    account.login = "mia_2105";
+    account.password = "qwerty";
+    account.role = "user";
+  }
+
   @override
-  NavigationMenuState createState() => NavigationMenuState();
+  NavigationMenuState createState() => NavigationMenuState(user, account);
 }
 
 class NavigationMenuState extends State<NavigationMenu> {
+  User _user;
+  Account _account;
   int _selectedIndex = 0;
-  List<Widget> _pages = <Widget>[
-    MainMenuContent(),
-    Text(
-      'Index 1: Business'
-    ),
-    Text(
-      'Index 2: School'
-    ),
-  ];
+  List<Widget> _pages;
+
+  NavigationMenuState(this._user, this._account){
+    _pages = <Widget>[
+      MainMenuContent(_user, _account),
+      OrdersObserveMain(_user, _account),
+      Text(
+          'Index 2: School'
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -4,21 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainMenuContent extends StatelessWidget {
-  User user;
-  Account account;
+  User _user;
+  Account _account;
 
-  MainMenuContent(){
-    user = User();
-    user.name = "Рината";
-    user.surname = "Завойская";
-    user.phone = "8(927)880-67-82";
-    user.accountId = 3;
-
-    account = Account();
-    account.login = "mia_2105";
-    account.password = "qwerty";
-    account.role = "user";
-  }
+  MainMenuContent(this._user, this._account);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +30,7 @@ class MainMenuContent extends StatelessWidget {
             padding: EdgeInsets.only(top:30, left: 10, right: 10),
             child:Row(
                 children: [
-                  Text(account.login, style: Theme.of(context).textTheme.body1),
+                  Text(_account.login, style: Theme.of(context).textTheme.body1),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: CircleAvatar(

@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.white,
                 decoration: TextDecoration.none),
             subtitle: TextStyle(
-                fontSize: 19,
+                fontSize: 23,
                 fontFamily: "Philosopher",
                 color: Color.fromRGBO(110, 53, 76, 1),
                 fontWeight: FontWeight.bold,
