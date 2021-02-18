@@ -65,17 +65,28 @@ class MainMenuContent extends StatelessWidget {
               color: Colors.white54,
               elevation: 10,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(
-                      image: AssetImage("resources/images/bouquet.add.jpg"),
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.cover,
-                      height: 280),
-                  Container(
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(Icons.add, color: Colors.white, size: 60),
+                  ),
+                  Padding(
                     padding: EdgeInsets.all(10),
                     child: Text("Новый букет",
                         style: Theme.of(context).textTheme.subtitle),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: OutlineButton(
+                      onPressed: () {
+
+                      },
+                      child: Text('Создать', style: Theme.of(context).textTheme.body2),
+                      borderSide: BorderSide(
+                          color:Colors.white
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -92,24 +103,42 @@ class MainMenuContent extends StatelessWidget {
               color: Colors.white54,
               elevation: 10,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(
-                      image: AssetImage("resources/images/template.add.jpg"),
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.cover,
-                      height: 250),
-                  Center(
-                    //padding: EdgeInsets.all(10),
-                    child: Text("Заказать по шаблону",
+                  // Padding(
+                  //   padding:EdgeInsets.all(20),
+                  //   child: CircleAvatar(
+                  //     backgroundImage: AssetImage("resources/images/bouquet.add.jpg"),
+                  //     maxRadius: 100,
+                  //   ),
+                  // ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(Icons.image_outlined, color: Colors.white, size: 60),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text("Букет по шаблону",
                         style: Theme.of(context).textTheme.subtitle),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: OutlineButton(
+                      onPressed: () {
+
+                      },
+                      child: Text('Выбрать', style: Theme.of(context).textTheme.body2),
+                      borderSide: BorderSide(
+                          color:Colors.white
+                      ),
+                    ),
                   )
                 ],
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 30, right: 70),
+            margin: EdgeInsets.only(left: 30),
             height: 300,
             width: 230,
             child: Card(
@@ -119,17 +148,28 @@ class MainMenuContent extends StatelessWidget {
               color: Colors.white54,
               elevation: 10,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(
-                      image: AssetImage("resources/images/random.add.jpg"),
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.cover,
-                      height: 280),
-                  Container(
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(Icons.add_shopping_cart, color: Colors.white, size: 60),
+                  ),
+                  Padding(
                     padding: EdgeInsets.all(10),
                     child: Text("Случайный букет",
                         style: Theme.of(context).textTheme.subtitle),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: OutlineButton(
+                      onPressed: () {
+
+                      },
+                      child: Text('Заказать', style: Theme.of(context).textTheme.body2),
+                      borderSide: BorderSide(
+                          color:Colors.white
+                      ),
+                    ),
                   )
                 ],
               ),
