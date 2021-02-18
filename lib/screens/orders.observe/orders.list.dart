@@ -187,7 +187,7 @@ class OrdersListState extends State<OrdersList> {
                                                     padding: EdgeInsets.only(
                                                         left: 10),
                                                     child: Text(
-                                                        getBouquetInOrder(_orders[index])
+                                                        _orders[index]
                                                                 .cost
                                                                 .toString() +
                                                             " " +
@@ -231,9 +231,9 @@ class OrdersListState extends State<OrdersList> {
                                                 padding: EdgeInsets.only(
                                                     left: 10),
                                                 child: Text(
-                                                    getBouquetInOrder(_orders[index])
-                                                            .cost
-                                                            .toString() +
+                                                    _orders[index]
+                                                        .cost
+                                                        .toString() +
                                                         " " +
                                                         CurrencyPickerUtils
                                                                 .getCountryByIsoCode(
@@ -253,7 +253,7 @@ class OrdersListState extends State<OrdersList> {
                                           ],
                                         ))
                                     : Container(height: 0),
-                                _orders[index].templateId != null
+                                _orders[index].isRandom != false
                                     ? Padding(
                                         padding: EdgeInsets.only(
                                             left: 20, right: 20, top: 20),
@@ -270,9 +270,9 @@ class OrdersListState extends State<OrdersList> {
                                                 padding: EdgeInsets.only(
                                                     left: 10),
                                                 child: Text(
-                                                    getBouquetInOrder(_orders[index])
-                                                            .cost
-                                                            .toString() +
+                                                    _orders[index]
+                                                        .cost
+                                                        .toString() +
                                                         " " +
                                                         CurrencyPickerUtils
                                                                 .getCountryByIsoCode(
