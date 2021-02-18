@@ -13,12 +13,13 @@ class OrdersObserveMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.only(top: 20, left:20, right: 20),
           child: Text("Заказы",
               style: Theme.of(context).textTheme.subtitle.copyWith(height: 2))),
-        OrdersList(_user, _account)
+        Expanded(child:OrdersList(_user, _account))
       ],
     );
   }

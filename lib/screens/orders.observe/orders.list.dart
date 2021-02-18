@@ -3,9 +3,13 @@ import 'package:flower_user_ui/models/order.dart';
 import 'package:flower_user_ui/models/shop.dart';
 import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/models/account.dart';
+import 'package:flower_user_ui/models/order.status.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+//import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:currency_pickers/currency_pickers.dart';
 
 class OrdersList extends StatefulWidget {
   User _user;
@@ -17,23 +21,25 @@ class OrdersList extends StatefulWidget {
 }
 
 class OrdersListState extends State<OrdersList> {
-  List<Order> _orders;
-  List<Shop> _shops;
-  List<Bouquet> _bouquets;
+  List<Order> _orders = [];
+  List<Shop> _shops = [];
+  List<Bouquet> _bouquets = [];
+  List<OrderStatus> _orderStatuses = [];
   User _user;
   Account _account;
+
   OrdersListState(this._user, this._account) {
     _getOrders();
     _getShops();
     _getBouquets();
+    _getOrderStatuses();
   }
 
   _getOrders() {
     WebApiServices.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
       setState(() {
-        _orders =
-            ordersData;
+        _orders = ordersData;
       });
     });
   }
@@ -56,6 +62,15 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
+  _getOrderStatuses() {
+    WebApiServices.fetchOrderStatuses().then((response) {
+      var orderStatusesData = orderStatusFromJson(response.data);
+      setState(() {
+        _orderStatuses = orderStatusesData;
+      });
+    });
+  }
+
   Shop getShopInOrder(Order order) {
     for (var item in _shops) {
       if (order.shopId == item.id) return item;
@@ -68,12 +83,18 @@ class OrdersListState extends State<OrdersList> {
     }
   }
 
+  OrderStatus getOrderStatusInOrder(Order order) {
+    for (var item in _orderStatuses) {
+      if (order.orderStatusId == item.id) return item;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
         child: Expanded(
-          child: _orders.length == null
+          child: _orders.length == 0
               ? Center(
                   child: Container(
                       color: Colors.white,
@@ -85,69 +106,210 @@ class OrdersListState extends State<OrdersList> {
                     return index + 1 == _orders.length + 1
                         ? Container(height: 90, color: Colors.white)
                         : Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                             color: Colors.white,
-                            elevation: 10,
+                            elevation: 5,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    "Букет на " +
-                                        _orders[index].finish.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(fontWeight: FontWeight.bold)),
-                                Text(
-                                    "Номер заказа: " +
-                                        _orders[index].id.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(
-                                            color: Color.fromRGBO(
-                                                110, 53, 76, 1))),
-                                Text(
-                                    "Пункт выдачи на " +
-                                        getShopInOrder(_orders[index]).address,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(
-                                            height: 4,
-                                            color: Color.fromRGBO(
-                                                110, 53, 76, 1))),
-                                Divider(
-                                  thickness: 2,
-                                  color: Color.fromRGBO(130, 157, 143, 1),
-                                ),
-                                Row(
-                                  children: [
-                                    Column(
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 20, left: 20, right: 20),
+                                    child: Text(
+                                        DateFormat('Букет на dd.MM.yyyy hh:mm')
+                                            .format(_orders[index].finish)
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold))),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text(
+                                        "Номер заказа: " +
+                                            _orders[index].id.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                                color: Color.fromRGBO(
+                                                    110, 53, 76, 1)))),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 20, right: 20, top: 40),
+                                    child: Text(
+                                        "Пункт выдачи на " +
+                                            getShopInOrder(_orders[index])
+                                                .address,
+                                        style:
+                                            Theme.of(context).textTheme.body1)),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: Color.fromRGBO(130, 157, 143, 1),
+                                    )),
+                                _orders[index].bouquetId != null
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20, right: 20, top: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Персональный букет",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .body1
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                    child: Text(
+                                                        getBouquetInOrder(
+                                                                _orders[index])
+                                                            .name,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .body1)),
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10),
+                                                    child: Text(
+                                                        getBouquetInOrder(_orders[index])
+                                                                .cost
+                                                                .toString() +
+                                                            " " +
+                                                            CurrencyPickerUtils.getCountryByIsoCode(
+                                                                    'RU')
+                                                                .currencyCode
+                                                                .toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .body1
+                                                            .copyWith(
+                                                                color:
+                                                                    Color.fromRGBO(
+                                                                        130,
+                                                                        157,
+                                                                        143,
+                                                                        1),
+                                                                fontSize: 25,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))),
+                                              ],
+                                            ),
+                                          ],
+                                        ))
+                                    : Container(height: 0),
+                                _orders[index].templateId != null
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20, right: 20, top: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                                child: Text("Букет по шаблону",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .body1)),
+                                            Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10),
+                                                child: Text(
+                                                    getBouquetInOrder(_orders[index])
+                                                            .cost
+                                                            .toString() +
+                                                        " " +
+                                                        CurrencyPickerUtils
+                                                                .getCountryByIsoCode(
+                                                                    'RU')
+                                                            .currencyCode
+                                                            .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .body1
+                                                        .copyWith(
+                                                            color: Color.fromRGBO(
+                                                                130, 157, 143, 1),
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold))),
+                                          ],
+                                        ))
+                                    : Container(height: 0),
+                                _orders[index].templateId != null
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20, right: 20, top: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                                child: Text("Случайный букет",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .body1)),
+                                            Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10),
+                                                child: Text(
+                                                    getBouquetInOrder(_orders[index])
+                                                            .cost
+                                                            .toString() +
+                                                        " " +
+                                                        CurrencyPickerUtils
+                                                                .getCountryByIsoCode(
+                                                                    'RU')
+                                                            .currencyCode
+                                                            .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .body1
+                                                        .copyWith(
+                                                            color: Color.fromRGBO(
+                                                                130, 157, 143, 1),
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold))),
+                                          ],
+                                        ))
+                                    : Container(height: 0),
+                                Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Row(
                                       children: [
+                                        Spacer(),
                                         Text(
-                                            getBouquetInOrder(_orders[index]).name,
+                                            getOrderStatusInOrder(
+                                                    _orders[index])
+                                                .name,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .body1
                                                 .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                        Text("<ertn "),
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color.fromRGBO(
+                                                        110, 53, 76, 1)))
                                       ],
-                                    ),
-                                    Text(
-                                        getBouquetInOrder(_orders[index]).cost.toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .body1
-                                            .copyWith(fontSize: 25, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                                Text(
-                                    _orders[index].orderStatusId.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(fontWeight: FontWeight.bold, color: Color.fromRGBO(110, 53, 76, 1))),
+                                    )),
                               ],
                             ),
                           );

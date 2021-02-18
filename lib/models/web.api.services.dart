@@ -23,8 +23,9 @@ class WebApiServices {
   static String _categoryUrl = "https://10.0.2.2:5001/categories/";
   static String _storeProductUrl = "https://10.0.2.2:5001/storeproducts/";
   static String _shopProductUrl = "https://10.0.2.2:5001/shopproducts/";
-  static String _orderUrl = "https://10.0.2.2:5001/shopproducts/orders/";
-  static String _bouquetUrl = "https://10.0.2.2:5001/shopproducts/bouquets/";
+  static String _orderUrl = "https://10.0.2.2:5001/orders/";
+  static String _bouquetUrl = "https://10.0.2.2:5001/bouquets/";
+  static String _orderStatusUrl = "https://10.0.2.2:5001/orderstatuses/";
 
   static Future fetchStore() async {
     return await Dio().get(
@@ -50,6 +51,13 @@ class WebApiServices {
   static Future<Response<String>> fetchBouquets() async {
     return await Dio().get<String>(
       _bouquetUrl,
+      options: buildCacheOptions(Duration(days: 1)),
+    );
+  }
+
+  static Future<Response<String>> fetchOrderStatuses() async {
+    return await Dio().get<String>(
+      _orderStatusUrl,
       options: buildCacheOptions(Duration(days: 1)),
     );
   }

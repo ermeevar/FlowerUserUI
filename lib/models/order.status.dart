@@ -1,30 +1,26 @@
-class OrderStatus{
-  int _id;
-  String _name;
+import 'dart:convert';
 
-  OrderStatus();
 
-  int get id => _id;
-  String get name => _name;
+List<OrderStatus> orderStatusFromJson(String str) => List<OrderStatus>.from(json.decode(str).map((x) => OrderStatus.fromJson(x)));
 
-  set id(int id){
-    _id = id;
-  }
-  set name(String name){
-    _name = name;
-  }
+String orderStatusToJson(List<OrderStatus> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+class OrderStatus {
+  OrderStatus({
+    this.id,
+    this.name,
+  });
 
-    map["id"] = _id;
-    map["name"] = _name;
+  int id;
+  String name;
 
-    return map;
-  }
+  factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
+    id: json["id"],
+    name: json["name"],
+  );
 
-  OrderStatus.fromObject(dynamic object){
-    this._id = object["id"];
-    this._name = object["name"];
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+  };
 }
