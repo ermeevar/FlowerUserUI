@@ -46,12 +46,12 @@ class MyApp extends StatelessWidget {
           ),
           inputDecorationTheme: InputDecorationTheme(
               labelStyle: TextStyle(
-                color: Colors.white,
+                color:Color.fromRGBO(130, 147, 153, 1),
               ),
               contentPadding: EdgeInsets.zero,
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.white,
+                    color: Color.fromRGBO(130, 147, 153, 1),
                   )
               )
           ),

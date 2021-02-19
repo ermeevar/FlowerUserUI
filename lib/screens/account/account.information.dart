@@ -16,6 +16,9 @@ class AccountInformation extends StatefulWidget {
 class AccountInformationState extends State<AccountInformation>
     with SingleTickerProviderStateMixin {
   User _user;
+  String _name;
+  String _surname;
+  String _phone;
   bool _isTab = false;
   Account _account;
 
@@ -49,7 +52,6 @@ class AccountInformationState extends State<AccountInformation>
 
   Widget _read(context) {
     return Container(
-      //color:Colors.black38,
       padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +74,10 @@ class AccountInformationState extends State<AccountInformation>
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                       FlatButton(
-                          onPressed: null,
+                          onPressed: (){
+                            _taped();
+                            Navigator.pop(context);
+                          },
                           padding: EdgeInsets.only(left: 10),
                           child: new Text("Изменить",
                               style: Theme.of(context).textTheme.body1.copyWith(
@@ -135,6 +140,96 @@ class AccountInformationState extends State<AccountInformation>
   }
 
   Widget _change(context) {
-    return null;
+    return Container(
+      color: Colors.black38,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Spacer(),
+              IconButton(
+                  icon: Icon(Icons.navigate_next, size: 30),
+                  color: Color.fromRGBO(130, 147, 153, 1),
+                  onPressed: () {
+                    _taped();
+                  }
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: TextFormField(
+                onChanged: (name){
+                  setState(() {
+                    this._name=name;
+                  });
+                },
+                cursorColor: Color.fromRGBO(130, 147, 153, 1),
+                key: Key("name"),
+                initialValue: _user.name != null ? _user.name : "",
+                style: Theme.of(context).textTheme.body1,
+                decoration: InputDecoration(
+                  labelText: "Имя",
+                  focusColor: Color.fromRGBO(130, 147, 153, 1),
+                )
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: TextFormField(
+                onChanged: (surname){
+                  setState(() {
+                    this._surname=surname;
+                  });
+                },
+                cursorColor: Color.fromRGBO(130, 147, 153, 1),
+                initialValue: _user.surname != null ? _user.surname : "",
+                style: Theme.of(context).textTheme.body1,
+                decoration: InputDecoration(
+                  labelText: "Фамилия",
+                  focusColor: Color.fromRGBO(130, 147, 153, 1),
+                )
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.zero,
+            child: TextFormField(
+                onChanged: (phone){
+                  setState(() {
+                    this._phone=phone;
+                  });
+                },
+                cursorColor: Color.fromRGBO(130, 147, 153, 1),
+                initialValue: _user.phone != null ? _user.phone : "",
+                style: Theme.of(context).textTheme.body1,
+                decoration: InputDecoration(
+                  labelText: "Телефон",
+                  focusColor: Color.fromRGBO(130, 147, 153, 1),
+                )
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            child: FlatButton(
+                onPressed: (){
+                  _taped();
+                },
+                padding: EdgeInsets.zero,
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(130, 147, 153, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                    child: new Text(
+                        "Сохранить",
+                        style: Theme.of(context).textTheme.body2)
+                )
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
