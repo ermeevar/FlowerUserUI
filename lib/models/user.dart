@@ -25,7 +25,7 @@ class User{
     _name = name;
   }
   set phone(String phone){
-    _surname = phone;
+    _phone = phone;
   }
   set picture(List<int> picture){
     _picture = picture;

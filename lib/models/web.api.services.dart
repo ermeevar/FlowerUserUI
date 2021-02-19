@@ -26,6 +26,7 @@ class WebApiServices {
   static String _orderUrl = "https://10.0.2.2:5001/orders/";
   static String _bouquetUrl = "https://10.0.2.2:5001/bouquets/";
   static String _orderStatusUrl = "https://10.0.2.2:5001/orderstatuses/";
+  static String _accountUrl = "https://10.0.2.2:5001/accounts/";
 
   static Future fetchStore() async {
     return await Dio().get(
@@ -37,6 +38,13 @@ class WebApiServices {
   static Future<Response<String>> fetchShop() async {
     return await Dio().get<String>(
       _shopUrl,
+      options: buildCacheOptions(Duration(days: 7)),
+    );
+  }
+
+  static Future<Response<String>> fetchAccount() async {
+    return await Dio().get<String>(
+      _accountUrl,
       options: buildCacheOptions(Duration(days: 7)),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'main.menu/main.menu.content.dart';
 import 'orders.observe/orders.observe.main.dart';
+import 'package:flower_user_ui/screens/account/account.main.dart';
 
 class NavigationMenu extends StatefulWidget{
   User user;
@@ -19,7 +20,7 @@ class NavigationMenu extends StatefulWidget{
 
     account = Account();
     account.login = "mia_2105";
-    account.password = "qwerty";
+    account.passwordHash = "qwerty";
     account.role = "user";
   }
 
@@ -37,9 +38,7 @@ class NavigationMenuState extends State<NavigationMenu> {
     _pages = <Widget>[
       MainMenuContent(_user, _account),
       OrdersObserveMain(_user, _account),
-      Text(
-          'Index 2: School'
-      ),
+      AccountObserve(_user),
     ];
   }
 
