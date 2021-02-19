@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flower_user_ui/models/bouquet.dart';
-import 'package:flower_user_ui/models/order.dart';
-import 'package:flower_user_ui/models/shop.dart';
 import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/screens/account/account.information.dart';
-import 'package:flower_user_ui/models/account.dart';
+import 'package:flower_user_ui/screens/account/account.bouquets.dart';
 
 class AccountObserve extends StatefulWidget{
   User _user;
@@ -37,7 +34,7 @@ class AccountObserveState extends State<AccountObserve>{
             ],
           ),
           AccountInformation(_user),
-          //AccountBouquets()
+          AccountBouquets(_user)
         ],
       ),
     );

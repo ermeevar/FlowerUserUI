@@ -121,7 +121,7 @@ class AccountInformationState extends State<AccountInformation>
             ],
           ),
           CircleAvatar(
-            radius: 70,
+            radius: 60,
             backgroundImage: NetworkImage(_user.picture == null
                 ? 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
                 : _user.picture),
@@ -141,7 +141,6 @@ class AccountInformationState extends State<AccountInformation>
 
   Widget _change(context) {
     return Container(
-      color: Colors.black38,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
@@ -150,6 +149,7 @@ class AccountInformationState extends State<AccountInformation>
               Spacer(),
               IconButton(
                   icon: Icon(Icons.navigate_next, size: 30),
+                  padding: EdgeInsets.zero,
                   color: Color.fromRGBO(130, 147, 153, 1),
                   onPressed: () {
                     _taped();
@@ -209,24 +209,29 @@ class AccountInformationState extends State<AccountInformation>
                 )
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(top: 20),
-            child: FlatButton(
-                onPressed: (){
-                  _taped();
-                },
-                padding: EdgeInsets.zero,
-                child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
-                    child: new Text(
-                        "Сохранить",
-                        style: Theme.of(context).textTheme.body2)
-                )
-            ),
+          Row(
+            children: [
+              Spacer(),
+              Container(
+                padding: EdgeInsets.only(top: 20, bottom: 2),
+                child: FlatButton(
+                    onPressed: (){
+                      _taped();
+                    },
+                    padding: EdgeInsets.zero,
+                    child: Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(130, 147, 153, 1),
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        child: new Text(
+                            "Сохранить",
+                            style: Theme.of(context).textTheme.body2)
+                    )
+                ),
+              )
+            ],
           )
         ],
       ),
