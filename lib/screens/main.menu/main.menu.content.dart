@@ -1,5 +1,6 @@
 import 'package:flower_user_ui/models/account.dart';
 import 'package:flower_user_ui/models/user.dart';
+import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -80,12 +81,14 @@ class MainMenuContent extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     child: OutlineButton(
                       onPressed: () {
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BouquetMainMenu(_user)));
                       },
-                      child: Text('Создать', style: Theme.of(context).textTheme.body2),
-                      borderSide: BorderSide(
-                          color:Colors.white
-                      ),
+                      child: Text('Создать',
+                          style: Theme.of(context).textTheme.body2),
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                   )
                 ],
@@ -114,7 +117,8 @@ class MainMenuContent extends StatelessWidget {
                   // ),
                   Padding(
                     padding: EdgeInsets.all(10),
-                    child: Icon(Icons.image_outlined, color: Colors.white, size: 60),
+                    child: Icon(Icons.image_outlined,
+                        color: Colors.white, size: 60),
                   ),
                   Padding(
                     padding: EdgeInsets.all(10),
@@ -124,13 +128,10 @@ class MainMenuContent extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: OutlineButton(
-                      onPressed: () {
-
-                      },
-                      child: Text('Выбрать', style: Theme.of(context).textTheme.body2),
-                      borderSide: BorderSide(
-                          color:Colors.white
-                      ),
+                      onPressed: () {},
+                      child: Text('Выбрать',
+                          style: Theme.of(context).textTheme.body2),
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                   )
                 ],
@@ -152,7 +153,8 @@ class MainMenuContent extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(10),
-                    child: Icon(Icons.add_shopping_cart, color: Colors.white, size: 60),
+                    child: Icon(Icons.add_shopping_cart,
+                        color: Colors.white, size: 60),
                   ),
                   Padding(
                     padding: EdgeInsets.all(10),
@@ -162,13 +164,10 @@ class MainMenuContent extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: OutlineButton(
-                      onPressed: () {
-
-                      },
-                      child: Text('Заказать', style: Theme.of(context).textTheme.body2),
-                      borderSide: BorderSide(
-                          color:Colors.white
-                      ),
+                      onPressed: () {},
+                      child: Text('Заказать',
+                          style: Theme.of(context).textTheme.body2),
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                   )
                 ],
