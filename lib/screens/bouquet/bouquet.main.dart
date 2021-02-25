@@ -1,5 +1,5 @@
-import 'package:flower_user_ui/models/account.dart';
 import 'package:flower_user_ui/models/user.dart';
+import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,12 +21,15 @@ class BouquetMainMenuState extends State<BouquetMainMenu>{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            _header(context),
-          ],
-        ),
+          color: Colors.white,
+          child: Column(
+            children: [
+              _header(context),
+              Expanded(
+                child: StoreSelection(_user),
+              )
+            ],
+          )
       ),
     );
   }

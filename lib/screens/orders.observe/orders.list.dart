@@ -35,8 +35,8 @@ class OrdersListState extends State<OrdersList> {
     _getOrderStatuses();
   }
 
-  _getOrders() {
-    WebApiServices.fetchOrders().then((response) {
+  _getOrders() async{
+    await WebApiServices.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
       setState(() {
         _orders = ordersData;
@@ -44,8 +44,8 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
-  _getShops() {
-    WebApiServices.fetchShop().then((response) {
+  _getShops() async{
+    await WebApiServices.fetchShop().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
         _shops = shopsData;
@@ -53,8 +53,8 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
-  _getBouquets() {
-    WebApiServices.fetchBouquets().then((response) {
+  _getBouquets() async{
+    await WebApiServices.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData;
@@ -62,8 +62,8 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
-  _getOrderStatuses() {
-    WebApiServices.fetchOrderStatuses().then((response) {
+  _getOrderStatuses() async{
+    await WebApiServices.fetchOrderStatuses().then((response) {
       var orderStatusesData = orderStatusFromJson(response.data);
       setState(() {
         _orderStatuses = orderStatusesData;
