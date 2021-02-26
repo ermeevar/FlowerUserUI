@@ -72,12 +72,19 @@ class StoreSelectionState extends State<StoreSelection> {
                 elevation: 10,
                 shape: CircleBorder(),
                 clipBehavior: Clip.antiAlias,
-                child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(_stores[index].picture == null
-                        ? "https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"
-                        : _stores[index].picture),
-                    backgroundColor: Colors.transparent),
+                child: IconButton(
+                  iconSize: 120,
+                  padding: EdgeInsets.zero,
+                  icon: CircleAvatar(
+                      radius: 60,
+                      backgroundImage: NetworkImage(_stores[index].picture == null
+                          ? "https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"
+                          : _stores[index].picture),
+                      backgroundColor: Colors.transparent),
+                  onPressed: (){
+
+                  },
+                ),
               ),
               Text(
                 _stores[index].name.toString(),
