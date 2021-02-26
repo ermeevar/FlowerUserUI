@@ -51,6 +51,10 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(130, 147, 153, 1),
+        child: Icon(Icons.list),
+      ),
       body: Container(
           color: Colors.white,
           child: Column(
@@ -72,12 +76,12 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                   },
                   fixedDotDecoration: FixedDotDecoration(
                       strokeWidth: 1,
-                      strokeColor: Color.fromRGBO(110, 53, 76, 1),
+                      strokeColor: Color.fromRGBO(130, 147, 153, 1),
                       color: Colors.white
                   ),
                   indicatorDecoration: IndicatorDecoration(
-                      color: Color.fromRGBO(110, 53, 76, 1),
-                      strokeColor: Color.fromRGBO(110, 53, 76, 1)
+                      color: Color.fromRGBO(130, 147, 153, 1),
+                      strokeColor: Color.fromRGBO(130, 147, 153, 1)
                   ),
                 ),
               ),
