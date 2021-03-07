@@ -22,7 +22,7 @@ class AccountInformationState extends State<AccountInformation>
   bool _isTab = false;
   Account _account;
 
-  AccountInformationState(this._user){
+  AccountInformationState(this._user) {
     _getAccount();
   }
 
@@ -30,10 +30,13 @@ class AccountInformationState extends State<AccountInformation>
     WebApiServices.fetchAccount().then((response) {
       var accountsData = accountFromJson(response.data);
       setState(() {
-        _account = accountsData.where((element) => element.id==_user.accountId).first;
+        _account = accountsData
+            .where((element) => element.id == _user.accountId)
+            .first;
       });
     });
   }
+
   void _taped() {
     setState(() {
       _isTab = !_isTab;
@@ -66,15 +69,15 @@ class AccountInformationState extends State<AccountInformation>
                 itemBuilder: (context) => [
                   PopupMenuItem(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Icon(
                         Icons.edit,
-                        size:25,
+                        size: 25,
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                       FlatButton(
-                          onPressed: (){
+                          onPressed: () {
                             _taped();
                             Navigator.pop(context);
                           },
@@ -86,7 +89,7 @@ class AccountInformationState extends State<AccountInformation>
                   )),
                   PopupMenuItem(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Icon(
                         Icons.exit_to_app,
@@ -103,17 +106,17 @@ class AccountInformationState extends State<AccountInformation>
                   )),
                   PopupMenuItem(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.delete,
-                          size: 25,
-                          color: Colors.red),
+                      Icon(Icons.delete, size: 25, color: Colors.red),
                       new FlatButton(
                           onPressed: null,
                           padding: EdgeInsets.only(left: 10),
                           child: new Text("Удалить",
-                              style: Theme.of(context).textTheme.body1.copyWith(
-                                  color: Colors.red)))
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(color: Colors.red)))
                     ],
                   )),
                 ],
@@ -128,10 +131,8 @@ class AccountInformationState extends State<AccountInformation>
             backgroundColor: Colors.transparent,
           ),
           Text(_account.login,
-              style: Theme.of(context)
-                  .textTheme
-                  .body1
-                  .copyWith(height: 2, fontWeight: FontWeight.bold, fontSize: 20)),
+              style: Theme.of(context).textTheme.body1.copyWith(
+                  height: 2, fontWeight: FontWeight.bold, fontSize: 20)),
           Text(_user.name + " " + _user.surname,
               style: Theme.of(context).textTheme.body1)
         ],
@@ -153,16 +154,15 @@ class AccountInformationState extends State<AccountInformation>
                   color: Color.fromRGBO(130, 147, 153, 1),
                   onPressed: () {
                     _taped();
-                  }
-              ),
+                  }),
             ],
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 20),
             child: TextFormField(
-                onChanged: (name){
+                onChanged: (name) {
                   setState(() {
-                    this._name=name;
+                    this._name = name;
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
@@ -172,15 +172,14 @@ class AccountInformationState extends State<AccountInformation>
                 decoration: InputDecoration(
                   labelText: "Имя",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
-                )
-            ),
+                )),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 20),
             child: TextFormField(
-                onChanged: (surname){
+                onChanged: (surname) {
                   setState(() {
-                    this._surname=surname;
+                    this._surname = surname;
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
@@ -189,15 +188,14 @@ class AccountInformationState extends State<AccountInformation>
                 decoration: InputDecoration(
                   labelText: "Фамилия",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
-                )
-            ),
+                )),
           ),
           Padding(
             padding: EdgeInsets.zero,
             child: TextFormField(
-                onChanged: (phone){
+                onChanged: (phone) {
                   setState(() {
-                    this._phone=phone;
+                    this._phone = phone;
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
@@ -206,8 +204,7 @@ class AccountInformationState extends State<AccountInformation>
                 decoration: InputDecoration(
                   labelText: "Телефон",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
-                )
-            ),
+                )),
           ),
           Row(
             children: [
@@ -215,7 +212,7 @@ class AccountInformationState extends State<AccountInformation>
               Container(
                 padding: EdgeInsets.only(top: 20, bottom: 2),
                 child: FlatButton(
-                    onPressed: (){
+                    onPressed: () {
                       _taped();
                     },
                     padding: EdgeInsets.zero,
@@ -223,13 +220,10 @@ class AccountInformationState extends State<AccountInformation>
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color: Color.fromRGBO(130, 147, 153, 1),
-                            borderRadius: BorderRadius.all(Radius.circular(20))
-                        ),
-                        child: new Text(
-                            "Сохранить",
-                            style: Theme.of(context).textTheme.body2)
-                    )
-                ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: new Text("Сохранить",
+                            style: Theme.of(context).textTheme.body2))),
               )
             ],
           )

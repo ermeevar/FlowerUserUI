@@ -18,15 +18,21 @@ class WebApiServices {
 
   static Dio dio = Dio();
 
-  static String _storeUrl = "https://10.0.2.2:5001/stores/";
-  static String _shopUrl = "https://10.0.2.2:5001/shops/";
-  static String _categoryUrl = "https://10.0.2.2:5001/categories/";
-  static String _storeProductUrl = "https://10.0.2.2:5001/storeproducts/";
-  static String _shopProductUrl = "https://10.0.2.2:5001/shopproducts/";
-  static String _orderUrl = "https://10.0.2.2:5001/orders/";
-  static String _bouquetUrl = "https://10.0.2.2:5001/bouquets/";
-  static String _orderStatusUrl = "https://10.0.2.2:5001/orderstatuses/";
-  static String _accountUrl = "https://10.0.2.2:5001/accounts/";
+  static String _androidEmulatorLoopback = "10.0.2.2";
+  static String _localhost = "localhost";
+  static String _port = "5001";
+
+  static String _baseUrl = "https://$_localhost:$_port/";
+
+  static String _storeUrl = _baseUrl+"stores/";
+  static String _shopUrl = _baseUrl+"shops/";
+  static String _categoryUrl = _baseUrl+"categories/";
+  static String _storeProductUrl = _baseUrl+"storeproducts/";
+  static String _shopProductUrl = _baseUrl+"shopproducts/";
+  static String _orderUrl = _baseUrl+"orders/";
+  static String _bouquetUrl = _baseUrl+"bouquets/";
+  static String _orderStatusUrl = _baseUrl+"orderstatuses/";
+  static String _accountUrl = _baseUrl+"accounts/";
 
 
   static Future<Response<String>> fetchShop() async {
@@ -51,6 +57,7 @@ class WebApiServices {
   }
 
   static Future<Response<String>> fetchOrders() async {
+    print(_orderStatusUrl);
     return await Dio().get<String>(
       _orderUrl,
       options: buildCacheOptions(Duration(days: 1)),

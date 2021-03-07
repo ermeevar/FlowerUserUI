@@ -19,7 +19,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   int _countOfPages = 4;
   int _stepIndex = 0;
   String swipeDirection ="";
-  List<Widget> _pages;
+  List<Widget> _pages = [];
 
   BouquetMainMenuState(this._user){
     _pages=[

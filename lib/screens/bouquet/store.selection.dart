@@ -16,6 +16,7 @@ class StoreSelection extends StatefulWidget {
 
 class StoreSelectionState extends State<StoreSelection> {
   User _user;
+  Store _selectedStore = Store();
   Bouquet _bouquet = Bouquet();
   List<Store> _stores = [];
 
@@ -51,6 +52,13 @@ class StoreSelectionState extends State<StoreSelection> {
                 focusColor: Color.fromRGBO(130, 147, 153, 1),
               )),
         ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Text(
+            "Сети магазинов",
+            style: Theme.of(context).textTheme.body1,
+          ),
+        ),
         Expanded(
           child: _storesList(context),
         ),
@@ -75,14 +83,30 @@ class StoreSelectionState extends State<StoreSelection> {
                 child: IconButton(
                   iconSize: 120,
                   padding: EdgeInsets.zero,
-                  icon: CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage(_stores[index].picture == null
-                          ? "https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"
-                          : _stores[index].picture),
-                      backgroundColor: Colors.transparent),
-                  onPressed: (){
-
+                  icon: _selectedStore != null &&
+                          _selectedStore == _stores[index]
+                      ? Icon(
+                          Icons.check,
+                          color: Color.fromRGBO(110, 53, 76, 1),
+                          size: 120,
+                        )
+                      : CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(_stores[index]
+                                      .picture ==
+                                  null
+                              ? "https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"
+                              : _stores[index].picture),
+                          backgroundColor: Colors.transparent),
+                  onPressed: () {
+                    if (_stores[index] == _selectedStore)
+                      setState(() {
+                        _selectedStore = Store();
+                      });
+                    else
+                      setState(() {
+                        _selectedStore = _stores[index];
+                      });
                   },
                 ),
               ),

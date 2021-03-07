@@ -7,13 +7,14 @@ import 'package:flower_user_ui/models/order.status.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:currency_pickers/currency_pickers.dart';
 
 class OrdersList extends StatefulWidget {
   User _user;
   Account _account;
+
   OrdersList(this._user, this._account);
 
   @override
@@ -35,7 +36,7 @@ class OrdersListState extends State<OrdersList> {
     _getOrderStatuses();
   }
 
-  _getOrders() async{
+  _getOrders() async {
     await WebApiServices.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
       setState(() {
@@ -44,7 +45,7 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
-  _getShops() async{
+  _getShops() async {
     await WebApiServices.fetchShop().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
@@ -53,7 +54,7 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
-  _getBouquets() async{
+  _getBouquets() async {
     await WebApiServices.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
@@ -62,7 +63,7 @@ class OrdersListState extends State<OrdersList> {
     });
   }
 
-  _getOrderStatuses() async{
+  _getOrderStatuses() async {
     await WebApiServices.fetchOrderStatuses().then((response) {
       var orderStatusesData = orderStatusFromJson(response.data);
       setState(() {
@@ -97,9 +98,11 @@ class OrdersListState extends State<OrdersList> {
           child: _orders.length == 0
               ? Center(
                   child: Container(
-                      color: Colors.white,
-                      child: Text("У вас нет ни одного заказа",
-                          style: Theme.of(context).textTheme.body1)))
+                    color: Colors.white,
+                    child: Text("У вас нет ни одного заказа",
+                        style: Theme.of(context).textTheme.body1),
+                  ),
+                )
               : ListView.builder(
                   itemCount: _orders.length + 1,
                   itemBuilder: (context, index) {
@@ -109,7 +112,8 @@ class OrdersListState extends State<OrdersList> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                            margin: EdgeInsets.only(
+                                left: 20, right: 20, bottom: 10),
                             color: Colors.white,
                             elevation: 5,
                             child: Column(
@@ -184,23 +188,20 @@ class OrdersListState extends State<OrdersList> {
                                                             .textTheme
                                                             .body1)),
                                                 Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10),
+                                                    padding: EdgeInsets
+                                                        .only(left: 10),
                                                     child: Text(
                                                         _orders[index]
                                                                 .cost
                                                                 .toString() +
-                                                            " " +
-                                                            CurrencyPickerUtils.getCountryByIsoCode(
-                                                                    'RU')
-                                                                .currencyCode
-                                                                .toString(),
-                                                        style: Theme.of(context)
+                                                            " ",
+                                                        style: Theme.of(
+                                                                context)
                                                             .textTheme
                                                             .body1
                                                             .copyWith(
-                                                                color:
-                                                                    Color.fromRGBO(
+                                                                color: Color
+                                                                    .fromRGBO(
                                                                         130,
                                                                         157,
                                                                         143,
@@ -228,24 +229,23 @@ class OrdersListState extends State<OrdersList> {
                                                         .textTheme
                                                         .body1)),
                                             Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10),
+                                                padding:
+                                                    EdgeInsets.only(left: 10),
                                                 child: Text(
                                                     _orders[index]
-                                                        .cost
-                                                        .toString() +
-                                                        " " +
-                                                        CurrencyPickerUtils
-                                                                .getCountryByIsoCode(
-                                                                    'RU')
-                                                            .currencyCode
-                                                            .toString(),
+                                                            .cost
+                                                            .toString() +
+                                                        " ",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .body1
                                                         .copyWith(
-                                                            color: Color.fromRGBO(
-                                                                130, 157, 143, 1),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    130,
+                                                                    157,
+                                                                    143,
+                                                                    1),
                                                             fontSize: 25,
                                                             fontWeight:
                                                                 FontWeight
@@ -267,24 +267,23 @@ class OrdersListState extends State<OrdersList> {
                                                         .textTheme
                                                         .body1)),
                                             Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10),
+                                                padding:
+                                                    EdgeInsets.only(left: 10),
                                                 child: Text(
                                                     _orders[index]
-                                                        .cost
-                                                        .toString() +
-                                                        " " +
-                                                        CurrencyPickerUtils
-                                                                .getCountryByIsoCode(
-                                                                    'RU')
-                                                            .currencyCode
-                                                            .toString(),
+                                                            .cost
+                                                            .toString() +
+                                                        " ",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .body1
                                                         .copyWith(
-                                                            color: Color.fromRGBO(
-                                                                130, 157, 143, 1),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    130,
+                                                                    157,
+                                                                    143,
+                                                                    1),
                                                             fontSize: 25,
                                                             fontWeight:
                                                                 FontWeight

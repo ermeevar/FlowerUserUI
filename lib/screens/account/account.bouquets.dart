@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
-import 'package:currency_pickers/currency_pickers.dart';
 
 class AccountBouquets extends StatefulWidget {
   User _user;
@@ -86,12 +85,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
                                         padding: EdgeInsets.zero,
                                         child: Text(
                                             _bouquets[index].cost.toString() +
-                                                " " +
-                                                CurrencyPickerUtils
-                                                        .getCountryByIsoCode(
-                                                            'RU')
-                                                    .currencyCode
-                                                    .toString(),
+                                                " " ,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .body1),
