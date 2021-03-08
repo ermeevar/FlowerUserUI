@@ -1,26 +1,18 @@
-import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/models/store.dart';
-import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
+import 'bouquet.main.dart';
 
 class StoreSelection extends StatefulWidget {
-  User _user;
-
-  StoreSelection(this._user);
-
   @override
-  StoreSelectionState createState() => StoreSelectionState(_user);
+  StoreSelectionState createState() => StoreSelectionState();
 }
 
 class StoreSelectionState extends State<StoreSelection> {
-  User _user;
-  Store _selectedStore = Store();
-  Bouquet _bouquet = Bouquet();
   List<Store> _stores = [];
 
-  StoreSelectionState(this._user) {
+  StoreSelectionState() {
     _getStores();
   }
 
@@ -42,9 +34,12 @@ class StoreSelectionState extends State<StoreSelection> {
           child: TextFormField(
               onChanged: (name) {
                 setState(() {
-                  this._bouquet.name = name;
+                  BouquetMainMenuState.newBouquet.name = name;
                 });
               },
+              initialValue: BouquetMainMenuState.newBouquet.name != null
+                  ? BouquetMainMenuState.newBouquet.name
+                  : "",
               cursorColor: Color.fromRGBO(130, 147, 153, 1),
               style: Theme.of(context).textTheme.body1,
               decoration: InputDecoration(
@@ -83,8 +78,9 @@ class StoreSelectionState extends State<StoreSelection> {
                 child: IconButton(
                   iconSize: 120,
                   padding: EdgeInsets.zero,
-                  icon: _selectedStore != null &&
-                          _selectedStore == _stores[index]
+                  icon: BouquetMainMenuState.newBouquet.storeId != null &&
+                          BouquetMainMenuState.newBouquet.storeId ==
+                              _stores[index].id
                       ? Icon(
                           Icons.check,
                           color: Color.fromRGBO(110, 53, 76, 1),
@@ -92,20 +88,24 @@ class StoreSelectionState extends State<StoreSelection> {
                         )
                       : CircleAvatar(
                           radius: 60,
-                          backgroundImage: NetworkImage(_stores[index]
-                                      .picture ==
-                                  null
-                              ? "https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"
-                              : _stores[index].picture),
+                          child: _stores[index].picture == null
+                              ? Icon(
+                                  Icons.image_outlined,
+                                  color: Colors.black38,
+                                  size: 50,
+                                )
+                              : _stores[index].picture,
                           backgroundColor: Colors.transparent),
                   onPressed: () {
-                    if (_stores[index] == _selectedStore)
+                    if (_stores[index].id ==
+                        BouquetMainMenuState.newBouquet.storeId)
                       setState(() {
-                        _selectedStore = Store();
+                        BouquetMainMenuState.newBouquet.storeId = null;
                       });
                     else
                       setState(() {
-                        _selectedStore = _stores[index];
+                        BouquetMainMenuState.newBouquet.storeId =
+                            _stores[index].id;
                       });
                   },
                 ),

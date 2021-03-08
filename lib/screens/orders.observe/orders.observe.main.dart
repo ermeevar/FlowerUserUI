@@ -1,14 +1,11 @@
-import 'package:flower_user_ui/models/user.dart';
-import 'package:flower_user_ui/models/account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../navigation.menu.dart';
 import 'orders.list.dart';
 
 class OrdersObserveMain extends StatelessWidget {
-  User _user;
-  Account _account;
-  OrdersObserveMain(this._user, this._account);
+  OrdersObserveMain();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +16,7 @@ class OrdersObserveMain extends StatelessWidget {
           padding: EdgeInsets.only(top: 20, left:20, right: 20),
           child: Text("Заказы",
               style: Theme.of(context).textTheme.subtitle.copyWith(height: 2))),
-        Expanded(child:OrdersList(_user, _account))
+        Expanded(child:OrdersList(NavigationMenu.user, NavigationMenu.account))
       ],
     );
   }

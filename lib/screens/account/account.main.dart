@@ -5,19 +5,11 @@ import 'package:flower_user_ui/screens/account/account.information.dart';
 import 'package:flower_user_ui/screens/account/account.bouquets.dart';
 
 class AccountObserve extends StatefulWidget{
-  User _user;
-
-  AccountObserve(this._user);
-
   @override
-  AccountObserveState createState() => AccountObserveState(_user);
+  AccountObserveState createState() => AccountObserveState();
 }
 
 class AccountObserveState extends State<AccountObserve>{
-  User _user;
-
-  AccountObserveState(this._user);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,8 +25,8 @@ class AccountObserveState extends State<AccountObserve>{
               Spacer()
             ],
           ),
-          AccountInformation(_user),
-          AccountBouquets(_user)
+          AccountInformation(),
+          AccountBouquets()
         ],
       ),
     );

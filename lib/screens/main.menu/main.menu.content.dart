@@ -1,14 +1,10 @@
-import 'package:flower_user_ui/models/account.dart';
-import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../navigation.menu.dart';
 
 class MainMenuContent extends StatelessWidget {
-  User _user;
-  Account _account;
-
-  MainMenuContent(this._user, this._account);
+  MainMenuContent();
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +29,21 @@ class MainMenuContent extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(top: 30, left: 10, right: 10),
             child: Row(children: [
-              Text(_account.login, style: Theme.of(context).textTheme.body1),
+              Text(NavigationMenu.account.login,
+                  style: Theme.of(context).textTheme.body1),
               Padding(
-                padding: EdgeInsets.all(10),
-                child: CircleAvatar(
+                  padding: EdgeInsets.all(10),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
                     radius: 20,
-                    backgroundImage: NetworkImage(
-                        "https://simple-fauna.ru/wp-content/uploads/2018/10/kvokka.jpg"),
-                    backgroundColor: Colors.transparent),
-              )
+                    child: NavigationMenu.user.picture == null
+                        ? Icon(
+                            Icons.image_outlined,
+                            color: Colors.black38,
+                            size: 20,
+                          )
+                        : NavigationMenu.user.picture,
+                  ))
             ]))
       ],
     );
@@ -84,7 +86,7 @@ class MainMenuContent extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => BouquetMainMenu(_user)));
+                                builder: (context) => BouquetMainMenu()));
                       },
                       child: Text('Создать',
                           style: Theme.of(context).textTheme.body2),

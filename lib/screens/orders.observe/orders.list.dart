@@ -7,8 +7,6 @@ import 'package:flower_user_ui/models/order.status.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-//import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class OrdersList extends StatefulWidget {
@@ -194,7 +192,7 @@ class OrdersListState extends State<OrdersList> {
                                                         _orders[index]
                                                                 .cost
                                                                 .toString() +
-                                                            " ",
+                                                            " ₽",
                                                         style: Theme.of(
                                                                 context)
                                                             .textTheme
@@ -235,7 +233,7 @@ class OrdersListState extends State<OrdersList> {
                                                     _orders[index]
                                                             .cost
                                                             .toString() +
-                                                        " ",
+                                                        " ₽",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .body1
@@ -273,7 +271,7 @@ class OrdersListState extends State<OrdersList> {
                                                     _orders[index]
                                                             .cost
                                                             .toString() +
-                                                        " ",
+                                                        " ₽",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .body1

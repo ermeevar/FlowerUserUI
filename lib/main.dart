@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flower_user_ui/screens/navigation.menu.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
 
 class MyHttpOverrides extends HttpOverrides{
   @override
@@ -12,7 +11,7 @@ class MyHttpOverrides extends HttpOverrides{
 }
 
 void main() {
-  //HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
 }
 

@@ -1,29 +1,25 @@
+import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:im_stepper/main.dart';
 import 'package:im_stepper/stepper.dart';
 
 class BouquetMainMenu extends StatefulWidget {
-  User _user;
-
-  BouquetMainMenu(this._user);
-
   @override
-  BouquetMainMenuState createState() => BouquetMainMenuState(_user);
+  BouquetMainMenuState createState() => BouquetMainMenuState();
 }
 
 class BouquetMainMenuState extends State<BouquetMainMenu> {
-  User _user;
   int _countOfPages = 4;
   int _stepIndex = 0;
-  String swipeDirection ="";
-  List<Widget> _pages = [];
+  String swipeDirection = "";
+  static Bouquet newBouquet = new Bouquet();
+  static List<Widget> _pages = [];
 
-  BouquetMainMenuState(this._user){
+  BouquetMainMenuState(){
     _pages=[
-      StoreSelection(_user),
+      StoreSelection(),
       Container(height: 100, width: 100, color: Colors.amber),
       Container(height: 100, width: 100, color: Colors.red),
       Container(height: 100, width: 100, color: Colors.green),
@@ -112,6 +108,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               padding: EdgeInsets.zero,
               color: Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
+                newBouquet = new Bouquet();
                 Navigator.pop(context);
               }),
           Text("Создание букета", style: Theme.of(context).textTheme.subtitle)

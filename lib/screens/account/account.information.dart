@@ -4,25 +4,22 @@ import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/models/account.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
 
+import '../navigation.menu.dart';
+
 class AccountInformation extends StatefulWidget {
-  User _user;
-
-  AccountInformation(this._user);
-
   @override
-  AccountInformationState createState() => AccountInformationState(_user);
+  AccountInformationState createState() => AccountInformationState();
 }
 
 class AccountInformationState extends State<AccountInformation>
     with SingleTickerProviderStateMixin {
-  User _user;
   String _name;
   String _surname;
   String _phone;
   bool _isTab = false;
   Account _account;
 
-  AccountInformationState(this._user) {
+  AccountInformationState() {
     _getAccount();
   }
 
@@ -31,7 +28,7 @@ class AccountInformationState extends State<AccountInformation>
       var accountsData = accountFromJson(response.data);
       setState(() {
         _account = accountsData
-            .where((element) => element.id == _user.accountId)
+            .where((element) => element.id == NavigationMenu.user.accountId)
             .first;
       });
     });
@@ -123,17 +120,25 @@ class AccountInformationState extends State<AccountInformation>
               )
             ],
           ),
-          CircleAvatar(
-            radius: 60,
-            backgroundImage: NetworkImage(_user.picture == null
-                ? 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
-                : _user.picture),
-            backgroundColor: Colors.transparent,
+          Card(
+            elevation: 10,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 60,
+              child: NavigationMenu.user.picture == null
+                  ? Icon(
+                Icons.image_outlined,
+                color: Colors.black38,
+                size: 50,
+              )
+                  : NavigationMenu.user.picture,
+            ),
           ),
           Text(_account.login,
               style: Theme.of(context).textTheme.body1.copyWith(
                   height: 2, fontWeight: FontWeight.bold, fontSize: 20)),
-          Text(_user.name + " " + _user.surname,
+          Text(NavigationMenu.user.name + " " + NavigationMenu.user.surname,
               style: Theme.of(context).textTheme.body1)
         ],
       ),
@@ -167,7 +172,9 @@ class AccountInformationState extends State<AccountInformation>
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
                 key: Key("name"),
-                initialValue: _user.name != null ? _user.name : "",
+                initialValue: NavigationMenu.user.name != null
+                    ? NavigationMenu.user.name
+                    : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
                   labelText: "Имя",
@@ -183,7 +190,9 @@ class AccountInformationState extends State<AccountInformation>
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: _user.surname != null ? _user.surname : "",
+                initialValue: NavigationMenu.user.surname != null
+                    ? NavigationMenu.user.surname
+                    : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
                   labelText: "Фамилия",
@@ -199,7 +208,9 @@ class AccountInformationState extends State<AccountInformation>
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: _user.phone != null ? _user.phone : "",
+                initialValue: NavigationMenu.user.phone != null
+                    ? NavigationMenu.user.phone
+                    : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
                   labelText: "Телефон",

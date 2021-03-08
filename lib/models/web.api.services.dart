@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
-import 'package:flower_user_ui/models/order.dart';
-import 'package:flower_user_ui/models/shop.dart';
 import 'package:flower_user_ui/models/store.product.dart';
 
 class WebApiServices {
@@ -21,18 +19,17 @@ class WebApiServices {
   static String _androidEmulatorLoopback = "10.0.2.2";
   static String _localhost = "localhost";
   static String _port = "5001";
+  static String  _baseUrl = "https://$_androidEmulatorLoopback:$_port";
 
-  static String _baseUrl = "https://$_localhost:$_port/";
-
-  static String _storeUrl = _baseUrl+"stores/";
-  static String _shopUrl = _baseUrl+"shops/";
-  static String _categoryUrl = _baseUrl+"categories/";
-  static String _storeProductUrl = _baseUrl+"storeproducts/";
-  static String _shopProductUrl = _baseUrl+"shopproducts/";
-  static String _orderUrl = _baseUrl+"orders/";
-  static String _bouquetUrl = _baseUrl+"bouquets/";
-  static String _orderStatusUrl = _baseUrl+"orderstatuses/";
-  static String _accountUrl = _baseUrl+"accounts/";
+  static String _storeUrl = _baseUrl+"/stores/";
+  static String _shopUrl = _baseUrl+"/shops/";
+  static String _categoryUrl = _baseUrl+"/categories/";
+  static String _storeProductUrl = _baseUrl+"/storeproducts/";
+  static String _shopProductUrl = _baseUrl+"/shopproducts/";
+  static String _orderUrl = _baseUrl+"/orders/";
+  static String _bouquetUrl = _baseUrl+"/bouquets/";
+  static String _orderStatusUrl = _baseUrl+"/orderstatuses/";
+  static String _accountUrl = _baseUrl+"/accounts/";
 
 
   static Future<Response<String>> fetchShop() async {

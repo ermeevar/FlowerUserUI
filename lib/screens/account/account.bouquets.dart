@@ -1,23 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flower_user_ui/models/user.dart';
 import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
 
+import '../navigation.menu.dart';
+
 class AccountBouquets extends StatefulWidget {
-  User _user;
-
-  AccountBouquets(this._user);
-
   @override
-  AccountBouquetsState createState() => AccountBouquetsState(_user);
+  AccountBouquetsState createState() => AccountBouquetsState();
 }
 
 class AccountBouquetsState extends State<AccountBouquets> {
-  User _user;
   List<Bouquet> _bouquets = [];
 
-  AccountBouquetsState(this._user) {
+  AccountBouquetsState() {
     _getBouquets();
   }
 
@@ -26,7 +22,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets =
-            bouquetData.where((element) => element.userId == _user.id).toList();
+            bouquetData.where((element) => element.userId == NavigationMenu.user.id).toList();
       });
     });
   }
@@ -85,7 +81,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
                                         padding: EdgeInsets.zero,
                                         child: Text(
                                             _bouquets[index].cost.toString() +
-                                                " " ,
+                                                " ₽",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .body1),

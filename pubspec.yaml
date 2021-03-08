@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.2
   dio: ^3.0.10
   dio_http_cache:
   intl: ^0.16.1

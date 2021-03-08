@@ -7,8 +7,8 @@ import 'orders.observe/orders.observe.main.dart';
 import 'package:flower_user_ui/screens/account/account.main.dart';
 
 class NavigationMenu extends StatefulWidget{
-  User user;
-  Account account;
+  static User user;
+  static Account account;
 
   NavigationMenu(){
     user = User();
@@ -25,20 +25,18 @@ class NavigationMenu extends StatefulWidget{
   }
 
   @override
-  NavigationMenuState createState() => NavigationMenuState(user, account);
+  NavigationMenuState createState() => NavigationMenuState();
 }
 
 class NavigationMenuState extends State<NavigationMenu> {
-  User _user;
-  Account _account;
   int _selectedIndex = 0;
   List<Widget> _pages;
 
-  NavigationMenuState(this._user, this._account){
+  NavigationMenuState(){
     _pages = <Widget>[
-      MainMenuContent(_user, _account),
-      OrdersObserveMain(_user, _account),
-      AccountObserve(_user),
+      MainMenuContent(),
+      OrdersObserveMain(),
+      AccountObserve(),
     ];
   }
 
