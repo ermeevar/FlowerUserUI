@@ -186,15 +186,14 @@ class OrdersListState extends State<OrdersList> {
                                                             .textTheme
                                                             .body1)),
                                                 Padding(
-                                                    padding: EdgeInsets
-                                                        .only(left: 10),
+                                                    padding: EdgeInsets.only(
+                                                        left: 10),
                                                     child: Text(
                                                         _orders[index]
                                                                 .cost
                                                                 .toString() +
                                                             " ₽",
-                                                        style: Theme.of(
-                                                                context)
+                                                        style: Theme.of(context)
                                                             .textTheme
                                                             .body1
                                                             .copyWith(

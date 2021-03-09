@@ -162,6 +162,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
                     for (int i = 0; i < _count; i++) {
                       BouquetMainMenuState.products.add(selectedProduct);
                     }
+                    Navigator.pop(context);
                   }
                 },
                 child: new Text(
