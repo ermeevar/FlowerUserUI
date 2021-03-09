@@ -54,7 +54,6 @@ class WebApiServices {
   }
 
   static Future<Response<String>> fetchOrders() async {
-    print(_orderStatusUrl);
     return await Dio().get<String>(
       _orderUrl,
       options: buildCacheOptions(Duration(days: 1)),
@@ -80,7 +79,10 @@ class WebApiServices {
   }
 
   static Future fetchStoreProduct() async {
-    return await dio.get(_storeProductUrl);
+    return await Dio().get<String>(
+      _storeProductUrl,
+      options: buildCacheOptions(Duration(days: 1)),
+    );
   }
 
   static Future fetchShopProduct() async {
@@ -94,14 +96,14 @@ class WebApiServices {
   //   return response.statusCode;
   // }
 
-  static Future postStoreProduct(StoreProduct storeProduct) async {
-    var reverseStoreProduct = storeProduct.toMap();
-    var storeProductJson = json.encode(reverseStoreProduct);
-    var response = await dio.post(_storeProductUrl, options: Options(headers: header), data: storeProductJson);
-    print("0000000000000000000000000000000000000000000000000");
-    print(response.statusCode);
-    return response.statusCode;
-  }
+  // static Future postStoreProduct(StoreProduct storeProduct) async {
+  //   var reverseStoreProduct = storeProduct.toMap();
+  //   var storeProductJson = json.encode(reverseStoreProduct);
+  //   var response = await dio.post(_storeProductUrl, options: Options(headers: header), data: storeProductJson);
+  //   print("0000000000000000000000000000000000000000000000000");
+  //   print(response.statusCode);
+  //   return response.statusCode;
+  // }
 
   // static Future putShop(Shop shop) async {
   //   var reverseShop = shop.toJson();

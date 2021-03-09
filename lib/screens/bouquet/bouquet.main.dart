@@ -1,5 +1,7 @@
 import 'package:flower_user_ui/models/bouquet.dart';
+import 'package:flower_user_ui/models/store.product.dart';
 import 'package:flower_user_ui/models/user.dart';
+import 'package:flower_user_ui/screens/bouquet/flower.selection.dart';
 import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +17,13 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   int _stepIndex = 0;
   String swipeDirection = "";
   static Bouquet newBouquet = new Bouquet();
+  static List<StoreProduct> products = [];
   static List<Widget> _pages = [];
 
   BouquetMainMenuState(){
     _pages=[
       StoreSelection(),
-      Container(height: 100, width: 100, color: Colors.amber),
+      FlowerSelection(),
       Container(height: 100, width: 100, color: Colors.red),
       Container(height: 100, width: 100, color: Colors.green),
     ];

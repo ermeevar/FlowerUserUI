@@ -1,58 +1,41 @@
-class StoreProduct{
-  int _id=0;
-  String _name;
-  List<int> _picture = [];
-  double _cost =0;
-  int _categoryId =0;
-  int _storeId =0;
+import 'dart:convert';
 
-  StoreProduct();
+List<StoreProduct> storeProductFromJson(String str) => List<StoreProduct>.from(json.decode(str).map((x) => StoreProduct.fromJson(x)));
 
-  int get id => _id;
-  String get name => _name;
-  List<int> get picture => _picture;
-  double get cost => _cost;
-  int get categoryId => _categoryId;
-  int get storeId => _storeId;
+String storeProductToJson(List<StoreProduct> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  set id(int id){
-    _id = id;
-  }
-  set name(String name){
-    _name = name;
-  }
-  set picture(List<int> picture){
-    _picture = picture;
-  }
-  set cost(double cost){
-    _cost = cost;
-  }
-  set categoryId(int categoryId){
-    _categoryId = categoryId;
-  }
-  set storeId(int storeId){
-    _storeId = storeId;
-  }
+class StoreProduct {
+  StoreProduct({
+    this.id,
+    this.name,
+    this.picture,
+    this.cost,
+    this.categoryId,
+    this.storeId,
+  });
 
-  Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+  int id;
+  String name;
+  List<int> picture;
+  double cost;
+  int categoryId;
+  int storeId;
 
-    map["id"] = _id;
-    map["name"] = _name;
-    map["picture"] = _picture;
-    map["cost"] = _cost;
-    map["categoryId"] = _categoryId;
-    map["storeId"] = _storeId;
+  factory StoreProduct.fromJson(Map<String, dynamic> json) => StoreProduct(
+    id: json["id"],
+    name: json["name"],
+    picture: json["picture"],
+    cost: json["cost"].toDouble(),
+    categoryId: json["categoryId"],
+    storeId: json["storeId"],
+  );
 
-    return map;
-  }
-
-  StoreProduct.fromObject(dynamic object){
-    this._id = object["id"];
-    this._name = object["name"];
-    this._picture = object["picture"];
-    this._cost = object["cost"].toDouble();
-    this._categoryId = object["categoryId"];
-    this._storeId = object["storeId"];
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "picture": picture,
+    "cost": cost,
+    "categoryId": categoryId,
+    "storeId": storeId,
+  };
 }
