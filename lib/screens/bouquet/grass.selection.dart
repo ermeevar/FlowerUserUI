@@ -1,19 +1,18 @@
-import 'package:flower_user_ui/models/store.dart';
 import 'package:flower_user_ui/models/store.product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
 import 'bouquet.main.dart';
 
-class FlowerSelection extends StatefulWidget {
+class GrassSelection extends StatefulWidget {
   @override
-  FlowerSelectionState createState() => FlowerSelectionState();
+  GrassSelectionState createState() => GrassSelectionState();
 }
 
-class FlowerSelectionState extends State<FlowerSelection> {
+class GrassSelectionState extends State<GrassSelection> {
   List<StoreProduct> _products = [];
 
-  FlowerSelectionState() {
+  GrassSelectionState() {
     _getStoreProducts();
   }
 
@@ -24,7 +23,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         _products = storeproductsData
             .where((element) =>
                 element.storeId == BouquetMainMenuState.newBouquet.storeId &&
-                element.categoryId == 1)
+                element.categoryId == 2)
             .toList();
       });
     });
@@ -37,7 +36,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         Padding(
           padding: EdgeInsets.only(bottom: 20, top: 20),
           child: Text(
-            "Цветы",
+            "Зелень",
             style: Theme.of(context).textTheme.body1,
           ),
         ),
@@ -64,7 +63,30 @@ class FlowerSelectionState extends State<FlowerSelection> {
             children: [
               GestureDetector(
                 onTap: () {
-                  _showCountOfProductDialog(_products[index]);
+                  bool isHasInBouquet = false;
+                  for (var item in BouquetMainMenuState.products) {
+                    if (item.id == _products[index].id) {
+                      isHasInBouquet = true;
+                    }
+                  }
+
+                  if (!isHasInBouquet) {
+                    BouquetMainMenuState.products.add(_products[index]);
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: !isHasInBouquet
+                          ? Text("Зелень добавлена в букет")
+                          : Text("Зелень уже присутствует в букете"),
+                      action: SnackBarAction(
+                        label: "Понятно",
+                        onPressed: () {
+                          // Code to execute.
+                        },
+                      ),
+                    ),
+                  );
                 },
                 child: Card(
                   elevation: 10,
@@ -113,83 +135,5 @@ class FlowerSelectionState extends State<FlowerSelection> {
             ],
           );
         });
-  }
-
-  Future<void> _showCountOfProductDialog(StoreProduct selectedProduct) async {
-    int _count = 0;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            selectedProduct.name,
-            style: Theme.of(context).textTheme.subtitle,
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextFormField(
-                    onChanged: (count) {
-                      _count = int.parse(count);
-                    },
-                    cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(
-                      labelText: "Количество",
-                      focusColor: Color.fromRGBO(130, 147, 153, 1),
-                    ))
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10),
-              child: FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: new Text(
-                  "Назад",
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                      ),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: FlatButton(
-                onPressed: () {
-                  if (_count != 0) {
-                    for (int i = 0; i < _count; i++) {
-                      BouquetMainMenuState.products.add(selectedProduct);
-                    }
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Цветок добавлен"),
-                        action: SnackBarAction(
-                          label: "Понятно",
-                          onPressed: () {
-                            // Code to execute.
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                },
-                child: new Text(
-                  "Сохранить",
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                      color: Color.fromRGBO(130, 147, 153, 1),
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

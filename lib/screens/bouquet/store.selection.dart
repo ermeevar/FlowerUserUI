@@ -112,6 +112,8 @@ class StoreSelectionState extends State<StoreSelection> {
               ),
               Text(
                 _stores[index].name.toString(),
+                overflow: TextOverflow.ellipsis,
+                softWrap: true,
                 style: Theme.of(context).textTheme.body1,
               )
             ],

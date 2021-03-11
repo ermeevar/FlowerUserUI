@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/store.product.dart';
 import 'package:flower_user_ui/screens/bouquet/flower.selection.dart';
@@ -5,6 +7,9 @@ import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
+
+import 'decoration.selection.dart';
+import 'grass.selection.dart';
 
 class BouquetMainMenu extends StatefulWidget {
   @override
@@ -23,9 +28,14 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
     _pages = [
       StoreSelection(),
       FlowerSelection(),
-      Container(height: 100, width: 100, color: Colors.red),
-      Container(height: 100, width: 100, color: Colors.green),
+      GrassSelection(),
+      DecorationSelection(),
     ];
+  }
+
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
   }
 
   addStepIndex() {
@@ -158,7 +168,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        bouquetCost.toString() + " ₽",
+                        roundDouble(bouquetCost, 1).toString() + " ₽",
                         style: Theme.of(context).textTheme.body1.copyWith(
                             color: Color.fromRGBO(130, 147, 153, 1),
                             fontSize: 25),
@@ -174,8 +184,14 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(products[index].name,
-                                      style: Theme.of(context).textTheme.body1),
+                                  Container(
+                                    width: 150,
+                                    child: Text(products[index].name,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
+                                        style:
+                                            Theme.of(context).textTheme.body1),
+                                  ),
                                   Text(products[index].cost.toString() + " ₽",
                                       style: Theme.of(context).textTheme.body1),
                                   IconButton(
