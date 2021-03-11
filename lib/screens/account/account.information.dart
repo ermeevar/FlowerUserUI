@@ -17,22 +17,6 @@ class AccountInformationState extends State<AccountInformation>
   String _surname;
   String _phone;
   bool _isTab = false;
-  Account _account;
-
-  AccountInformationState() {
-    _getAccount();
-  }
-
-  _getAccount() {
-    WebApiServices.fetchAccount().then((response) {
-      var accountsData = accountFromJson(response.data);
-      setState(() {
-        _account = accountsData
-            .where((element) => element.id == NavigationMenu.user.accountId)
-            .first;
-      });
-    });
-  }
 
   void _taped() {
     setState(() {
@@ -135,7 +119,7 @@ class AccountInformationState extends State<AccountInformation>
                   : NavigationMenu.user.picture,
             ),
           ),
-          Text(_account.login,
+          Text(NavigationMenu.account!=null?NavigationMenu.account.login:"Error",
               style: Theme.of(context).textTheme.body1.copyWith(
                   height: 2, fontWeight: FontWeight.bold, fontSize: 20)),
           Text(NavigationMenu.user.name + " " + NavigationMenu.user.surname,
