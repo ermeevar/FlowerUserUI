@@ -4,6 +4,7 @@ import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/store.product.dart';
 import 'package:flower_user_ui/screens/bouquet/flower.selection.dart';
 import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
+import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
@@ -147,9 +148,13 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
-            newBouquet.name != null ? newBouquet.name : "Пустое название",
-            style: Theme.of(context).textTheme.subtitle,
+          title: Container(
+            child: Text(
+              newBouquet.name != null ? newBouquet.name : "Пустое название",
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              style: Theme.of(context).textTheme.subtitle,
+            ),
           ),
           content: products.length == 0
               ? Center(
@@ -220,6 +225,42 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                   );
                 }),
           actions: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10),
+              child: FlatButton(
+                onPressed: () {
+                  if (newBouquet.storeId == null ||
+                      products.where((element) => element.categoryId == 1).length ==0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Букет не собран"),
+                        action: SnackBarAction(
+                          label: "Понятно",
+                          onPressed: () {
+                            // Code to execute.
+                          },
+                        ),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                  else{
+                    newBouquet.cost=bouquetCost;
+                    Navigator.pop(context);
+                    Navigator.push(context,  MaterialPageRoute(
+                        builder: (context) => OrderMainMenu()));
+                  }
+
+                },
+                child: new Text(
+                  "Заказать",
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                        color: Color.fromRGBO(130, 147, 153, 1),
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+            ),
             Container(
               padding: EdgeInsets.all(10),
               child: FlatButton(

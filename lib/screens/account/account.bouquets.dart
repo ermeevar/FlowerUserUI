@@ -71,6 +71,8 @@ class AccountBouquetsState extends State<AccountBouquets> {
                                       Padding(
                                         padding: EdgeInsets.zero,
                                         child: Text(_bouquets[index].name,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
                                             textAlign: TextAlign.center,
                                             style: Theme.of(context)
                                                 .textTheme

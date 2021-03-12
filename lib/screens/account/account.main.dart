@@ -26,7 +26,7 @@ class AccountObserveState extends State<AccountObserve>{
             ],
           ),
           AccountInformation(),
-          AccountBouquets()
+          Expanded(child: AccountBouquets()),
         ],
       ),
     );
