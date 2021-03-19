@@ -90,8 +90,6 @@ class WebApiServices {
   static Future postBouquet(Bouquet bouquet) async {
     var reverseBouquet = bouquet.toJson();
     var bouquetJson = json.encode(reverseBouquet);
-    print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    print(bouquetJson);
     var response = await dio.post(_bouquetUrl,
         options: Options(headers: {
     HttpHeaders.contentTypeHeader: "application/json"}), data: bouquetJson);

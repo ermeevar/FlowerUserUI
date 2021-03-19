@@ -34,6 +34,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
       order.userId=BouquetMainMenuState.newBouquet.userId;
       order.cost=BouquetMainMenuState.newBouquet.cost;
       order.orderStatusId=1;
+      order.isRandom=false;
     });
   }
 
@@ -348,8 +349,8 @@ class OrderMainMenuState extends State<OrderMainMenu> {
           Container(
             padding: EdgeInsets.all(10),
             child: FlatButton(
-                onPressed: () {
-                  _postOrder(context);
+                onPressed: () async{
+                  await _postOrder(context);
                   BouquetMainMenuState.products=[];
                   BouquetMainMenuState.newBouquet=Bouquet();
                   order = Order();
@@ -389,7 +390,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
   }
 
   void _postOrder(context) async{
-    _postBouquet(context);
+    await _postBouquet(context);
 
     Bouquet postedBouquet;
     await WebApiServices.fetchBouquet().then((response) {
