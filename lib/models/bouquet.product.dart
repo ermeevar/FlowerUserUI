@@ -1,37 +1,29 @@
-class BouquetProduct{
-  int _id;
-  int _shopProductId;
-  int _bouquetId;
+import 'dart:convert';
 
-  BouquetProduct();
+List<BouquetProduct> bouquetProductFromJson(String str) => List<BouquetProduct>.from(json.decode(str).map((x) => BouquetProduct.fromJson(x)));
 
-  int get id => _id;
-  int get shopProductId => _shopProductId;
-  int get bouquetId => _bouquetId;
+String bouquetProductToJson(List<BouquetProduct> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  set id(int id){
-    _id = id;
-  }
-  set shopProductId(int shopProductId){
-    _shopProductId = shopProductId;
-  }
-  set bouquetId(int bouquetId){
-    _bouquetId = bouquetId;
-  }
 
-  Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+class BouquetProduct {
+  BouquetProduct({
+    this.id,
+    this.productId,
+    this.bouquetId,
+  });
 
-    map["id"] = _id;
-    map["shopProductId"] = _shopProductId;
-    map["bouquetId"] = _bouquetId;
+  int id;
+  int productId;
+  int bouquetId;
 
-    return map;
-  }
+  factory BouquetProduct.fromJson(Map<String, dynamic> json) => BouquetProduct(
+    id: json["id"],
+    productId: json["productId"],
+    bouquetId: json["bouquetId"],
+  );
 
-  BouquetProduct.fromObject(dynamic object){
-    this._id = object["id"];
-    this._shopProductId = object["shopProductId"];
-    this._bouquetId = object["bouquetId"];
-  }
+  Map<String, dynamic> toJson() => {
+    "productId": productId,
+    "bouquetId": bouquetId,
+  };
 }

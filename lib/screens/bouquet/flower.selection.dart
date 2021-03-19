@@ -1,5 +1,5 @@
 import 'package:flower_user_ui/models/store.dart';
-import 'package:flower_user_ui/models/store.product.dart';
+import 'package:flower_user_ui/models/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
@@ -11,7 +11,7 @@ class FlowerSelection extends StatefulWidget {
 }
 
 class FlowerSelectionState extends State<FlowerSelection> {
-  List<StoreProduct> _products = [];
+  List<Product> _products = [];
 
   FlowerSelectionState() {
     _getStoreProducts();
@@ -24,7 +24,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         _products = storeproductsData
             .where((element) =>
                 element.storeId == BouquetMainMenuState.newBouquet.storeId &&
-                element.categoryId == 1)
+                element.productCategoryId == 1)
             .toList();
       });
     });
@@ -115,7 +115,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         });
   }
 
-  Future<void> _showCountOfProductDialog(StoreProduct selectedProduct) async {
+  Future<void> _showCountOfProductDialog(Product selectedProduct) async {
     int _count = 0;
     return showDialog<void>(
       context: context,

@@ -1,36 +1,38 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
-import 'package:flower_user_ui/models/store.product.dart';
+import 'bouquet.dart';
+import 'bouquet.product.dart';
+import 'order.dart';
 
 class WebApiServices {
+  static Dio dio = Dio();
+
+  static String _androidEmulatorLoopback = "10.0.2.2";
+  static String _localhost = "localhost";
+  static String _port = "5001";
+  static String _baseUrl = "https://$_androidEmulatorLoopback:$_port";
+
+  static String _storeUrl = _baseUrl + "/stores/";
+  static String _shopUrl = _baseUrl + "/shops/";
+  static String _categoryUrl = _baseUrl + "/productcategories/";
+  static String _storeProductUrl = _baseUrl + "/products/";
+  static String _orderUrl = _baseUrl + "/orders/";
+  static String _bouquetUrl = _baseUrl + "/bouquets/";
+  static String _bouquetproductUrl = _baseUrl + "/bouquetproducts/";
+  static String _orderStatusUrl = _baseUrl + "/orderstatuses/";
+  static String _accountUrl = _baseUrl + "/accounts/";
 
   WebApiServices() {
-    dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: "https://10.0.2.2")).interceptor);
+    dio.interceptors.add(
+        DioCacheManager(CacheConfig(baseUrl: "https://10.0.2.2")).interceptor);
   }
 
   static Map<String, String> header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   };
-
-  static Dio dio = Dio();
-
-  static String _androidEmulatorLoopback = "10.0.2.2";
-  static String _localhost = "localhost";
-  static String _port = "5001";
-  static String  _baseUrl = "https://$_androidEmulatorLoopback:$_port";
-
-  static String _storeUrl = _baseUrl+"/stores/";
-  static String _shopUrl = _baseUrl+"/shops/";
-  static String _categoryUrl = _baseUrl+"/categories/";
-  static String _storeProductUrl = _baseUrl+"/storeproducts/";
-  static String _shopProductUrl = _baseUrl+"/shopproducts/";
-  static String _orderUrl = _baseUrl+"/orders/";
-  static String _bouquetUrl = _baseUrl+"/bouquets/";
-  static String _orderStatusUrl = _baseUrl+"/orderstatuses/";
-  static String _accountUrl = _baseUrl+"/accounts/";
-
 
   static Future<Response<String>> fetchShop() async {
     return await Dio().get<String>(
@@ -60,7 +62,7 @@ class WebApiServices {
     );
   }
 
-  static Future<Response<String>> fetchBouquets() async {
+  static Future<Response<String>> fetchBouquet() async {
     return await Dio().get<String>(
       _bouquetUrl,
       options: buildCacheOptions(Duration(days: 1)),
@@ -85,9 +87,33 @@ class WebApiServices {
     );
   }
 
-  static Future fetchShopProduct() async {
-    return await dio.get(_shopProductUrl);
+  static Future postBouquet(Bouquet bouquet) async {
+    var reverseBouquet = bouquet.toJson();
+    var bouquetJson = json.encode(reverseBouquet);
+    print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+    print(bouquetJson);
+    var response = await dio.post(_bouquetUrl,
+        options: Options(headers: {
+    HttpHeaders.contentTypeHeader: "application/json"}), data: bouquetJson);
+    return response.statusCode;
   }
+
+  static Future postBouquetProduct(BouquetProduct bouquetProduct) async {
+    var reverseBouquetProduct = bouquetProduct.toJson();
+    var bouquetProductJson = json.encode(reverseBouquetProduct);
+    var response = await dio.post(_bouquetproductUrl,
+        options: Options(headers: header), data: bouquetProductJson);
+    return response.statusCode;
+  }
+
+  static Future postOrder(Order order) async {
+    var reverseOrder = order.toJson();
+    var orderJson = json.encode(reverseOrder);
+    var response = await dio.post(_orderUrl,
+        options: Options(headers: header), data: orderJson);
+    return response.statusCode;
+  }
+
 
   // static Future postShop(Shop shop) async {
   //   var reverseShop = shop.toJson();

@@ -18,7 +18,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
   }
 
   _getBouquets() {
-    WebApiServices.fetchBouquets().then((response) {
+    WebApiServices.fetchBouquet().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets =

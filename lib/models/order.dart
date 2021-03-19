@@ -14,6 +14,7 @@ class Order {
     this.orderStatusId,
     this.userId,
     this.cost,
+    this.card,
     this.bouquetId,
     this.templateId,
     this.shopId,
@@ -26,6 +27,7 @@ class Order {
   int orderStatusId;
   int userId;
   double cost;
+  String card;
   int bouquetId;
   int templateId;
   int shopId;
@@ -40,11 +42,11 @@ class Order {
     bouquetId: json["bouquetId"],
     templateId: json["templateId"],
     shopId: json["shopId"],
+    card: json["card"],
     cost: json["cost"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "start": start.toIso8601String(),
     "finish": finish.toIso8601String(),
     "isRandom": isRandom,
@@ -53,6 +55,7 @@ class Order {
     "bouquetId": bouquetId,
     "templateId": templateId,
     "shopId": shopId,
+    "card": card,
     "cost": cost,
   };
 }

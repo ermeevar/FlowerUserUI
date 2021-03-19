@@ -28,9 +28,8 @@ class Bouquet {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "name": name,
-    "cost": cost,
+    "cost": cost.toDouble(),
     "storeId": storeId,
     "userId": userId,
   };

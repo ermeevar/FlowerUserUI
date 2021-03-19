@@ -53,7 +53,7 @@ class OrdersListState extends State<OrdersList> {
   }
 
   _getBouquets() async {
-    await WebApiServices.fetchBouquets().then((response) {
+    await WebApiServices.fetchBouquet().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData;

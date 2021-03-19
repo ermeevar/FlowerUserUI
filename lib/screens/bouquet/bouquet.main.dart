@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flower_user_ui/models/bouquet.dart';
-import 'package:flower_user_ui/models/store.product.dart';
+import 'package:flower_user_ui/models/product.dart';
 import 'package:flower_user_ui/screens/bouquet/flower.selection.dart';
 import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
 import 'package:flower_user_ui/screens/order/order.main.dart';
@@ -22,7 +22,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   int _stepIndex = 0;
   String swipeDirection = "";
   static Bouquet newBouquet = new Bouquet();
-  static List<StoreProduct> products = [];
+  static List<Product> products = [];
   static List<Widget> _pages = [];
 
   BouquetMainMenuState() {
@@ -128,7 +128,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               onPressed: () {
                 newBouquet = new Bouquet();
                 // ignore: deprecated_member_use
-                products = new List<StoreProduct>();
+                products = new List<Product>();
                 Navigator.pop(context);
               }),
           Text("Создание букета", style: Theme.of(context).textTheme.subtitle)
@@ -230,7 +230,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               child: FlatButton(
                 onPressed: () {
                   if (newBouquet.storeId == null ||
-                      products.where((element) => element.categoryId == 1).length ==0) {
+                      products.where((element) => element.productCategoryId == 1).length ==0) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Букет не собран"),

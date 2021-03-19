@@ -1,4 +1,4 @@
-import 'package:flower_user_ui/models/store.product.dart';
+import 'package:flower_user_ui/models/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
@@ -10,7 +10,7 @@ class GrassSelection extends StatefulWidget {
 }
 
 class GrassSelectionState extends State<GrassSelection> {
-  List<StoreProduct> _products = [];
+  List<Product> _products = [];
 
   GrassSelectionState() {
     _getStoreProducts();
@@ -23,7 +23,7 @@ class GrassSelectionState extends State<GrassSelection> {
         _products = storeproductsData
             .where((element) =>
                 element.storeId == BouquetMainMenuState.newBouquet.storeId &&
-                element.categoryId == 2)
+                element.productCategoryId == 2)
             .toList();
       });
     });
