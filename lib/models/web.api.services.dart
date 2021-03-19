@@ -17,10 +17,10 @@ class WebApiServices {
   static String _storeUrl = _baseUrl + "/stores/";
   static String _shopUrl = _baseUrl + "/shops/";
   static String _categoryUrl = _baseUrl + "/productcategories/";
-  static String _storeProductUrl = _baseUrl + "/products/";
+  static String _productUrl = _baseUrl + "/products/";
   static String _orderUrl = _baseUrl + "/orders/";
   static String _bouquetUrl = _baseUrl + "/bouquets/";
-  static String _bouquetproductUrl = _baseUrl + "/bouquetproducts/";
+  static String _bouquetProductUrl = _baseUrl + "/bouquetproducts/";
   static String _orderStatusUrl = _baseUrl + "/orderstatuses/";
   static String _accountUrl = _baseUrl + "/accounts/";
 
@@ -80,9 +80,15 @@ class WebApiServices {
     return await dio.get(_categoryUrl);
   }
 
-  static Future fetchStoreProduct() async {
+  static Future fetchProduct() async {
     return await Dio().get<String>(
-      _storeProductUrl,
+      _productUrl,
+      options: buildCacheOptions(Duration(days: 1)),
+    );
+  }
+  static Future fetchBouquetProduct() async {
+    return await Dio().get<String>(
+      _bouquetProductUrl,
       options: buildCacheOptions(Duration(days: 1)),
     );
   }
@@ -99,7 +105,7 @@ class WebApiServices {
   static Future postBouquetProduct(BouquetProduct bouquetProduct) async {
     var reverseBouquetProduct = bouquetProduct.toJson();
     var bouquetProductJson = json.encode(reverseBouquetProduct);
-    var response = await dio.post(_bouquetproductUrl,
+    var response = await dio.post(_bouquetProductUrl,
         options: Options(headers: header), data: bouquetProductJson);
     return response.statusCode;
   }
@@ -144,7 +150,7 @@ class WebApiServices {
   }
 
   static Future deleteStoreProduct(int id) async {
-    var response = await dio.delete(_storeProductUrl + id.toString());
+    var response = await dio.delete(_productUrl + id.toString());
     return response.statusCode;
   }
 }

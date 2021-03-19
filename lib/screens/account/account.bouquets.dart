@@ -1,3 +1,4 @@
+import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/bouquet.dart';
@@ -21,8 +22,9 @@ class AccountBouquetsState extends State<AccountBouquets> {
     WebApiServices.fetchBouquet().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
-        _bouquets =
-            bouquetData.where((element) => element.userId == NavigationMenu.user.id).toList();
+        _bouquets = bouquetData
+            .where((element) => element.userId == NavigationMenu.user.id)
+            .toList();
       });
     });
   }
@@ -46,8 +48,9 @@ class AccountBouquetsState extends State<AccountBouquets> {
             Expanded(
               child: _bouquets.length == 0
                   ? Center(child: Text("У вас нет ни одного букета"))
-                  : Padding(
+                  : Container(
                       padding: EdgeInsets.zero,
+                      height: 200,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: _bouquets.length,
@@ -57,7 +60,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 margin: EdgeInsets.only(
-                                    top: 10, right: 10, left:20, bottom: 10),
+                                    top: 10, right: 10, left: 20, bottom: 10),
                                 color: Color.fromRGBO(130, 147, 153, 1),
                                 elevation: 5,
                                 child: Container(
@@ -91,7 +94,16 @@ class AccountBouquetsState extends State<AccountBouquets> {
                                       Padding(
                                         padding: EdgeInsets.only(top: 15),
                                         child: OutlineButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        OrderMainMenu
+                                                            .OldBouquet(
+                                                                _bouquets[
+                                                                    index])));
+                                          },
                                           child: Text('Заказать',
                                               style: Theme.of(context)
                                                   .textTheme

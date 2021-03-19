@@ -17,8 +17,8 @@ class GrassSelectionState extends State<GrassSelection> {
   }
 
   _getStoreProducts() {
-    WebApiServices.fetchStoreProduct().then((response) {
-      var storeproductsData = storeProductFromJson(response.data);
+    WebApiServices.fetchProduct().then((response) {
+      var storeproductsData = productFromJson(response.data);
       setState(() {
         _products = storeproductsData
             .where((element) =>

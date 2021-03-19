@@ -1,4 +1,6 @@
+import 'package:flower_user_ui/models/bouquet.product.dart';
 import 'package:flower_user_ui/models/product.dart';
+import 'package:flower_user_ui/models/web.api.services.dart';
 import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
 import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,10 +13,33 @@ class ProductsList extends StatefulWidget {
 
 class ProductsListState extends State<ProductsList> {
   List<Product> _products = [];
-  String _card=null;
+  String _card = null;
 
   ProductsListState() {
-    _products = BouquetMainMenuState.products;
+    if (OrderMainMenuState.order.bouquetId == 0)
+      _products = BouquetMainMenuState.products;
+    else
+      _getProducts();
+  }
+
+  _getProducts() async {
+    List<BouquetProduct> middleProducts;
+    await WebApiServices.fetchBouquetProduct().then((response) {
+      var bouquetProductsData = bouquetProductFromJson(response.data);
+      middleProducts = bouquetProductsData
+          .where((element) => element.bouquetId == OrderMainMenuState.order.bouquetId)
+      .toList();
+    });
+
+    await WebApiServices.fetchProduct().then((response) {
+      var productsData = productFromJson(response.data);
+      setState(() {
+        _products = productsData
+            .where((element) =>
+                middleProducts.any((bp) => bp.productId == element.id))
+            .toList();
+      });
+    });
   }
 
   @override
@@ -104,8 +129,8 @@ class ProductsListState extends State<ProductsList> {
                   : FlatButton(
                       onPressed: () {
                         setState(() {
-                          OrderMainMenuState.order.card=null;
-                          OrderMainMenuState.isSelectedCard =  false;
+                          OrderMainMenuState.order.card = null;
+                          OrderMainMenuState.isSelectedCard = false;
                         });
                       },
                       child: new Text(
@@ -138,9 +163,9 @@ class ProductsListState extends State<ProductsList> {
             child: ListBody(
               children: <Widget>[
                 TextField(
-                  onChanged: (card){
+                  onChanged: (card) {
                     setState(() {
-                      _card=card;
+                      _card = card;
                     });
                   },
                   minLines: null,
@@ -164,8 +189,8 @@ class ProductsListState extends State<ProductsList> {
                 child: new Text(
                   "Назад",
                   style: Theme.of(context).textTheme.body1.copyWith(
-                    color: Color.fromRGBO(130, 147, 153, 1),
-                  ),
+                        color: Color.fromRGBO(130, 147, 153, 1),
+                      ),
                 ),
               ),
             ),
@@ -174,7 +199,7 @@ class ProductsListState extends State<ProductsList> {
               child: FlatButton(
                 onPressed: () {
                   setState(() {
-                    OrderMainMenuState.order.card=_card;
+                    OrderMainMenuState.order.card = _card;
                   });
 
                   Navigator.pop(context);
