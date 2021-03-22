@@ -10,13 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OrdersList extends StatefulWidget {
-  User _user;
-  Account _account;
-
-  OrdersList(this._user, this._account);
-
   @override
-  OrdersListState createState() => OrdersListState(_user, _account);
+  OrdersListState createState() => OrdersListState();
 }
 
 class OrdersListState extends State<OrdersList> {
@@ -24,10 +19,8 @@ class OrdersListState extends State<OrdersList> {
   List<Shop> _shops = [];
   List<Bouquet> _bouquets = [];
   List<OrderStatus> _orderStatuses = [];
-  User _user;
-  Account _account;
 
-  OrdersListState(this._user, this._account) {
+  OrdersListState() {
     _getOrders();
     _getShops();
     _getBouquets();
@@ -38,7 +31,7 @@ class OrdersListState extends State<OrdersList> {
     await WebApiServices.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
       setState(() {
-        _orders = ordersData;
+        _orders = ordersData.reversed.toList();
       });
     });
   }

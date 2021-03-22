@@ -16,7 +16,7 @@ class OrdersObserveMain extends StatelessWidget {
           padding: EdgeInsets.only(top: 20, left:20, right: 20),
           child: Text("Заказы",
               style: Theme.of(context).textTheme.subtitle.copyWith(height: 2))),
-        Expanded(child:OrdersList(NavigationMenu.user, NavigationMenu.account))
+        Expanded(child:OrdersList())
       ],
     );
   }
