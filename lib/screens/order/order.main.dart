@@ -13,17 +13,24 @@ import 'order.products.list.dart';
 
 class OrderMainMenu extends StatefulWidget {
   Bouquet _accountBouquet = Bouquet();
+  double _cost;
+
   OrderMainMenu() {}
   OrderMainMenu.OldBouquet(this._accountBouquet) {}
+  OrderMainMenu.RandomBouquet(this._cost) {}
+
   @override
   OrderMainMenuState createState() => _accountBouquet.id == 0
       ? OrderMainMenuState()
-      : OrderMainMenuState.OldBouquet(_accountBouquet);
+      : _cost != null
+          ? OrderMainMenuState.RandomBouquet(_cost)
+          : OrderMainMenuState.OldBouquet(_accountBouquet);
 }
 
 class OrderMainMenuState extends State<OrderMainMenu> {
   static Order order = new Order();
   static bool isSelectedCard = false;
+  double _cost;
   Bouquet _accountBouquet = Bouquet();
   List<Shop> _shops = [];
 
@@ -35,23 +42,39 @@ class OrderMainMenuState extends State<OrderMainMenu> {
     _setOrderInitialData();
   }
 
+  OrderMainMenuState.RandomBouquet(this._cost) {
+    _setOrderInitialData();
+  }
+
   _setOrderInitialData() async {
-    await _getShops();
-    setState(() {
-      order.shopId = _shops.first.id;
-      order.finish = DateTime.now().add(Duration(days: 1));
+    if (_cost == null)
+      await _getShopsStoreFilter();
+    else
+      await _getShops();
+
+    await setState(() {
       order.userId = NavigationMenu.user.id;
-      if (_accountBouquet.id != 0)
+      order.finish = DateTime.now().add(Duration(days: 1));
+      order.shopId = _shops.first.id;
+      order.orderStatusId = 1;
+
+      if (_accountBouquet.id != null && _accountBouquet.id != 0)
         order.cost = _accountBouquet.cost;
+      else if (_cost != null)
+        order.cost = _cost;
       else
         order.cost = BouquetMainMenuState.newBouquet.cost;
-      order.orderStatusId = 1;
+
       if (_accountBouquet.id != 0) order.bouquetId = _accountBouquet.id;
-      order.isRandom = false;
+
+      if (_cost == null)
+        order.isRandom = false;
+      else
+        order.isRandom = true;
     });
   }
 
-  _getShops() async {
+  _getShopsStoreFilter() async {
     await WebApiServices.fetchShop().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
@@ -64,6 +87,15 @@ class OrderMainMenuState extends State<OrderMainMenu> {
           _shops = shopsData
               .where((element) => element.storeId == _accountBouquet.storeId)
               .toList();
+      });
+    });
+  }
+
+  _getShops() async {
+    await WebApiServices.fetchShop().then((response) {
+      var shopsData = shopFromJson(response.data);
+      setState(() {
+        _shops = shopsData;
       });
     });
   }
@@ -81,7 +113,8 @@ class OrderMainMenuState extends State<OrderMainMenu> {
           _header(context),
           _nameAndCostInfo(context),
           _orderInfo(context),
-          ProductsList(),
+          if (_cost == null)
+            ProductsList(),
           _buttons(context),
         ],
       ),
@@ -117,11 +150,13 @@ class OrderMainMenuState extends State<OrderMainMenu> {
         children: [
           Container(
             child: Text(
-                order.bouquetId != 0
+                order.bouquetId != null && order.bouquetId != 0
                     ? _accountBouquet.name
                     : BouquetMainMenuState.newBouquet.name != null
                         ? BouquetMainMenuState.newBouquet.name
-                        : "Название букета",
+                        : _cost != null
+                            ? "Случайный букет"
+                            : "Название букета",
                 overflow: TextOverflow.clip,
                 softWrap: true,
                 style: Theme.of(context).textTheme.body1.copyWith(
@@ -132,7 +167,9 @@ class OrderMainMenuState extends State<OrderMainMenu> {
           Text(
               order.cost != null
                   ? roundDouble(order.cost, 2).toString() + " ₽"
-                  : "Цена",
+                  : _cost != null
+                      ? roundDouble(_cost, 2).toString() + " ₽"
+                      : "Цена",
               style: Theme.of(context).textTheme.body1.copyWith(
                     color: Color.fromRGBO(130, 147, 153, 1),
                     fontSize: 25,
@@ -345,7 +382,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
       padding: EdgeInsets.all(10),
       child: Row(
         children: [
-          order.bouquetId == 0
+          order.bouquetId == 0 && _cost == null
               ? FlatButton(
                   onPressed: () async {
                     _postBouquet(context);
@@ -374,13 +411,16 @@ class OrderMainMenuState extends State<OrderMainMenu> {
             child: FlatButton(
                 onPressed: () async {
                   await _postOrder(context);
+
                   BouquetMainMenuState.products = [];
                   BouquetMainMenuState.newBouquet = Bouquet();
+                  _cost = null;
                   order = Order();
                   _shops = [];
+                  isSelectedCard = false;
+                  _accountBouquet = Bouquet();
+
                   Navigator.pop(context);
-                  if(_accountBouquet.id==0)
-                    Navigator.pop(context);
                 },
                 padding: EdgeInsets.zero,
                 child: Container(
@@ -414,7 +454,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
   }
 
   void _postOrder(context) async {
-    if (order.bouquetId == 0) await _postBouquet(context);
+    if (order.bouquetId == 0 && _cost == null) await _postBouquet(context);
 
     Bouquet postedBouquet;
     await WebApiServices.fetchBouquet().then((response) {
@@ -423,7 +463,9 @@ class OrderMainMenuState extends State<OrderMainMenu> {
     });
 
     order.start = DateTime.now();
-    if (order.bouquetId == 0) order.bouquetId = postedBouquet.id;
+    if (order.bouquetId == 0 && _cost == null)
+      order.bouquetId = postedBouquet.id;
+
     await WebApiServices.postOrder(order);
   }
 }

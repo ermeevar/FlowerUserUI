@@ -1,4 +1,5 @@
 import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
+import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../navigation.menu.dart';
@@ -110,13 +111,6 @@ class MainMenuContent extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Padding(
-                  //   padding:EdgeInsets.all(20),
-                  //   child: CircleAvatar(
-                  //     backgroundImage: AssetImage("resources/images/bouquet.add.jpg"),
-                  //     maxRadius: 100,
-                  //   ),
-                  // ),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Icon(Icons.image_outlined,
@@ -166,7 +160,9 @@ class MainMenuContent extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: OutlineButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _showCountOfProductDialog(context);
+                      },
                       child: Text('Заказать',
                           style: Theme.of(context).textTheme.body2),
                       borderSide: BorderSide(color: Colors.white),
@@ -178,6 +174,75 @@ class MainMenuContent extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showCountOfProductDialog(context) async {
+    double _cost = 0;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Выбор ценовой категории",
+            style: Theme.of(context).textTheme.subtitle,
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                    onChanged: (cost) {
+                      _cost = double.parse(cost);
+                      print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+                      print(_cost);
+                    },
+                    cursorColor: Color.fromRGBO(130, 147, 153, 1),
+                    style: Theme.of(context).textTheme.body1,
+                    decoration: InputDecoration(
+                      labelText: "Цена",
+                      focusColor: Color.fromRGBO(130, 147, 153, 1),
+                    ))
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: new Text(
+                  "Назад",
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                        color: Color.fromRGBO(130, 147, 153, 1),
+                      ),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: FlatButton(
+                onPressed: () async{
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderMainMenu.RandomBouquet(_cost)));
+                  Navigator.pop(context);
+                },
+                child: new Text(
+                  "Заказать",
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                      color: Color.fromRGBO(130, 147, 153, 1),
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
