@@ -228,7 +228,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
             Container(
               padding: EdgeInsets.all(10),
               child: FlatButton(
-                onPressed: () {
+                onPressed: () async{
                   if (newBouquet.storeId == null ||
                       products.where((element) => element.productCategoryId == 1).length ==0) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -246,11 +246,11 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                   }
                   else{
                     newBouquet.cost=bouquetCost;
-                    Navigator.pop(context);
-                    Navigator.push(context,  MaterialPageRoute(
+                    await Navigator.push(context,  MaterialPageRoute(
                         builder: (context) => OrderMainMenu()));
+                    Navigator.pop(context);
                   }
-
+                  Navigator.pop(context);
                 },
                 child: new Text(
                   "Заказать",

@@ -16,7 +16,8 @@ class ProductsListState extends State<ProductsList> {
   String _card = null;
 
   ProductsListState() {
-    if (OrderMainMenuState.order.bouquetId == 0)
+    if (OrderMainMenuState.order.bouquetId == 0 ||
+        OrderMainMenuState.order.bouquetId == null)
       _products = BouquetMainMenuState.products;
     else
       _getProducts();

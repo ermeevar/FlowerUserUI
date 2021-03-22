@@ -47,10 +47,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
   }
 
   _setOrderInitialData() async {
-    if (_cost == null)
-      await _getShopsStoreFilter();
-    else
-      await _getShops();
+    await _getShops();
 
     await setState(() {
       order.userId = NavigationMenu.user.id;
@@ -58,7 +55,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
       order.shopId = _shops.first.id;
       order.orderStatusId = 1;
 
-      if (_accountBouquet.id != null && _accountBouquet.id != 0)
+      if (_accountBouquet.id != null)
         order.cost = _accountBouquet.cost;
       else if (_cost != null)
         order.cost = _cost;
@@ -74,11 +71,13 @@ class OrderMainMenuState extends State<OrderMainMenu> {
     });
   }
 
-  _getShopsStoreFilter() async {
+  _getShops() async {
     await WebApiServices.fetchShop().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
-        if (_accountBouquet.id == 0)
+        if (_cost != null)
+          _shops = shopsData;
+        else if (_accountBouquet.id == null)
           _shops = shopsData
               .where((element) =>
                   element.storeId == BouquetMainMenuState.newBouquet.storeId)
@@ -87,15 +86,6 @@ class OrderMainMenuState extends State<OrderMainMenu> {
           _shops = shopsData
               .where((element) => element.storeId == _accountBouquet.storeId)
               .toList();
-      });
-    });
-  }
-
-  _getShops() async {
-    await WebApiServices.fetchShop().then((response) {
-      var shopsData = shopFromJson(response.data);
-      setState(() {
-        _shops = shopsData;
       });
     });
   }
@@ -382,7 +372,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
       padding: EdgeInsets.all(10),
       child: Row(
         children: [
-          order.bouquetId == 0 && _cost == null
+          _accountBouquet.id == null && _cost == null
               ? FlatButton(
                   onPressed: () async {
                     _postBouquet(context);
@@ -436,7 +426,8 @@ class OrderMainMenuState extends State<OrderMainMenu> {
     );
   }
 
-  void _postBouquet(context) async {
+  Future _postBouquet(context) async {
+    BouquetMainMenuState.newBouquet.userId = NavigationMenu.user.id;
     await WebApiServices.postBouquet(BouquetMainMenuState.newBouquet);
 
     Bouquet postedBouquet;
@@ -454,18 +445,19 @@ class OrderMainMenuState extends State<OrderMainMenu> {
   }
 
   void _postOrder(context) async {
-    if (order.bouquetId == 0 && _cost == null) await _postBouquet(context);
+    if (order.bouquetId == null && _cost == null){
+      await _postBouquet(context);
 
-    Bouquet postedBouquet;
-    await WebApiServices.fetchBouquet().then((response) {
-      var bouquetsData = bouquetFromJson(response.data);
-      postedBouquet = bouquetsData.last;
-    });
+      Bouquet postedBouquet;
+      await WebApiServices.fetchBouquet().then((response) {
+        var bouquetsData = bouquetFromJson(response.data);
+        postedBouquet = bouquetsData.last;
+      });
+
+      order.bouquetId = postedBouquet.id;
+    }
 
     order.start = DateTime.now();
-    if (order.bouquetId == 0 && _cost == null)
-      order.bouquetId = postedBouquet.id;
-
     await WebApiServices.postOrder(order);
   }
 }
