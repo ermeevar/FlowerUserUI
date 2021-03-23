@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
+import 'package:flower_user_ui/models/template.dart';
 import 'bouquet.dart';
 import 'bouquet.product.dart';
 import 'order.dart';
@@ -16,13 +17,14 @@ class WebApiServices {
 
   static String _storeUrl = _baseUrl + "/stores/";
   static String _shopUrl = _baseUrl + "/shops/";
-  static String _categoryUrl = _baseUrl + "/productcategories/";
   static String _productUrl = _baseUrl + "/products/";
   static String _orderUrl = _baseUrl + "/orders/";
   static String _bouquetUrl = _baseUrl + "/bouquets/";
   static String _bouquetProductUrl = _baseUrl + "/bouquetproducts/";
   static String _orderStatusUrl = _baseUrl + "/orderstatuses/";
   static String _accountUrl = _baseUrl + "/accounts/";
+  static String _templateUrl = _baseUrl + "/templates/";
+  static String _templateCategoryUrl = _baseUrl + "/templatecategories/";
 
   WebApiServices() {
     dio.interceptors.add(
@@ -34,50 +36,46 @@ class WebApiServices {
     'Accept': 'application/json',
   };
 
-  static Future<Response<String>> fetchShop() async {
+  static Future fetchShop() async {
     return await Dio().get<String>(
       _shopUrl,
       options: buildCacheOptions(Duration(days: 7)),
     );
   }
 
-  static Future<Response<String>> fetchStore() async {
+  static Future fetchStore() async {
     return await Dio().get<String>(
       _storeUrl,
       options: buildCacheOptions(Duration(days: 7)),
     );
   }
 
-  static Future<Response<String>> fetchAccount() async {
+  static Future fetchAccount() async {
     return await Dio().get<String>(
       _accountUrl,
       options: buildCacheOptions(Duration(days: 7)),
     );
   }
 
-  static Future<Response<String>> fetchOrders() async {
+  static Future fetchOrders() async {
     return await Dio().get<String>(
       _orderUrl,
       options: buildCacheOptions(Duration(days: 1)),
     );
   }
 
-  static Future<Response<String>> fetchBouquet() async {
+  static Future fetchBouquet() async {
     return await Dio().get<String>(
       _bouquetUrl,
       options: buildCacheOptions(Duration(days: 1)),
     );
   }
 
-  static Future<Response<String>> fetchOrderStatuses() async {
+  static Future fetchOrderStatuses() async {
     return await Dio().get<String>(
       _orderStatusUrl,
       options: buildCacheOptions(Duration(days: 1)),
     );
-  }
-
-  static Future fetchCategory() async {
-    return await dio.get(_categoryUrl);
   }
 
   static Future fetchProduct() async {
@@ -86,9 +84,24 @@ class WebApiServices {
       options: buildCacheOptions(Duration(days: 1)),
     );
   }
+
   static Future fetchBouquetProduct() async {
     return await Dio().get<String>(
       _bouquetProductUrl,
+      options: buildCacheOptions(Duration(days: 1)),
+    );
+  }
+
+  static Future fetchTemplate() async {
+    return await Dio().get<String>(
+      _templateUrl,
+      options: buildCacheOptions(Duration(days: 1)),
+    );
+  }
+
+  static Future fetchTemplateCategory() async {
+    return await Dio().get<String>(
+      _templateCategoryUrl,
       options: buildCacheOptions(Duration(days: 1)),
     );
   }
@@ -115,37 +128,6 @@ class WebApiServices {
     var orderJson = json.encode(reverseOrder);
     var response = await dio.post(_orderUrl,
         options: Options(headers: header), data: orderJson);
-    return response.statusCode;
-  }
-
-
-  // static Future postShop(Shop shop) async {
-  //   var reverseShop = shop.toJson();
-  //   var shopJson = json.encode(reverseShop);
-  //   var response = await dio.post(_shopUrl, options: Options(headers: header), data: shopJson);
-  //   return response.statusCode;
-  // }
-
-  // static Future postStoreProduct(StoreProduct storeProduct) async {
-  //   var reverseStoreProduct = storeProduct.toMap();
-  //   var storeProductJson = json.encode(reverseStoreProduct);
-  //   var response = await dio.post(_storeProductUrl, options: Options(headers: header), data: storeProductJson);
-  //   print("0000000000000000000000000000000000000000000000000");
-  //   print(response.statusCode);
-  //   return response.statusCode;
-  // }
-
-  // static Future putShop(Shop shop) async {
-  //   var reverseShop = shop.toJson();
-  //   var shopJson = json.encode(reverseShop);
-  //   var response = await dio.post(_shopUrl + shop.id.toString(),
-  //       options: Options(headers: header), data: shopJson);
-  //   print(response.statusCode);
-  //   return response.statusCode;
-  // }
-
-  static Future deleteShop(int id) async {
-    var response = await dio.delete(_shopUrl + id.toString());
     return response.statusCode;
   }
 

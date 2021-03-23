@@ -1,5 +1,6 @@
 import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
 import 'package:flower_user_ui/screens/order/order.main.dart';
+import 'package:flower_user_ui/screens/template/template.category.selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../navigation.menu.dart';
@@ -124,7 +125,13 @@ class MainMenuContent extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: OutlineButton(
-                      onPressed: () {},
+                      onPressed: () async{
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TemplateCategorySelection()));
+                      },
                       child: Text('Выбрать',
                           style: Theme.of(context).textTheme.body2),
                       borderSide: BorderSide(color: Colors.white),
@@ -194,8 +201,6 @@ class MainMenuContent extends StatelessWidget {
                 TextFormField(
                     onChanged: (cost) {
                       _cost = double.parse(cost);
-                      print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-                      print(_cost);
                     },
                     cursorColor: Color.fromRGBO(130, 147, 153, 1),
                     style: Theme.of(context).textTheme.body1,
