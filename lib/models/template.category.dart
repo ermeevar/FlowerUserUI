@@ -1,30 +1,24 @@
-class TemplateCategory{
-  int _id;
-  String _name;
+import 'dart:convert';
 
-  TemplateCategory();
+List<TemplateCategory> templateCategoryFromJson(String str) => List<TemplateCategory>.from(json.decode(str).map((x) => TemplateCategory.fromJson(x)));
 
-  int get id => _id;
-  String get name => _name;
+String templateCategoryToJson(List<TemplateCategory> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  set id(int id){
-    _id = id;
-  }
-  set name(String name){
-    _name = name;
-  }
+class TemplateCategory {
+  TemplateCategory({
+    this.id,
+    this.name,
+  });
 
-  Map<String, dynamic> toMap(){
-    var map = new Map<String, dynamic>();
+  int id;
+  String name;
 
-    map["id"] = _id;
-    map["name"] = _name;
+  factory TemplateCategory.fromJson(Map<String, dynamic> json) => TemplateCategory(
+    id: json["id"],
+    name: json["name"],
+  );
 
-    return map;
-  }
-
-  TemplateCategory.fromObject(dynamic object){
-    this._id = object["id"];
-    this._name = object["name"];
-  }
+  Map<String, dynamic> toJson() => {
+    "name": name,
+  };
 }
