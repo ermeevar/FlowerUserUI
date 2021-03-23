@@ -1,6 +1,7 @@
 import 'package:flower_user_ui/models/template.category.dart';
 import 'package:flower_user_ui/models/template.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flower_user_ui/screens/template/template.selection.dart';
 import 'package:flutter/material.dart';
 
@@ -94,6 +95,11 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
                 MaterialPageRoute(
                     builder: (context) =>
                         TemplateSelection(_templateCategories[index])));
+
+            if(OrderMainMenuState.isAdded == true){
+              OrderMainMenuState.isAdded == false;
+              Navigator.pop(context);
+            }
           },
           child: Row(
             children: [

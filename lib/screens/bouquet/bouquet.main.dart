@@ -127,8 +127,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               color: Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
                 newBouquet = new Bouquet();
-                // ignore: deprecated_member_use
-                products = new List<Product>();
+                products = [];
                 Navigator.pop(context);
               }),
           Text("Создание букета", style: Theme.of(context).textTheme.subtitle)
@@ -248,7 +247,10 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                     newBouquet.cost=bouquetCost;
                     await Navigator.push(context,  MaterialPageRoute(
                         builder: (context) => OrderMainMenu()));
-                    Navigator.pop(context);
+                    if(OrderMainMenuState.isAdded == true){
+                      Navigator.pop(context);
+                      OrderMainMenuState.isAdded = false;
+                    }
                   }
                   Navigator.pop(context);
                 },

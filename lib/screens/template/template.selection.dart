@@ -1,6 +1,7 @@
 import 'package:flower_user_ui/models/template.category.dart';
 import 'package:flower_user_ui/models/template.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -84,6 +85,15 @@ class TemplateSelectionState extends State<TemplateSelection> {
           return Column(
             children: [
               GestureDetector(
+                onTap: () async {
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderMainMenu.TemplateBouquet(
+                              _templates[index])));
+                  if(OrderMainMenuState.isAdded == true)
+                    Navigator.pop(context);
+                },
                 child: Card(
                   elevation: 10,
                   clipBehavior: Clip.antiAlias,
@@ -96,15 +106,15 @@ class TemplateSelectionState extends State<TemplateSelection> {
                       children: [
                         _templates[index].picture == null
                             ? Container(
-                          width: 140,
-                          height: 140,
-                          child: Icon(
-                            Icons.image_outlined,
-                            color: Colors.black38,
-                            size: 50,
-                          ),
-                          color: Colors.black12,
-                        )
+                                width: 140,
+                                height: 140,
+                                child: Icon(
+                                  Icons.image_outlined,
+                                  color: Colors.black38,
+                                  size: 50,
+                                ),
+                                color: Colors.black12,
+                              )
                             : _templates[index].picture,
                         Container(
                           width: 140,
@@ -114,9 +124,9 @@ class TemplateSelectionState extends State<TemplateSelection> {
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             style:
-                            Theme.of(context).textTheme.subtitle.copyWith(
-                              color: Color.fromRGBO(55, 50, 52, 1),
-                            ),
+                                Theme.of(context).textTheme.subtitle.copyWith(
+                                      color: Color.fromRGBO(55, 50, 52, 1),
+                                    ),
                           ),
                         ),
                         Text(

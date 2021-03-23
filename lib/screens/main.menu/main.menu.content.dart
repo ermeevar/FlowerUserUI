@@ -235,6 +235,7 @@ class MainMenuContent extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) =>
                               OrderMainMenu.RandomBouquet(_cost)));
+                  OrderMainMenuState.isAdded == false;
                   Navigator.pop(context);
                 },
                 child: new Text(
