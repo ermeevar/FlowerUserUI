@@ -10,23 +10,31 @@ class Template {
     this.name,
     this.templateCategoryId,
     this.storeId,
+    this.picture,
+    this.cost,
   });
 
   int id;
   String name;
   int templateCategoryId;
   int storeId;
+  List<int> picture;
+  double cost;
 
   factory Template.fromJson(Map<String, dynamic> json) => Template(
     id: json["id"],
     name: json["name"],
     templateCategoryId: json["templateCategoryId"],
     storeId: json["storeId"],
+    picture: json["picture"],
+    cost: json["cost"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "templateCategoryId": templateCategoryId,
     "storeId": storeId,
+    "picture": picture,
+    "cost": cost,
   };
 }

@@ -1,6 +1,7 @@
 import 'package:flower_user_ui/models/template.category.dart';
 import 'package:flower_user_ui/models/template.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/screens/template/template.selection.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCategorySelection extends StatefulWidget {
@@ -30,7 +31,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
     await WebApiServices.fetchTemplate().then((response) {
       var templateData = templateFromJson(response.data);
       setState(() {
-        _templates=templateData;
+        _templates = templateData;
       });
     });
   }
@@ -87,6 +88,13 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
       itemCount: _templateCategories.length,
       itemBuilder: (context, index) {
         return GestureDetector(
+          onTap: () async {
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        TemplateSelection(_templateCategories[index])));
+          },
           child: Row(
             children: [
               Container(
@@ -97,13 +105,14 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
                   child: Text(
                     _getCountOfCategories(_templateCategories[index]) != null
                         ? _getCountOfCategories(_templateCategories[index])
-                        .toString()
+                            .toString()
                         : "0",
                     style: Theme.of(context).textTheme.body2,
                   ),
                 ),
               ),
-              Expanded(child: Column(
+              Expanded(
+                  child: Column(
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 15),
