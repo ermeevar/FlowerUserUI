@@ -118,7 +118,7 @@ class AccountInformationState extends State<AccountInformation>
                 radius: 60,
                 child: NavigationMenu.user.picture == null
                     ? Icon(
-                        Icons.image_outlined,
+                        Icons.supervisor_account_outlined,
                         color: Colors.black38,
                         size: 50,
                       )

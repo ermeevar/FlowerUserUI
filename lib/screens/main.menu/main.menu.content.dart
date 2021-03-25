@@ -40,11 +40,18 @@ class MainMenuContent extends StatelessWidget {
                     radius: 20,
                     child: NavigationMenu.user.picture == null
                         ? Icon(
-                            Icons.image_outlined,
+                            Icons.supervisor_account_outlined,
                             color: Colors.black38,
                             size: 20,
                           )
-                        : NavigationMenu.user.picture,
+                        : ClipOval(
+                            child: Image(
+                              image: MemoryImage(NavigationMenu.user.picture),
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ))
             ]))
       ],
@@ -125,7 +132,7 @@ class MainMenuContent extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: OutlineButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -229,7 +236,7 @@ class MainMenuContent extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(10),
               child: FlatButton(
-                onPressed: () async{
+                onPressed: () async {
                   await Navigator.push(
                       context,
                       MaterialPageRoute(
