@@ -1,8 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flower_user_ui/models/user.dart';
-import 'package:flower_user_ui/models/account.dart';
-import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 import '../navigation.menu.dart';
 
@@ -17,6 +18,7 @@ class AccountInformationState extends State<AccountInformation>
   String _surname;
   String _phone;
   bool _isTab = false;
+  final picker = ImagePicker();
 
   void _taped() {
     setState(() {
@@ -104,22 +106,37 @@ class AccountInformationState extends State<AccountInformation>
               )
             ],
           ),
-          Card(
-            elevation: 10,
-            shape: CircleBorder(),
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 60,
-              child: NavigationMenu.user.picture == null
-                  ? Icon(
-                Icons.image_outlined,
-                color: Colors.black38,
-                size: 50,
-              )
-                  : NavigationMenu.user.picture,
+          GestureDetector(
+            onTap: () async {
+              await showOptionsForPhoto();
+            },
+            child: Card(
+              elevation: 10,
+              shape: CircleBorder(),
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 60,
+                child: NavigationMenu.user.picture == null
+                    ? Icon(
+                        Icons.image_outlined,
+                        color: Colors.black38,
+                        size: 50,
+                      )
+                    : ClipOval(
+                        child: Image(
+                          image: MemoryImage(NavigationMenu.user.picture),
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+              ),
             ),
           ),
-          Text(NavigationMenu.account!=null?NavigationMenu.account.login:"Error",
+          Text(
+              NavigationMenu.account != null
+                  ? NavigationMenu.account.login
+                  : "Error",
               style: Theme.of(context).textTheme.body1.copyWith(
                   height: 2, fontWeight: FontWeight.bold, fontSize: 20)),
           Text(NavigationMenu.user.name + " " + NavigationMenu.user.surname,
@@ -222,6 +239,58 @@ class AccountInformationState extends State<AccountInformation>
               )
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  Future getImageFromGallery() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
+
+    setState(() {
+      if (pickedFile != null) {
+        NavigationMenu.user.picture = _newImageBytes;
+      }
+    });
+  }
+
+  Future getImageFromCamera() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
+
+    setState(() {
+      if (pickedFile != null) {
+        NavigationMenu.user.picture = _newImageBytes;
+      }
+    });
+  }
+
+  Future showOptionsForPhoto() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text(
+              'Выбрать из галереи',
+              style: Theme.of(context).textTheme.body1,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              getImageFromGallery();
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text(
+              'Камера',
+              style: Theme.of(context).textTheme.body1,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              getImageFromCamera();
+            },
+          ),
         ],
       ),
     );

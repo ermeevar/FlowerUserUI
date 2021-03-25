@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 class User{
   int _id;
   String _surname;
   String _name;
   String _phone;
-  List<int> _picture;
+  Uint8List _picture;
   int _accountId;
 
   User();
@@ -12,7 +14,7 @@ class User{
   String get surname => _surname;
   String get name => _name;
   String get phone => _phone;
-  List<int> get picture => _picture;
+  Uint8List get picture => _picture;
   int get accountId => _accountId;
 
   set id(int id){
@@ -27,7 +29,7 @@ class User{
   set phone(String phone){
     _phone = phone;
   }
-  set picture(List<int> picture){
+  set picture(Uint8List picture){
     _picture = picture;
   }
   set accountId(int accountId){

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:typed_data';
+
 List<Product> productFromJson(String str) => List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 
 String productToJson(List<Product> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -16,7 +18,7 @@ class Product {
 
   int id;
   String name;
-  List<int> picture;
+  Uint8List picture;
   double cost;
   int productCategoryId;
   int storeId;

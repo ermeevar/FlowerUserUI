@@ -28,6 +28,8 @@ dependencies:
   intl: ^0.16.1
   im_stepper: ^0.1.2+10
   connectivity: ^3.0.2
+  camera: ^0.6.0
+  image_picker: ^0.6.7+22
 
 
   # The following adds the Cupertino Icons font to your application.
