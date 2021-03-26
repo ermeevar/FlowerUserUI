@@ -3,6 +3,7 @@ import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flower_user_ui/screens/template/template.category.selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../navigation.menu.dart';
 
 class MainMenuContent extends StatelessWidget {
@@ -206,8 +207,12 @@ class MainMenuContent extends StatelessWidget {
             child: ListBody(
               children: <Widget>[
                 TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     onChanged: (cost) {
-                      _cost = double.parse(cost);
+                      _cost = double.parse(cost)>=300?double.parse(cost):null;
                     },
                     cursorColor: Color.fromRGBO(130, 147, 153, 1),
                     style: Theme.of(context).textTheme.body1,
@@ -237,11 +242,24 @@ class MainMenuContent extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: FlatButton(
                 onPressed: () async {
+                  if(_cost!=null)
                   await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               OrderMainMenu.RandomBouquet(_cost)));
+                  else
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Заказ должен превышать 300 рублей"),
+                        action: SnackBarAction(
+                          label: "Понятно",
+                          onPressed: () {
+                            // Code to execute.
+                          },
+                        ),
+                      ),
+                    );
                   OrderMainMenuState.isAdded == false;
                   Navigator.pop(context);
                 },
