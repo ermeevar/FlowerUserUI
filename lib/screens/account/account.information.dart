@@ -1,10 +1,11 @@
 import 'dart:typed_data';
-
+import 'package:flower_user_ui/models/ri.keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
+import 'package:form_field_validator/form_field_validator.dart';
 import '../navigation.menu.dart';
 
 class AccountInformation extends StatefulWidget {
@@ -147,25 +148,26 @@ class AccountInformationState extends State<AccountInformation>
   }
 
   Widget _change(context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Spacer(),
-              IconButton(
-                  icon: Icon(Icons.navigate_next, size: 30),
-                  padding: EdgeInsets.zero,
-                  color: Color.fromRGBO(130, 147, 153, 1),
-                  onPressed: () {
-                    _taped();
-                  }),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: TextFormField(
+    return Form(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Spacer(),
+                IconButton(
+                    icon: Icon(Icons.navigate_next, size: 30),
+                    padding: EdgeInsets.zero,
+                    color: Color.fromRGBO(130, 147, 153, 1),
+                    onPressed: () {
+                      _taped();
+                    }),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: TextFormField(
                 onChanged: (name) {
                   setState(() {
                     this._name = name;
@@ -180,11 +182,12 @@ class AccountInformationState extends State<AccountInformation>
                 decoration: InputDecoration(
                   labelText: "Имя",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
-                )),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: TextFormField(
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: TextFormField(
                 onChanged: (surname) {
                   setState(() {
                     this._surname = surname;
@@ -198,16 +201,21 @@ class AccountInformationState extends State<AccountInformation>
                 decoration: InputDecoration(
                   labelText: "Фамилия",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
-                )),
-          ),
-          Padding(
-            padding: EdgeInsets.zero,
-            child: TextFormField(
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: TextFormField(
+                keyboardType: TextInputType.phone,
                 onChanged: (phone) {
                   setState(() {
                     this._phone = phone;
                   });
                 },
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ], //
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
                 initialValue: NavigationMenu.user.phone != null
                     ? NavigationMenu.user.phone
@@ -215,31 +223,34 @@ class AccountInformationState extends State<AccountInformation>
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
                   labelText: "Телефон",
+                  prefixText: "+7 ",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
-                )),
-          ),
-          Row(
-            children: [
-              Spacer(),
-              Container(
-                padding: EdgeInsets.only(top: 20, bottom: 2),
-                child: FlatButton(
-                    onPressed: () {
-                      _taped();
-                    },
-                    padding: EdgeInsets.zero,
-                    child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(130, 147, 153, 1),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: new Text("Сохранить",
-                            style: Theme.of(context).textTheme.body2))),
-              )
-            ],
-          )
-        ],
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Spacer(),
+                Container(
+                  padding: EdgeInsets.only(top: 20, bottom: 2),
+                  child: FlatButton(
+                      onPressed: () {
+                        _taped();
+                      },
+                      padding: EdgeInsets.zero,
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(130, 147, 153, 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: new Text("Сохранить",
+                              style: Theme.of(context).textTheme.body2))),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
