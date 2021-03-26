@@ -208,14 +208,14 @@ class AccountInformationState extends State<AccountInformation>
               margin: EdgeInsets.only(bottom: 20),
               child: TextFormField(
                 keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 onChanged: (phone) {
                   setState(() {
                     this._phone = phone;
                   });
                 },
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ], //
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
                 initialValue: NavigationMenu.user.phone != null
                     ? NavigationMenu.user.phone

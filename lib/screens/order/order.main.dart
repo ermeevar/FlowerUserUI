@@ -8,6 +8,7 @@ import 'package:flower_user_ui/models/web.api.services.dart';
 import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../navigation.menu.dart';
 import 'order.products.list.dart';
@@ -260,6 +261,10 @@ class OrderMainMenuState extends State<OrderMainMenu> {
           Container(
             margin: EdgeInsets.only(bottom: 20),
             child: TextFormField(
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 onChanged: (phone) {
                   setState(() {});
                 },
@@ -270,6 +275,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
                   labelText: "Телефон",
+                  prefixText: "+7 ",
                   focusColor: Color.fromRGBO(130, 147, 153, 1),
                 )),
           ),

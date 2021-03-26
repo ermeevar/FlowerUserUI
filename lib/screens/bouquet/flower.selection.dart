@@ -1,8 +1,10 @@
 import 'package:flower_user_ui/models/store.dart';
 import 'package:flower_user_ui/models/product.dart';
+import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flutter/services.dart';
 import 'bouquet.main.dart';
 
 class FlowerSelection extends StatefulWidget {
@@ -130,6 +132,10 @@ class FlowerSelectionState extends State<FlowerSelection> {
             child: ListBody(
               children: <Widget>[
                 TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     onChanged: (count) {
                       _count = int.parse(count);
                     },

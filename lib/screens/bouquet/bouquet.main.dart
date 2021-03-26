@@ -241,7 +241,6 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                         ),
                       ),
                     );
-                    Navigator.pop(context);
                   }
                   else{
                     newBouquet.cost=bouquetCost;

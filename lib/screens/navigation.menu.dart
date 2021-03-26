@@ -16,7 +16,7 @@ class NavigationMenu extends StatefulWidget {
     user.id = 1;
     user.name = "Рината";
     user.surname = "Завойская";
-    user.phone = "8(927)880-67-82";
+    user.phone = "9278806782";
     user.accountId = 3;
 
     account = Account();
