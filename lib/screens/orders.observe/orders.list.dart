@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/order.dart';
 import 'package:flower_user_ui/models/shop.dart';
@@ -79,6 +81,11 @@ class OrdersListState extends State<OrdersList> {
     for (var item in _orderStatuses) {
       if (order.orderStatusId == item.id) return item;
     }
+  }
+
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
   }
 
   @override
@@ -179,27 +186,31 @@ class OrdersListState extends State<OrdersList> {
                                                             .textTheme
                                                             .body1)),
                                                 Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10),
-                                                    child: Text(
-                                                        _orders[index]
-                                                                .cost
-                                                                .toString() +
-                                                            " ₽",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .body1
-                                                            .copyWith(
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        130,
-                                                                        157,
-                                                                        143,
-                                                                        1),
-                                                                fontSize: 25,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold))),
+                                                  padding:
+                                                      EdgeInsets.only(left: 10),
+                                                  child: Text(
+                                                    roundDouble(
+                                                                _orders[index]
+                                                                    .cost,
+                                                                2)
+                                                            .toString() +
+                                                        " ₽",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .body1
+                                                        .copyWith(
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    130,
+                                                                    157,
+                                                                    143,
+                                                                    1),
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -222,9 +233,11 @@ class OrdersListState extends State<OrdersList> {
                                                 padding:
                                                     EdgeInsets.only(left: 10),
                                                 child: Text(
-                                                    _orders[index]
-                                                            .cost
-                                                            .toString() +
+                                                    roundDouble(
+                                                        _orders[index]
+                                                            .cost,
+                                                        2)
+                                                        .toString() +
                                                         " ₽",
                                                     style: Theme.of(context)
                                                         .textTheme
@@ -260,9 +273,11 @@ class OrdersListState extends State<OrdersList> {
                                                 padding:
                                                     EdgeInsets.only(left: 10),
                                                 child: Text(
-                                                    _orders[index]
-                                                            .cost
-                                                            .toString() +
+                                                    roundDouble(
+                                                        _orders[index]
+                                                            .cost,
+                                                        2)
+                                                        .toString() +
                                                         " ₽",
                                                     style: Theme.of(context)
                                                         .textTheme
