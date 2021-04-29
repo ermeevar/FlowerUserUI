@@ -1,3 +1,4 @@
+import 'package:flower_user_ui/models/account.info.dart';
 import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData
-            .where((element) => element.userId == NavigationMenu.user.id)
+            .where((element) => element.userId == AccountInfo.user.id)
             .toList();
       });
     });

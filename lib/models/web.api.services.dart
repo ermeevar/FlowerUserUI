@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
+import 'package:flower_user_ui/models/store.dart';
 import 'package:flower_user_ui/models/template.dart';
+import 'package:flower_user_ui/models/user.dart';
+import 'account.dart';
 import 'bouquet.dart';
 import 'bouquet.product.dart';
 import 'order.dart';
@@ -25,6 +28,7 @@ class WebApiServices {
   static String _accountUrl = _baseUrl + "/accounts/";
   static String _templateUrl = _baseUrl + "/templates/";
   static String _templateCategoryUrl = _baseUrl + "/templatecategories/";
+  static String _userUrl = _baseUrl + "/users/";
 
   WebApiServices() {
     dio.interceptors.add(
@@ -85,6 +89,13 @@ class WebApiServices {
     );
   }
 
+  static Future fetchUser() async {
+    return await Dio().get<String>(
+      _userUrl,
+      options: buildCacheOptions(Duration(days: 1)),
+    );
+  }
+
   static Future fetchBouquetProduct() async {
     return await Dio().get<String>(
       _bouquetProductUrl,
@@ -130,6 +141,24 @@ class WebApiServices {
         options: Options(headers: header), data: orderJson);
     return response.statusCode;
   }
+
+
+  static Future postAccount(Account account) async {
+    var reverseAccount = account.toJson();
+    var accountJson = json.encode(reverseAccount);
+    var response = await dio.post(_accountUrl,
+        options: Options(headers: header), data: accountJson);
+    return response.statusCode;
+  }
+
+  static Future postUser(User user) async {
+    var reverseUser = user.toJson();
+    var userJson = json.encode(reverseUser);
+    var response = await dio.post(_userUrl,
+        options: Options(headers: header), data: userJson);
+    return response.statusCode;
+  }
+
 
   static Future deleteStoreProduct(int id) async {
     var response = await dio.delete(_productUrl + id.toString());

@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flower_user_ui/models/account.info.dart';
 import 'package:flower_user_ui/models/ri.keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,7 @@ class AccountInformationState extends State<AccountInformation>
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 60,
-                child: NavigationMenu.user.picture == null
+                child: AccountInfo.user.picture == null
                     ? Icon(
                         Icons.supervisor_account_outlined,
                         color: Colors.black38,
@@ -125,7 +126,7 @@ class AccountInformationState extends State<AccountInformation>
                       )
                     : ClipOval(
                         child: Image(
-                          image: MemoryImage(NavigationMenu.user.picture),
+                          image: MemoryImage(AccountInfo.user.picture),
                           width: 120,
                           height: 120,
                           fit: BoxFit.cover,
@@ -135,12 +136,12 @@ class AccountInformationState extends State<AccountInformation>
             ),
           ),
           Text(
-              NavigationMenu.account != null
-                  ? NavigationMenu.account.login
+              AccountInfo.account != null
+                  ? AccountInfo.account.login
                   : "Error",
               style: Theme.of(context).textTheme.body1.copyWith(
                   height: 2, fontWeight: FontWeight.bold, fontSize: 20)),
-          Text(NavigationMenu.user.name + " " + NavigationMenu.user.surname,
+          Text(AccountInfo.user.name + " " + AccountInfo.user.surname,
               style: Theme.of(context).textTheme.body1)
         ],
       ),
@@ -175,8 +176,8 @@ class AccountInformationState extends State<AccountInformation>
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
                 key: Key("name"),
-                initialValue: NavigationMenu.user.name != null
-                    ? NavigationMenu.user.name
+                initialValue: AccountInfo.user.name != null
+                    ? AccountInfo.user.name
                     : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
@@ -194,8 +195,8 @@ class AccountInformationState extends State<AccountInformation>
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: NavigationMenu.user.surname != null
-                    ? NavigationMenu.user.surname
+                initialValue: AccountInfo.user.surname != null
+                    ? AccountInfo.user.surname
                     : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
@@ -217,8 +218,8 @@ class AccountInformationState extends State<AccountInformation>
                   });
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: NavigationMenu.user.phone != null
-                    ? NavigationMenu.user.phone
+                initialValue: AccountInfo.user.phone != null
+                    ? AccountInfo.user.phone
                     : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
@@ -261,7 +262,7 @@ class AccountInformationState extends State<AccountInformation>
 
     setState(() {
       if (pickedFile != null) {
-        NavigationMenu.user.picture = _newImageBytes;
+        AccountInfo.user.picture = _newImageBytes;
       }
     });
   }
@@ -272,7 +273,7 @@ class AccountInformationState extends State<AccountInformation>
 
     setState(() {
       if (pickedFile != null) {
-        NavigationMenu.user.picture = _newImageBytes;
+        AccountInfo.user.picture = _newImageBytes;
       }
     });
   }

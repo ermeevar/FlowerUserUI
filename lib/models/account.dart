@@ -17,7 +17,7 @@ class Account {
   int id;
   String login;
   String passwordHash;
-  dynamic salt;
+  String salt;
   String role;
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
@@ -29,6 +29,13 @@ class Account {
   );
 
   Map<String, dynamic> toJson() => {
+    "login": login,
+    "passwordHash": passwordHash,
+    "salt": salt,
+    "role": role,
+  };
+
+  Map<String, dynamic> toJsonUpdate() => {
     "id": id,
     "login": login,
     "passwordHash": passwordHash,

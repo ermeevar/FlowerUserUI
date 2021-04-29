@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flower_user_ui/screens/navigation.menu.dart';
+import 'package:flower_user_ui/screens/authorization.widgets/authorization.main.menu.dart';
 import 'package:flutter/material.dart';
 
 class MyHttpOverrides extends HttpOverrides{
@@ -22,12 +22,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           textTheme: TextTheme(
             body1: TextStyle(
-                fontSize: 19,
+                fontSize: 15,
                 fontFamily: "SourceSansPro",
                 color: Color.fromRGBO(55, 50, 52, 1),
                 decoration: TextDecoration.none),
             body2: TextStyle(
-                fontSize: 19,
+                fontSize: 15,
                 fontFamily: "SourceSansPro",
                 color: Colors.white,
                 decoration: TextDecoration.none),
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
               )
           )
       ),
-      home: NavigationMenu(),
+      home: AuthorizationMainMenu(),
     );
   }
 }

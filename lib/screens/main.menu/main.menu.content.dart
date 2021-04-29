@@ -1,3 +1,4 @@
+import 'package:flower_user_ui/models/account.info.dart';
 import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
 import 'package:flower_user_ui/screens/order/order.main.dart';
 import 'package:flower_user_ui/screens/template/template.category.selection.dart';
@@ -32,14 +33,14 @@ class MainMenuContent extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(top: 30, left: 10, right: 10),
             child: Row(children: [
-              Text(NavigationMenu.account.login,
+              Text(AccountInfo.account.login,
                   style: Theme.of(context).textTheme.body1),
               Padding(
                   padding: EdgeInsets.all(10),
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 20,
-                    child: NavigationMenu.user.picture == null
+                    child: AccountInfo.user.picture == null
                         ? Icon(
                             Icons.supervisor_account_outlined,
                             color: Colors.black38,
@@ -47,7 +48,7 @@ class MainMenuContent extends StatelessWidget {
                           )
                         : ClipOval(
                             child: Image(
-                              image: MemoryImage(NavigationMenu.user.picture),
+                              image: MemoryImage(AccountInfo.user.picture),
                               width: 40,
                               height: 40,
                               fit: BoxFit.cover,

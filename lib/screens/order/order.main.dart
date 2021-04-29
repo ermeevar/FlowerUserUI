@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flower_user_ui/models/account.info.dart';
 import 'package:flower_user_ui/models/bouquet.dart';
 import 'package:flower_user_ui/models/order.dart';
 import 'package:flower_user_ui/models/shop.dart';
@@ -62,7 +63,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
     await _getShops();
 
     await setState(() {
-      order.userId = NavigationMenu.user.id;
+      order.userId = AccountInfo.user.id;
       order.finish = DateTime.now().add(Duration(days: 1));
       order.shopId = _shops.first.id;
       order.orderStatusId = 1;
@@ -233,8 +234,8 @@ class OrderMainMenuState extends State<OrderMainMenu> {
                   setState(() {});
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: NavigationMenu.user.surname != null
-                    ? NavigationMenu.user.surname
+                initialValue: AccountInfo.user.surname != null
+                    ? AccountInfo.user.surname
                     : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
@@ -249,8 +250,8 @@ class OrderMainMenuState extends State<OrderMainMenu> {
                   setState(() {});
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: NavigationMenu.user.name != null
-                    ? NavigationMenu.user.name
+                initialValue: AccountInfo.user.name != null
+                    ? AccountInfo.user.name
                     : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
@@ -269,8 +270,8 @@ class OrderMainMenuState extends State<OrderMainMenu> {
                   setState(() {});
                 },
                 cursorColor: Color.fromRGBO(130, 147, 153, 1),
-                initialValue: NavigationMenu.user.phone != null
-                    ? NavigationMenu.user.phone
+                initialValue: AccountInfo.user.phone != null
+                    ? AccountInfo.user.phone
                     : "",
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
@@ -454,7 +455,7 @@ class OrderMainMenuState extends State<OrderMainMenu> {
   }
 
   Future _postBouquet(context) async {
-    BouquetMainMenuState.newBouquet.userId = NavigationMenu.user.id;
+    BouquetMainMenuState.newBouquet.userId = AccountInfo.user.id;
     await WebApiServices.postBouquet(BouquetMainMenuState.newBouquet);
 
     Bouquet postedBouquet;

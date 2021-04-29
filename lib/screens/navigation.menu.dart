@@ -8,23 +8,6 @@ import 'package:flower_user_ui/screens/account/account.main.dart';
 import 'package:connectivity/connectivity.dart';
 
 class NavigationMenu extends StatefulWidget {
-  static User user;
-  static Account account;
-
-  NavigationMenu() {
-    user = User();
-    user.id = 1;
-    user.name = "Рината";
-    user.surname = "Завойская";
-    user.phone = "9278806782";
-    user.accountId = 3;
-
-    account = Account();
-    account.login = "mia_2105";
-    account.passwordHash = "qwerty";
-    account.role = "user";
-  }
-
   @override
   NavigationMenuState createState() => NavigationMenuState();
 }
