@@ -1,12 +1,15 @@
 import 'dart:typed_data';
 import 'package:flower_user_ui/models/account.info.dart';
 import 'package:flower_user_ui/models/ri.keys.dart';
+import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/screens/authorization.widgets/authorization.main.menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../navigation.menu.dart';
 
 class AccountInformation extends StatefulWidget {
@@ -82,7 +85,9 @@ class AccountInformationState extends State<AccountInformation>
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                       FlatButton(
-                          onPressed: null,
+                          onPressed: ()async{
+                            await onAuthorizationPage();
+                          },
                           padding: EdgeInsets.only(left: 10),
                           child: new Text("Выйти",
                               style: Theme.of(context).textTheme.body1.copyWith(
@@ -95,7 +100,10 @@ class AccountInformationState extends State<AccountInformation>
                     children: [
                       Icon(Icons.delete, size: 25, color: Colors.red),
                       new FlatButton(
-                          onPressed: null,
+                          onPressed: ()async{
+                            await WebApiServices.deleteAccount(AccountInfo.account.id);
+                            await onAuthorizationPage();
+                          },
                           padding: EdgeInsets.only(left: 10),
                           child: new Text("Удалить",
                               style: Theme.of(context)
@@ -304,6 +312,21 @@ class AccountInformationState extends State<AccountInformation>
             },
           ),
         ],
+      ),
+    );
+  }
+
+  onAuthorizationPage() async{
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+
+    prefs.setInt("AccountId", 0);
+    prefs.setInt("UserId", 0);
+
+    Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => AuthorizationMainMenu(),
       ),
     );
   }

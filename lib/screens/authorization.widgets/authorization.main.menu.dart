@@ -7,6 +7,7 @@ import 'package:flower_user_ui/models/account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crypt/crypt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../navigation.menu.dart';
 
@@ -15,13 +16,27 @@ class AuthorizationMainMenu extends StatefulWidget {
 }
 
 class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
-  String login;
-  String password;
+  Account _account = Account();
   bool isWrong = false;
+  List<Account> _accounts = [];
+
+  AuthorizationMainMenuState() {
+    getAccounts();
+  }
+
+  getAccounts() async {
+    await WebApiServices.fetchAccount().then((response) {
+      var accountsData = accountFromJson(response.data);
+      setState(() {
+        _accounts = accountsData;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         overflow: Overflow.clip,
         children: [
@@ -102,7 +117,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
                   child: TextFormField(
                       onChanged: (login) {
                         setState(() {
-                          this.login = login;
+                          this._account.login = login;
                         });
                       },
                       cursorColor: Colors.white,
@@ -120,7 +135,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
                   child: TextFormField(
                       onChanged: (password) {
                         setState(() {
-                          this.password = password;
+                          this._account.passwordHash = password;
                         });
                       },
                       cursorColor: Colors.white,
@@ -150,19 +165,31 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
                   padding: EdgeInsets.only(top: 80),
                   child: FlatButton(
                       onPressed: () async {
-                        User user = await getUser(this.login, this.password);
+                        User accUser = await getUser(_account);
 
-                        if (user == null)
-                          setState(() {
-                            isWrong = true;
-                          });
-                        else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NavigationMenu()),
+                        if (accUser == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Пользователь не найден",
+                                style: Theme.of(context).textTheme.body2,
+                              ),
+                              action: SnackBarAction(
+                                label: "Понятно",
+                                onPressed: () {
+                                  // Code to execute.
+                                },
+                              ),
+                            ),
                           );
+                          return;
                         }
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NavigationMenu()),
+                        );
                       },
                       padding: EdgeInsets.zero,
                       child: Container(
@@ -232,39 +259,42 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     );
   }
 
-  Future<Account> getAccount(String login, String password) async {
-    Account account;
+  Future<Account> getAccount(Account account) async {
+    Account accountBD;
 
     await WebApiServices.fetchAccount().then((response) {
       var accountData = accountFromJson(response.data);
-      account = accountData.firstWhere(
-          (element) => element.login == login && element.role == "user");
+      accountBD = accountData.firstWhere((element) =>
+        element.login == account.login && element.role == "user", orElse: ()=>null);
     });
+    if (accountBD == null) return null;
 
-    if (account == null) return null;
+    final crypto = Crypt.sha256(account.passwordHash, salt: accountBD.salt);
 
-    final crypto = Crypt.sha256(password, salt: account.salt);
-
-    if (account.passwordHash == crypto.hash) {
-      AccountInfo.account = account;
-      return account;
+    if (accountBD.passwordHash == crypto.hash) {
+      return accountBD;
     } else
       return null;
   }
 
-  Future<User> getUser(String login, String password) async {
-    Account account = await getAccount(login, password);
+  Future<User> getUser(Account account) async {
+    Account accountBD = await getAccount(account);
 
-    if (account == null) return null;
+    if (accountBD == null) return null;
 
     User user;
     await WebApiServices.fetchUser().then((response) {
       var userData = userFromJson(response.data);
       user = userData
-          .firstWhere((element) => element.accountId == account.id);
+          .firstWhere((element) => element.accountId == accountBD.id);
     });
 
-    AccountInfo.user = user;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+
+    prefs.setInt("AccountId", accountBD.id);
+    prefs.setInt("UserId", user.id);
+
     return user;
   }
 }

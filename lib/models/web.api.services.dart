@@ -159,9 +159,13 @@ class WebApiServices {
     return response.statusCode;
   }
 
-
   static Future deleteStoreProduct(int id) async {
     var response = await dio.delete(_productUrl + id.toString());
+    return response.statusCode;
+  }
+
+  static Future deleteAccount(int id) async {
+    var response = await dio.delete(_accountUrl + id.toString());
     return response.statusCode;
   }
 }

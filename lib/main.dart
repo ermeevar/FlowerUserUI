@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flower_user_ui/screens/authorization.widgets/authorization.main.menu.dart';
+import 'package:flower_user_ui/screens/navigation.menu.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHttpOverrides extends HttpOverrides{
   @override
@@ -61,7 +63,31 @@ class MyApp extends StatelessWidget {
               )
           )
       ),
-      home: AuthorizationMainMenu(),
+      home: FutureBuilder<bool>(
+          future: isAuthorized(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Scaffold(
+                  body: Center(
+                    child: Text("Загрузка...", style: Theme.of(context).textTheme.body1,),
+                  ),
+                );
+              case ConnectionState.done:
+                return snapshot.data ? NavigationMenu() : AuthorizationMainMenu();
+            }
+          }),
     );
+  }
+
+  Future<bool> isAuthorized() async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+
+    if (prefs.getInt('AccountId') == null
+        || prefs.getInt('AccountId') == 0)
+      return false;
+    else
+      return true;
   }
 }

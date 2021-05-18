@@ -22,14 +22,6 @@ class User {
   int accountId;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    surname: json["surname"],
-    name: json["name"],
-    phone: json["phone"],
-    picture: json["picture"],
-    accountId: json["accountId"],
-  );
-
-  factory User.fromJsonUpdate(Map<String, dynamic> json) => User(
     id: json["id"],
     surname: json["surname"],
     name: json["name"],

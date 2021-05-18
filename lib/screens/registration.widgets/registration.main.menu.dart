@@ -12,7 +12,7 @@ class RegistrationMainMenu extends StatefulWidget {
 class RegistrationMainMenuState extends State<RegistrationMainMenu> {
   User _user = User();
   Account _account = Account();
-  List<Account> accounts = [];
+  List<Account> _accounts = [];
 
   RegistrationMainMenuState() {
     getAccounts();
@@ -22,7 +22,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
     await WebApiServices.fetchAccount().then((response) {
       var accountData = accountFromJson(response.data);
       setState(() {
-        accounts = accountData;
+        _accounts = accountData.toList();
       });
     });
   }
@@ -30,6 +30,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         overflow: Overflow.clip,
         children: [
@@ -209,9 +210,22 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
                 Container(
                   padding: EdgeInsets.only(top: 50),
                   child: FlatButton(
-                      onPressed: () async{
-                        await addUser();
-                        Navigator.pop(context);
+                      onPressed: () async {
+                        if(await addUser(_account, _user) == true)
+                          Navigator.pop(context);
+                        else
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Произошла ошибка", style: Theme.of(context).textTheme.body2,),
+                              action: SnackBarAction(
+                                label: "Понятно",
+                                onPressed: () {
+                                  // Code to execute.
+                                },
+                              ),
+                            ),
+                          );
+
                       },
                       padding: EdgeInsets.zero,
                       child: Container(
@@ -262,20 +276,21 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
     );
   }
 
-   addUser() async {
-    final crypto = Crypt.sha256(_account.passwordHash);
-    _account.passwordHash = crypto.hash;
-    _account.salt = crypto.salt;
-    _account.role = "user";
+  Future<bool> addUser(Account account, User user) async {
+    final crypto = Crypt.sha256(account.passwordHash);
+    account.passwordHash = crypto.hash;
+    account.salt = crypto.salt;
+    account.role = "user";
 
-    for (var item in accounts) {
-      if (item.login == _account.login) return;
+    for (var item in _accounts) {
+      if (item.login == _account.login) return false;
     }
 
     await WebApiServices.postAccount(_account);
     await getAccounts();
 
-    _user.accountId = accounts.last.id;
-    await WebApiServices.postUser(_user);
+    user.accountId = _accounts.toList().last.id;
+    await WebApiServices.postUser(user);
+    return true;
   }
 }
