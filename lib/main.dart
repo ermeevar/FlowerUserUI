@@ -1,19 +1,12 @@
 import 'dart:io';
 import 'package:flower_user_ui/screens/authorization.widgets/authorization.main.menu.dart';
 import 'package:flower_user_ui/screens/navigation.menu.dart';
+import 'package:flower_user_ui/states/certificate.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHttpOverrides extends HttpOverrides{
-  @override
-  HttpClient createHttpClient(SecurityContext context){
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
-  }
-}
-
 void main() {
-  HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = new Certificate();
   runApp(MyApp());
 }
 
@@ -26,7 +19,7 @@ class MyApp extends StatelessWidget {
             body1: TextStyle(
                 fontSize: 15,
                 fontFamily: "SourceSansPro",
-                color: Color.fromRGBO(55, 50, 52, 1),
+                color: Colors.black,
                 decoration: TextDecoration.none),
             body2: TextStyle(
                 fontSize: 15,
@@ -44,6 +37,10 @@ class MyApp extends StatelessWidget {
                 color: Color.fromRGBO(110, 53, 76, 1),
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none),
+          ),
+          snackBarTheme: SnackBarThemeData(
+            backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+            actionTextColor: Colors.white,
           ),
           inputDecorationTheme: InputDecorationTheme(
               labelStyle: TextStyle(

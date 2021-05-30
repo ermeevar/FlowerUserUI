@@ -1,7 +1,7 @@
-import 'package:flower_user_ui/models/product.dart';
+import 'package:flower_user_ui/entities/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/states/web.api.services.dart';
 import 'bouquet.main.dart';
 
 class DecorationSelection extends StatefulWidget {
@@ -17,13 +17,13 @@ class DecorationSelectionState extends State<DecorationSelection> {
   }
 
   _getStoreProducts() {
-    WebApiServices.fetchProduct().then((response) {
+    WebApiServices.fetchProducts().then((response) {
       var storeproductsData = productFromJson(response.data);
       setState(() {
         _products = storeproductsData
             .where((element) =>
-        element.storeId == BouquetMainMenuState.newBouquet.storeId &&
-            element.productCategoryId == 3)
+                element.storeId == BouquetMainMenuState.newBouquet.storeId &&
+                element.productCategoryId == 3)
             .toList();
       });
     });
@@ -33,21 +33,29 @@ class DecorationSelectionState extends State<DecorationSelection> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 20, top: 20),
-          child: Text(
-            "Украшения",
-            style: Theme.of(context).textTheme.body1,
-          ),
-        ),
-        Expanded(
-          child: _products.length == 0
-              ? Center(
+        getDecorationTitle(context),
+        showNonSelectedStoreError(context),
+      ],
+    );
+  }
+
+  Expanded showNonSelectedStoreError(BuildContext context) {
+    return Expanded(
+      child: _products.length == 0
+          ? Center(
               child: Text("Сеть не выбрана",
                   style: Theme.of(context).textTheme.body1))
-              : _storeProductsList(context),
-        ),
-      ],
+          : _storeProductsList(context),
+    );
+  }
+
+  Padding getDecorationTitle(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20, top: 20),
+      child: Text(
+        "Украшения",
+        style: Theme.of(context).textTheme.body1,
+      ),
     );
   }
 
@@ -100,15 +108,15 @@ class DecorationSelectionState extends State<DecorationSelection> {
                       children: [
                         _products[index].picture == null
                             ? Container(
-                          width: 140,
-                          height: 140,
-                          child: Icon(
-                            Icons.image_outlined,
-                            color: Colors.black38,
-                            size: 50,
-                          ),
-                          color: Colors.black12,
-                        )
+                                width: 140,
+                                height: 140,
+                                child: Icon(
+                                  Icons.image_outlined,
+                                  color: Colors.black38,
+                                  size: 50,
+                                ),
+                                color: Colors.black12,
+                              )
                             : _products[index].picture,
                         Container(
                           width: 140,
@@ -118,9 +126,9 @@ class DecorationSelectionState extends State<DecorationSelection> {
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             style:
-                            Theme.of(context).textTheme.subtitle.copyWith(
-                              color: Color.fromRGBO(55, 50, 52, 1),
-                            ),
+                                Theme.of(context).textTheme.subtitle.copyWith(
+                                      color: Color.fromRGBO(55, 50, 52, 1),
+                                    ),
                           ),
                         ),
                         Text(

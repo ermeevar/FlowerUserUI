@@ -25,6 +25,12 @@ class Shop {
   );
 
   Map<String, dynamic> toJson() => {
+    "address": address,
+    "storeId": storeId,
+    "accountId": accountId,
+  };
+
+  Map<String, dynamic> toJsonUpdate() => {
     "id": id,
     "address": address,
     "storeId": storeId,

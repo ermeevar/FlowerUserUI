@@ -1,38 +1,37 @@
-import 'package:flower_user_ui/models/bouquet.product.dart';
-import 'package:flower_user_ui/models/product.dart';
-import 'package:flower_user_ui/models/web.api.services.dart';
-import 'package:flower_user_ui/screens/bouquet/bouquet.main.dart';
-import 'package:flower_user_ui/screens/order/order.main.dart';
+import 'package:flower_user_ui/entities/bouquet.product.dart';
+import 'package:flower_user_ui/entities/product.dart';
+import 'package:flower_user_ui/states/nullContainer.dart';
+import 'package:flower_user_ui/states/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductsList extends StatefulWidget {
+  int bouquetId;
+
+  ProductsList(this.bouquetId) {}
+
   @override
-  ProductsListState createState() => ProductsListState();
+  ProductsListState createState() => ProductsListState(this.bouquetId);
 }
 
 class ProductsListState extends State<ProductsList> {
   List<Product> _products = [];
-  String _card = null;
+  int bouquetId;
 
-  ProductsListState() {
-    if (OrderMainMenuState.order.bouquetId == 0 ||
-        OrderMainMenuState.order.bouquetId == null)
-      _products = BouquetMainMenuState.products;
-    else
-      _getProducts();
+  ProductsListState(this.bouquetId) {
+    _getProducts();
   }
 
   _getProducts() async {
     List<BouquetProduct> middleProducts;
-    await WebApiServices.fetchBouquetProduct().then((response) {
+    await WebApiServices.fetchBouquetProducts().then((response) {
       var bouquetProductsData = bouquetProductFromJson(response.data);
       middleProducts = bouquetProductsData
-          .where((element) => element.bouquetId == OrderMainMenuState.order.bouquetId)
-      .toList();
+          .where((element) => element.bouquetId == bouquetId)
+          .toList();
     });
 
-    await WebApiServices.fetchProduct().then((response) {
+    await WebApiServices.fetchProducts().then((response) {
       var productsData = productFromJson(response.data);
       setState(() {
         _products = productsData
@@ -47,186 +46,71 @@ class ProductsListState extends State<ProductsList> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 420,
+        padding: EdgeInsets.only(bottom: 10),
+        height: 260,
         clipBehavior: Clip.none,
         color: Color.fromRGBO(110, 53, 76, 1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
-              child: Row(
-                children: [
-                  Text(
-                    "Состав букета",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle
-                        .copyWith(color: Colors.white),
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.zero,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _products.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                          margin: EdgeInsets.only(
-                              top: 10, right: 10, left: 20, bottom: 10),
-                          elevation: 5,
-                          color: Color.fromRGBO(55, 50, 52, 1),
-                          child: Container(
-                            padding: EdgeInsets.zero,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                _products[index].picture == null
-                                    ? Container(
-                                        width: 140,
-                                        height: 200,
-                                        child: Icon(
-                                          Icons.image_outlined,
-                                          color: Colors.white,
-                                          size: 50,
-                                        ),
-                                        color: Colors.black12,
-                                      )
-                                    : _products[index].picture,
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                      _products[index].cost.toString() + " ₽",
-                                      style: Theme.of(context).textTheme.body2),
-                                ),
-                              ],
-                            ),
-                          ));
-                    }),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: OrderMainMenuState.order.card == null
-                  ? OutlineButton(
-                      onPressed: () {
-                        _showCardDialog();
-                      },
-                      child: Text(
-                        'Добавить открытку',
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(color: Color.fromRGBO(130, 147, 153, 1)),
-                      ),
-                      borderSide:
-                          BorderSide(color: Color.fromRGBO(130, 147, 153, 1)),
-                    )
-                  : FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          OrderMainMenuState.order.card = null;
-                          OrderMainMenuState.isSelectedCard = false;
-                        });
-                      },
-                      child: new Text(
-                        "Удалить открытку",
-                        style: Theme.of(context).textTheme.body1.copyWith(
-                              color: Color.fromRGBO(130, 147, 153, 1),
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-            ),
+            getTitle(context),
+            getProductList(),
           ],
         ),
       ),
     );
   }
 
-  Future<void> _showCardDialog() async {
-    int _count = 0;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Открытка",
-            style: Theme.of(context).textTheme.subtitle,
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  onChanged: (card) {
-                    setState(() {
-                      _card = card;
-                    });
-                  },
-                  minLines: null,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    border: OutlineInputBorder(),
-                    labelText: 'Надпись',
-                    focusedBorder: OutlineInputBorder(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Container(
-              child: FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: new Text(
-                  "Назад",
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                      ),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: FlatButton(
-                onPressed: () {
-                  setState(() {
-                    OrderMainMenuState.order.card = _card;
-                  });
+  Expanded getProductList() {
+    return Expanded(
+      child: _products.length != 0
+          ? Padding(
+              padding: EdgeInsets.zero,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _products.length,
+                  itemBuilder: (context, index) {
+                    return getValue(index, context);
+                  }),
+            )
+          : nullContainer(),
+    );
+  }
 
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Открытка добавлена"),
-                      action: SnackBarAction(
-                        label: "Понятно",
-                        onPressed: () {
-                          // Code to execute.
-                        },
-                      ),
-                    ),
-                  );
-                },
-                child: new Text(
-                  "Сохранить",
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                      color: Color.fromRGBO(130, 147, 153, 1),
-                      fontWeight: FontWeight.bold),
-                ),
+  Card getValue(int index, BuildContext context) {
+    return Card(
+      margin: EdgeInsets.only(top: 10, right: 10, left: 20, bottom: 10),
+      elevation: 5,
+      color: Color.fromRGBO(55, 50, 52, 1),
+      child: _products[index].picture == null
+          ? Container(
+              width: 140,
+              child: Icon(
+                Icons.image_outlined,
+                color: Colors.white,
+                size: 50,
               ),
-            ),
-          ],
-        );
-      },
+              color: Colors.black12,
+            )
+          : _products[index].picture,
+    );
+  }
+
+  Container getTitle(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
+      child: Row(
+        children: [
+          Text(
+            "Состав букета",
+            style: Theme.of(context)
+                .textTheme
+                .subtitle
+                .copyWith(color: Colors.white),
+          ),
+          Spacer(),
+        ],
+      ),
     );
   }
 }

@@ -1,12 +1,11 @@
-import 'dart:math';
-
-import 'package:flower_user_ui/models/bouquet.dart';
-import 'package:flower_user_ui/models/order.dart';
-import 'package:flower_user_ui/models/shop.dart';
-import 'package:flower_user_ui/models/user.dart';
-import 'package:flower_user_ui/models/account.dart';
-import 'package:flower_user_ui/models/order.status.dart';
-import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/entities/bouquet.dart';
+import 'package:flower_user_ui/entities/order.dart';
+import 'package:flower_user_ui/entities/shop.dart';
+import 'package:flower_user_ui/entities/order.status.dart';
+import 'package:flower_user_ui/states/calc.dart';
+import 'package:flower_user_ui/states/nullContainer.dart';
+import 'package:flower_user_ui/states/spaceContainer.dart';
+import 'package:flower_user_ui/states/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +15,8 @@ class OrdersList extends StatefulWidget {
   OrdersListState createState() => OrdersListState();
 }
 
-class OrdersListState extends State<OrdersList> {
+class OrdersListState extends State<OrdersList>
+    with SingleTickerProviderStateMixin {
   List<Order> _orders = [];
   List<Shop> _shops = [];
   List<Bouquet> _bouquets = [];
@@ -29,6 +29,7 @@ class OrdersListState extends State<OrdersList> {
     _getOrderStatuses();
   }
 
+  //#region GetData
   _getOrders() async {
     await WebApiServices.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
@@ -39,7 +40,7 @@ class OrdersListState extends State<OrdersList> {
   }
 
   _getShops() async {
-    await WebApiServices.fetchShop().then((response) {
+    await WebApiServices.fetchShops().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
         _shops = shopsData;
@@ -48,7 +49,7 @@ class OrdersListState extends State<OrdersList> {
   }
 
   _getBouquets() async {
-    await WebApiServices.fetchBouquet().then((response) {
+    await WebApiServices.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData;
@@ -63,6 +64,217 @@ class OrdersListState extends State<OrdersList> {
         _orderStatuses = orderStatusesData;
       });
     });
+  }
+  //#endregion
+
+  @override
+  Widget build(BuildContext context) {
+    return _orders.length == 0 ||
+            _shops.length == 0 ||
+            _bouquets.length == 0 ||
+            _orderStatuses.length == 0
+        ? nullContainer()
+        : buildContent(context);
+  }
+
+  Container buildContent(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 20),
+      color: Colors.white,
+      child: Expanded(
+        child: _orders.length == 0
+            ? showNullOrderError(context)
+            : buildOrderList(),
+      ),
+    );
+  }
+
+  ListView buildOrderList() {
+    return ListView.builder(
+        padding: EdgeInsets.only(top: 10),
+        itemCount: _orders.length + 1,
+        itemBuilder: (context, index) {
+          return index + 1 == _orders.length + 1
+              ? getSpaceContainer()
+              : drawCard(index, context);
+        });
+  }
+
+  //#region Card
+  Card drawCard(int index, BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+      color: Colors.white,
+      elevation: 5,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          getDate(index, context),
+          getOrderId(index, context),
+          getShop(index, context),
+          getDivider(),
+          _orders[index].bouquetId != null
+              ? getBouquet(context, index)
+              : nullContainer(),
+          _orders[index].templateId != null
+              ? getTemplate(context, index)
+              : nullContainer(),
+          _orders[index].isRandom != false
+              ? getRandom(context, index)
+              : nullContainer(),
+          getStatus(index, context),
+        ],
+      ),
+    );
+  }
+
+  Padding getStatus(int index, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Spacer(),
+          Text(
+            getOrderStatusInOrder(_orders[index]).name,
+            style: Theme.of(context).textTheme.body1.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(110, 53, 76, 1),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding getRandom(BuildContext context, int index) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+              child: Text("Случайный букет",
+                  style: Theme.of(context).textTheme.body1)),
+          Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              Calc.roundDouble(_orders[index].cost, 2).toString() + " ₽",
+              style: Theme.of(context).textTheme.body1.copyWith(
+                  color: Color.fromRGBO(130, 157, 143, 1),
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding getTemplate(BuildContext context, int index) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+              child: Text("Букет по шаблону",
+                  style: Theme.of(context).textTheme.body1)),
+          Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              Calc.roundDouble(_orders[index].cost, 2).toString() + " ₽",
+              style: Theme.of(context).textTheme.body1.copyWith(
+                  color: Color.fromRGBO(130, 157, 143, 1),
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding getBouquet(BuildContext context, int index) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Персональный букет",
+              style: Theme.of(context)
+                  .textTheme
+                  .body1
+                  .copyWith(fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(getBouquetInOrder(_orders[index]).name,
+                    style: Theme.of(context).textTheme.body1),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  Calc.roundDouble(_orders[index].cost, 2).toString() + " ₽",
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                      color: Color.fromRGBO(130, 157, 143, 1),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding getDivider() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Divider(
+        thickness: 1,
+        color: Color.fromRGBO(130, 157, 143, 1),
+      ),
+    );
+  }
+
+  Padding getShop(int index, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 40),
+      child: Text("Пункт выдачи на " + getShopInOrder(_orders[index]).address,
+          style: Theme.of(context).textTheme.body1),
+    );
+  }
+
+  Padding getOrderId(int index, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
+        "Номер заказа: " + _orders[index].id.toString(),
+        style: Theme.of(context).textTheme.body1.copyWith(
+              color: Color.fromRGBO(110, 53, 76, 1),
+            ),
+      ),
+    );
+  }
+
+  Padding getDate(int index, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Text(
+        DateFormat('Букет на dd.MM.yyyy hh:mm')
+            .format(_orders[index].finish)
+            .toString(),
+        style: Theme.of(context)
+            .textTheme
+            .body1
+            .copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   Shop getShopInOrder(Order order) {
@@ -82,242 +294,15 @@ class OrdersListState extends State<OrdersList> {
       if (order.orderStatusId == item.id) return item;
     }
   }
+  //#endregion
 
-  double roundDouble(double value, int places) {
-    double mod = pow(10.0, places);
-    return ((value * mod).round().toDouble() / mod);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+  Center showNullOrderError(BuildContext context) {
+    return Center(
+      child: Container(
         color: Colors.white,
-        child: Expanded(
-          child: _orders.length == 0
-              ? Center(
-                  child: Container(
-                    color: Colors.white,
-                    child: Text("У вас нет ни одного заказа",
-                        style: Theme.of(context).textTheme.body1),
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: _orders.length + 1,
-                  itemBuilder: (context, index) {
-                    return index + 1 == _orders.length + 1
-                        ? Container(height: 90, color: Colors.white)
-                        : Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            margin: EdgeInsets.only(
-                                left: 20, right: 20, bottom: 10),
-                            color: Colors.white,
-                            elevation: 5,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 20, left: 20, right: 20),
-                                    child: Text(
-                                        DateFormat('Букет на dd.MM.yyyy hh:mm')
-                                            .format(_orders[index].finish)
-                                            .toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .body1
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold))),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text(
-                                        "Номер заказа: " +
-                                            _orders[index].id.toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .body1
-                                            .copyWith(
-                                                color: Color.fromRGBO(
-                                                    110, 53, 76, 1)))),
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 20, right: 20, top: 40),
-                                    child: Text(
-                                        "Пункт выдачи на " +
-                                            getShopInOrder(_orders[index])
-                                                .address,
-                                        style:
-                                            Theme.of(context).textTheme.body1)),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Divider(
-                                      thickness: 1,
-                                      color: Color.fromRGBO(130, 157, 143, 1),
-                                    )),
-                                _orders[index].bouquetId != null
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 20, right: 20, top: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Персональный букет",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .body1
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                    child: Text(
-                                                        getBouquetInOrder(
-                                                                _orders[index])
-                                                            .name,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .body1)),
-                                                Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 10),
-                                                  child: Text(
-                                                    roundDouble(
-                                                                _orders[index]
-                                                                    .cost,
-                                                                2)
-                                                            .toString() +
-                                                        " ₽",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .body1
-                                                        .copyWith(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    130,
-                                                                    157,
-                                                                    143,
-                                                                    1),
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ))
-                                    : Container(height: 0),
-                                _orders[index].templateId != null
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 20, right: 20, top: 20),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                                child: Text("Букет по шаблону",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .body1)),
-                                            Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 10),
-                                                child: Text(
-                                                    roundDouble(
-                                                        _orders[index]
-                                                            .cost,
-                                                        2)
-                                                        .toString() +
-                                                        " ₽",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .body1
-                                                        .copyWith(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    130,
-                                                                    157,
-                                                                    143,
-                                                                    1),
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold))),
-                                          ],
-                                        ))
-                                    : Container(height: 0),
-                                _orders[index].isRandom != false
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 20, right: 20, top: 20),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                                child: Text("Случайный букет",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .body1)),
-                                            Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 10),
-                                                child: Text(
-                                                    roundDouble(
-                                                        _orders[index]
-                                                            .cost,
-                                                        2)
-                                                        .toString() +
-                                                        " ₽",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .body1
-                                                        .copyWith(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    130,
-                                                                    157,
-                                                                    143,
-                                                                    1),
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold))),
-                                          ],
-                                        ))
-                                    : Container(height: 0),
-                                Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Row(
-                                      children: [
-                                        Spacer(),
-                                        Text(
-                                            getOrderStatusInOrder(
-                                                    _orders[index])
-                                                .name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body1
-                                                .copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color.fromRGBO(
-                                                        110, 53, 76, 1)))
-                                      ],
-                                    )),
-                              ],
-                            ),
-                          );
-                  }),
-        ));
+        child: Text("У вас нет ни одного заказа",
+            style: Theme.of(context).textTheme.body1),
+      ),
+    );
   }
 }

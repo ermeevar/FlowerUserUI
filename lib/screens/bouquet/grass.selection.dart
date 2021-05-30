@@ -1,7 +1,7 @@
-import 'package:flower_user_ui/models/product.dart';
+import 'package:flower_user_ui/entities/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flower_user_ui/models/web.api.services.dart';
+import 'package:flower_user_ui/states/web.api.services.dart';
 import 'bouquet.main.dart';
 
 class GrassSelection extends StatefulWidget {
@@ -17,7 +17,7 @@ class GrassSelectionState extends State<GrassSelection> {
   }
 
   _getStoreProducts() {
-    WebApiServices.fetchProduct().then((response) {
+    WebApiServices.fetchProducts().then((response) {
       var storeproductsData = productFromJson(response.data);
       setState(() {
         _products = storeproductsData
@@ -33,21 +33,29 @@ class GrassSelectionState extends State<GrassSelection> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 20, top: 20),
-          child: Text(
-            "Зелень",
-            style: Theme.of(context).textTheme.body1,
-          ),
-        ),
-        Expanded(
-          child: _products.length == 0
-              ? Center(
-                  child: Text("Сеть не выбрана",
-                      style: Theme.of(context).textTheme.body1))
-              : _storeProductsList(context),
-        ),
+        getGrassTitle(context),
+        getNonSelectedStoreError(context),
       ],
+    );
+  }
+
+  Expanded getNonSelectedStoreError(BuildContext context) {
+    return Expanded(
+      child: _products.length == 0
+          ? Center(
+              child: Text("Сеть не выбрана",
+                  style: Theme.of(context).textTheme.body1))
+          : _storeProductsList(context),
+    );
+  }
+
+  Padding getGrassTitle(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20, top: 20),
+      child: Text(
+        "Зелень",
+        style: Theme.of(context).textTheme.body1,
+      ),
     );
   }
 

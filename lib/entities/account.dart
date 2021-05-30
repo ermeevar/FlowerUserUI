@@ -17,7 +17,7 @@ class Account {
   int id;
   String login;
   String passwordHash;
-  String salt;
+  dynamic salt;
   String role;
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(

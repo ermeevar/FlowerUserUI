@@ -33,6 +33,14 @@ class Product {
   );
 
   Map<String, dynamic> toJson() => {
+    "name": name,
+    "picture": picture,
+    "cost": cost,
+    "productCategoryId": productCategoryId,
+    "storeId": storeId,
+  };
+
+  Map<String, dynamic> toJsonUpdate() => {
     "id": id,
     "name": name,
     "picture": picture,

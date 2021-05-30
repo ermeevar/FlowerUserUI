@@ -1,14 +1,16 @@
-import 'dart:math';
-
-import 'package:flower_user_ui/models/bouquet.dart';
-import 'package:flower_user_ui/models/product.dart';
+import 'package:flower_user_ui/entities/bouquet.dart';
+import 'package:flower_user_ui/entities/bouquet.product.dart';
+import 'package:flower_user_ui/entities/product.dart';
 import 'package:flower_user_ui/screens/bouquet/flower.selection.dart';
 import 'package:flower_user_ui/screens/bouquet/store.selection.dart';
-import 'package:flower_user_ui/screens/order/order.main.dart';
+import 'package:flower_user_ui/screens/navigation.menu.dart';
+import 'package:flower_user_ui/screens/order/bouquet.order.dart';
+import 'package:flower_user_ui/states/calc.dart';
+import 'package:flower_user_ui/states/profile.manipulation.dart';
+import 'package:flower_user_ui/states/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
-
 import 'decoration.selection.dart';
 import 'grass.selection.dart';
 
@@ -21,7 +23,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   int _countOfPages = 4;
   int _stepIndex = 0;
   String swipeDirection = "";
-  static Bouquet newBouquet = new Bouquet();
+  static Bouquet newBouquet = Bouquet();
   static List<Product> products = [];
   static List<Widget> _pages = [];
 
@@ -34,11 +36,25 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
     ];
   }
 
-  double roundDouble(double value, int places) {
-    double mod = pow(10.0, places);
-    return ((value * mod).round().toDouble() / mod);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: showBouquetInfo(),
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            _header(context),
+            buildDoteStepper(),
+            swipeController(),
+          ],
+        ),
+      ),
+    );
   }
 
+  //#region NavigationController
+  //#region IndexController
   addStepIndex() {
     if (_stepIndex >= _countOfPages - 1) return;
     setState(() {
@@ -56,64 +72,61 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   Widget getStep() {
     return _pages[_stepIndex];
   }
+  //#endregion
 
-  removeProduct(product) {
-    setState(() {
-      products.remove(product);
-    });
+  Expanded swipeController() {
+    return Expanded(
+      child: GestureDetector(
+        child: getStep(),
+        onPanUpdate: (details) {
+          swipeDirection = details.delta.dx < 0 ? 'left' : 'right';
+        },
+        onPanEnd: (details) {
+          if (swipeDirection == 'left') {
+            addStepIndex();
+          }
+          if (swipeDirection == 'right') {
+            removeStepIndex();
+          }
+        },
+      ),
+    );
+  }
+  //#endregion
+
+  Container buildDoteStepper() {
+    return Container(
+      padding: EdgeInsets.only(top: 20),
+      child: DotStepper(
+        dotCount: _countOfPages,
+        dotRadius: 6,
+        activeStep: _stepIndex,
+        shape: Shape.circle,
+        spacing: 7,
+        indicator: Indicator.worm,
+        onDotTapped: (tappedDotIndex) {
+          setState(() {
+            _stepIndex = tappedDotIndex;
+          });
+        },
+        fixedDotDecoration: FixedDotDecoration(
+            strokeWidth: 1,
+            strokeColor: Color.fromRGBO(130, 147, 153, 1),
+            color: Colors.white),
+        indicatorDecoration: IndicatorDecoration(
+          color: Color.fromRGBO(130, 147, 153, 1),
+          strokeColor: Color.fromRGBO(130, 147, 153, 1),
+        ),
+      ),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _showBouquetInformation(),
-          backgroundColor: Color.fromRGBO(130, 147, 153, 1),
-          child: Icon(Icons.list),
-        ),
-        body: Container(
-            color: Colors.white,
-            child: Column(children: [
-              _header(context),
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                child: DotStepper(
-                  dotCount: _countOfPages,
-                  dotRadius: 6,
-                  activeStep: _stepIndex,
-                  shape: Shape.circle,
-                  spacing: 7,
-                  indicator: Indicator.worm,
-                  onDotTapped: (tappedDotIndex) {
-                    setState(() {
-                      _stepIndex = tappedDotIndex;
-                    });
-                  },
-                  fixedDotDecoration: FixedDotDecoration(
-                      strokeWidth: 1,
-                      strokeColor: Color.fromRGBO(130, 147, 153, 1),
-                      color: Colors.white),
-                  indicatorDecoration: IndicatorDecoration(
-                      color: Color.fromRGBO(130, 147, 153, 1),
-                      strokeColor: Color.fromRGBO(130, 147, 153, 1)),
-                ),
-              ),
-              Expanded(
-                  child: GestureDetector(
-                child: getStep(),
-                onPanUpdate: (details) {
-                  swipeDirection = details.delta.dx < 0 ? 'left' : 'right';
-                },
-                onPanEnd: (details) {
-                  if (swipeDirection == 'left') {
-                    addStepIndex();
-                  }
-                  if (swipeDirection == 'right') {
-                    removeStepIndex();
-                  }
-                },
-              ))
-            ])));
+  FloatingActionButton showBouquetInfo() {
+    return FloatingActionButton(
+      onPressed: () => _showBouquetInformation(),
+      backgroundColor: Color.fromRGBO(130, 147, 153, 1),
+      child: Icon(Icons.list),
+    );
   }
 
   Widget _header(context) {
@@ -122,20 +135,25 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
       child: Row(
         children: [
           IconButton(
-              icon: Icon(Icons.arrow_back_ios, size: 30),
-              padding: EdgeInsets.zero,
-              color: Color.fromRGBO(130, 147, 153, 1),
-              onPressed: () {
-                newBouquet = new Bouquet();
-                products = [];
-                Navigator.pop(context);
-              }),
-          Text("Создание букета", style: Theme.of(context).textTheme.subtitle)
+            icon: Icon(Icons.arrow_back_ios, size: 30),
+            padding: EdgeInsets.zero,
+            color: Color.fromRGBO(130, 147, 153, 1),
+            onPressed: () {
+              newBouquet = new Bouquet();
+              products = [];
+              Navigator.pop(context);
+            },
+          ),
+          Text(
+            "Создание букета",
+            style: Theme.of(context).textTheme.subtitle,
+          ),
         ],
       ),
     );
   }
 
+  //#region BouquetInfo
   Future<void> _showBouquetInformation() {
     double bouquetCost = 0;
     for (var item in products) {
@@ -147,138 +165,223 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Container(
-            child: Text(
-              newBouquet.name != null ? newBouquet.name : "Пустое название",
-              overflow: TextOverflow.ellipsis,
-              softWrap: true,
-              style: Theme.of(context).textTheme.subtitle,
-            ),
-          ),
+          title: getBouquetName(context),
           content: products.length == 0
-              ? Center(
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    color: Colors.white,
-                    child: Text("Цветы не выбраны",
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(fontSize: 15)),
-                  ),
-                )
+              ? showNullSelectedFlowerError(context)
               : StatefulBuilder(builder: (context, setState) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        roundDouble(bouquetCost, 1).toString() + " ₽",
-                        style: Theme.of(context).textTheme.body1.copyWith(
-                            color: Color.fromRGBO(130, 147, 153, 1),
-                            fontSize: 25),
-                      ),
+                      getCommonCost(bouquetCost, context),
                       Container(
                         width: 300,
                         height: 300,
                         child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: products.length,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: 150,
-                                    child: Text(products[index].name,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style:
-                                            Theme.of(context).textTheme.body1),
+                          shrinkWrap: true,
+                          itemCount: products.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                getSelectedFlowerName(index, context),
+                                getSelectedFlowerCost(index, context),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.delete_outline,
+                                    size: 20,
+                                    color: Colors.red,
                                   ),
-                                  Text(products[index].cost.toString() + " ₽",
-                                      style: Theme.of(context).textTheme.body1),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.delete_outline,
-                                        size: 20,
-                                        color: Colors.red,
-                                      ),
-                                      padding: EdgeInsets.zero,
-                                      color: Color.fromRGBO(130, 147, 153, 1),
-                                      onPressed: () {
-                                        setState(() {
-                                          bouquetCost = 0;
-                                          products.remove(products[index]);
-                                          if (products.length != 0)
-                                            for (var item in products) {
-                                              bouquetCost += item.cost;
-                                            }
-                                        });
-                                      }),
-                                ],
-                              );
-                            }),
-                      )
-                    ],
-                  );
-                }),
-          actions: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10),
-              child: FlatButton(
-                onPressed: () async{
-                  if (newBouquet.storeId == null ||
-                      products.where((element) => element.productCategoryId == 1).length ==0) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Букет не собран"),
-                        action: SnackBarAction(
-                          label: "Понятно",
-                          onPressed: () {
-                            // Code to execute.
+                                  padding: EdgeInsets.zero,
+                                  color: Color.fromRGBO(130, 147, 153, 1),
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        bouquetCost = 0;
+                                        products.remove(products[index]);
+                                        if (products.length != 0)
+                                          for (var item in products) {
+                                            bouquetCost += item.cost;
+                                          }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
                           },
                         ),
                       ),
-                    );
-                  }
-                  else{
-                    newBouquet.cost=bouquetCost;
-                    await Navigator.push(context,  MaterialPageRoute(
-                        builder: (context) => OrderMainMenu()));
-                    if(OrderMainMenuState.isAdded == true){
-                      Navigator.pop(context);
-                      OrderMainMenuState.isAdded = false;
-                    }
-                  }
-                  Navigator.pop(context);
-                },
-                child: new Text(
-                  "Заказать",
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: new Text(
-                  "Назад",
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                      ),
-                ),
-              ),
+                    ],
+                  );
+                }),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                getSaveTemplateButton(context, bouquetCost),
+                getOrderButton(context, bouquetCost),
+                getBackButton(context),
+              ],
             ),
           ],
         );
       },
+    );
+  }
+
+  SizedBox getSaveTemplateButton(BuildContext context, double bouquetCost) {
+    return SizedBox(
+      width: 80,
+      child: IconButton(
+        icon: Icon(
+          Icons.save_alt,
+          color: Color.fromRGBO(130, 147, 153, 1),
+        ),
+        onPressed: () async {
+          await postBouquet(bouquetCost);
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => NavigationMenu(),
+              ),
+                  (Route<dynamic> route) => false);
+        },
+      ),
+    );
+  }
+
+  //#region ButtonsOfBouquetInfo
+  Container getBackButton(BuildContext context) {
+    return Container(
+      //padding: EdgeInsets.all(10),
+      child: FlatButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: new Text(
+          "Назад",
+          style: Theme.of(context).textTheme.body1.copyWith(
+                color: Color.fromRGBO(130, 147, 153, 1),
+              ),
+        ),
+      ),
+    );
+  }
+
+  Container getOrderButton(BuildContext context, double bouquetCost) {
+    return Container(
+      //padding: EdgeInsets.all(10),
+      child: FlatButton(
+        onPressed: () async {
+          if (newBouquet.storeId == null ||
+              products
+                      .where((element) => element.productCategoryId == 1)
+                      .length ==
+                  0) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Букет не собран"),
+                action: SnackBarAction(
+                  label: "Понятно",
+                  onPressed: () {
+                    // Code to execute.
+                  },
+                ),
+              ),
+            );
+          } else {
+            Bouquet postedBouquet = await postBouquet(bouquetCost);
+
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => BouquetOrder(postedBouquet),
+                ),
+                (Route<dynamic> route) => false);
+          }
+        },
+        child: new Text(
+          "Заказать",
+          style: Theme.of(context).textTheme.body1.copyWith(
+                color: Color.fromRGBO(130, 147, 153, 1),
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ),
+    );
+  }
+
+  Future<Bouquet> postBouquet(double bouquetCost) async {
+    newBouquet.cost = bouquetCost;
+    newBouquet.userId = ProfileManipulation.user.id;
+
+    await WebApiServices.postBouquet(BouquetMainMenuState.newBouquet);
+
+    Bouquet postedBouquet;
+    await WebApiServices.fetchBouquets().then((response) {
+      var bouquetsData = bouquetFromJson(response.data);
+      postedBouquet = bouquetsData.last;
+    });
+
+    for (var item in BouquetMainMenuState.products) {
+      BouquetProduct middleBouquetProduct = BouquetProduct();
+      middleBouquetProduct.bouquetId = postedBouquet.id;
+      middleBouquetProduct.productId = item.id;
+      await WebApiServices.postBouquetProduct(middleBouquetProduct);
+    }
+
+    return postedBouquet;
+  }
+  //#endregion
+
+  //#region SelectedProductInfo
+  Text getSelectedFlowerCost(int index, BuildContext context) {
+    return Text(Calc.roundDouble(products[index].cost, 2).toString() + " ₽",
+        style: Theme.of(context).textTheme.body1);
+  }
+
+  Container getSelectedFlowerName(int index, BuildContext context) {
+    return Container(
+      width: 150,
+      child: Text(products[index].name,
+          overflow: TextOverflow.ellipsis,
+          softWrap: true,
+          style: Theme.of(context).textTheme.body1),
+    );
+  }
+
+  Text getCommonCost(double bouquetCost, BuildContext context) {
+    return Text(
+      Calc.roundDouble(bouquetCost, 1).toString() + " ₽",
+      style: Theme.of(context)
+          .textTheme
+          .body1
+          .copyWith(color: Color.fromRGBO(130, 147, 153, 1), fontSize: 25),
+    );
+  }
+  //#endregion
+  //endregion
+
+  Center showNullSelectedFlowerError(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(10),
+        color: Colors.white,
+        child: Text(
+          "Цветы не выбраны",
+          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15),
+        ),
+      ),
+    );
+  }
+
+  Container getBouquetName(BuildContext context) {
+    return Container(
+      child: Text(
+        newBouquet.name != null ? newBouquet.name : "Пустое название",
+        overflow: TextOverflow.ellipsis,
+        softWrap: true,
+        style: Theme.of(context).textTheme.subtitle,
+      ),
     );
   }
 }
