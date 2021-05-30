@@ -110,6 +110,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
     return Padding(
       padding: EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
+        obscureText: true,
         onChanged: (password) {
           setState(() {
             this._account.passwordHash = password;
