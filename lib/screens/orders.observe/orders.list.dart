@@ -2,6 +2,7 @@ import 'package:flower_user_ui/entities/bouquet.dart';
 import 'package:flower_user_ui/entities/order.dart';
 import 'package:flower_user_ui/entities/shop.dart';
 import 'package:flower_user_ui/entities/order.status.dart';
+import 'package:flower_user_ui/screens/navigation.menu.dart';
 import 'package:flower_user_ui/states/calc.dart';
 import 'package:flower_user_ui/states/nullContainer.dart';
 import 'package:flower_user_ui/states/spaceContainer.dart';
@@ -30,6 +31,13 @@ class OrdersListState extends State<OrdersList>
   }
 
   //#region GetData
+  Future<void> _refresh() async {
+    await _getOrders();
+    await _getShops();
+    await _getBouquets();
+    await _getOrderStatuses();
+  }
+
   _getOrders() async {
     await WebApiServices.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
@@ -69,12 +77,17 @@ class OrdersListState extends State<OrdersList>
 
   @override
   Widget build(BuildContext context) {
-    return _orders.length == 0 ||
-            _shops.length == 0 ||
-            _bouquets.length == 0 ||
-            _orderStatuses.length == 0
-        ? nullContainer()
-        : buildContent(context);
+    return RefreshIndicator(
+      color: Color.fromRGBO(110, 53, 76, 1),
+      key: NavigationMenuState.refreshIndicatorKey,
+      onRefresh: _refresh,
+      child: _orders.length == 0 ||
+              _shops.length == 0 ||
+              _bouquets.length == 0 ||
+              _orderStatuses.length == 0
+          ? nullContainer()
+          : buildContent(context),
+    );
   }
 
   Container buildContent(BuildContext context) {

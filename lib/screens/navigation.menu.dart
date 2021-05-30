@@ -17,6 +17,8 @@ class NavigationMenu extends StatefulWidget {
 
 class NavigationMenuState extends State<NavigationMenu>
     with TickerProviderStateMixin {
+  static final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   int _selectedIndex = 0;
   List<Widget> _pages;
@@ -93,82 +95,82 @@ class NavigationMenuState extends State<NavigationMenu>
 
   BottomNavigationBarItem getAccountItem() {
     return BottomNavigationBarItem(
-        activeIcon: CircleAvatar(
-          radius: 31,
-          backgroundColor: Color.fromRGBO(110, 53, 76, 1),
-          child: CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.white,
-            child: Icon(
-              Icons.person,
-              color: Color.fromRGBO(110, 53, 76, 1),
-              size: 40,
-            ),
-          ),
-        ),
-        icon: CircleAvatar(
-          radius: 25,
-          backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+      activeIcon: CircleAvatar(
+        radius: 31,
+        backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+        child: CircleAvatar(
+          radius: 30,
+          backgroundColor: Colors.white,
           child: Icon(
             Icons.person,
-            color: Colors.white,
+            color: Color.fromRGBO(110, 53, 76, 1),
+            size: 40,
           ),
         ),
-        label: "",
-      );
+      ),
+      icon: CircleAvatar(
+        radius: 25,
+        backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+        child: Icon(
+          Icons.person,
+          color: Colors.white,
+        ),
+      ),
+      label: "",
+    );
   }
 
   BottomNavigationBarItem getOrderItem() {
     return BottomNavigationBarItem(
-        activeIcon: CircleAvatar(
-          radius: 31,
-          backgroundColor: Color.fromRGBO(110, 53, 76, 1),
-          child: CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.white,
-            child: Icon(
-              Icons.shopping_cart,
-              color: Color.fromRGBO(110, 53, 76, 1),
-              size: 40,
-            ),
-          ),
-        ),
-        icon: CircleAvatar(
-          radius: 25,
-          backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+      activeIcon: CircleAvatar(
+        radius: 31,
+        backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+        child: CircleAvatar(
+          radius: 30,
+          backgroundColor: Colors.white,
           child: Icon(
             Icons.shopping_cart,
-            color: Colors.white,
+            color: Color.fromRGBO(110, 53, 76, 1),
+            size: 40,
           ),
         ),
-        label: "",
-      );
+      ),
+      icon: CircleAvatar(
+        radius: 25,
+        backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+        child: Icon(
+          Icons.shopping_cart,
+          color: Colors.white,
+        ),
+      ),
+      label: "",
+    );
   }
 
   BottomNavigationBarItem getHomeItem() {
     return BottomNavigationBarItem(
-        activeIcon: CircleAvatar(
-          radius: 31,
-          backgroundColor: Color.fromRGBO(110, 53, 76, 1),
-          child: CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.white,
-            child: Icon(
-              Icons.home,
-              color: Color.fromRGBO(110, 53, 76, 1),
-              size: 40,
-            ),
+      activeIcon: CircleAvatar(
+        radius: 31,
+        backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+        child: CircleAvatar(
+          radius: 30,
+          backgroundColor: Colors.white,
+          child: Icon(
+            Icons.home,
+            color: Color.fromRGBO(110, 53, 76, 1),
+            size: 40,
           ),
         ),
-        icon: CircleAvatar(
-            radius: 25,
-            backgroundColor: Color.fromRGBO(110, 53, 76, 1),
-            child: Icon(
-              Icons.home,
-              color: Colors.white,
-            )),
-        label: "",
-      );
+      ),
+      icon: CircleAvatar(
+          radius: 25,
+          backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+          child: Icon(
+            Icons.home,
+            color: Colors.white,
+          )),
+      label: "",
+    );
   }
 
   Container buildContent() {

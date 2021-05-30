@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flower_user_ui/entities/bouquet.dart';
 import 'package:flower_user_ui/states/web.api.services.dart';
 
+import '../navigation.menu.dart';
+
 class AccountBouquets extends StatefulWidget {
   @override
   AccountBouquetsState createState() => AccountBouquetsState();
@@ -15,10 +17,10 @@ class AccountBouquetsState extends State<AccountBouquets> {
   List<Bouquet> _bouquets = [];
 
   AccountBouquetsState() {
-    _getBouquets();
+    getBouquets();
   }
 
-  _getBouquets() {
+  Future<void> getBouquets() {
     WebApiServices.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
@@ -31,19 +33,24 @@ class AccountBouquetsState extends State<AccountBouquets> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        getBouquetTitle(context),
-        Expanded(
-          child: _bouquets.length == 0
-              ? getNullBouquetError()
-              : Container(
-                  padding: EdgeInsets.zero,
-                  height: 200,
-                  child: buildBouquetList(),
-                ),
-        )
-      ],
+    return RefreshIndicator(
+      color: Color.fromRGBO(110, 53, 76, 1),
+      key: NavigationMenuState.refreshIndicatorKey,
+      onRefresh: getBouquets,
+      child: Column(
+        children: [
+          getBouquetTitle(context),
+          Expanded(
+            child: _bouquets.length == 0
+                ? getNullBouquetError()
+                : Container(
+                    padding: EdgeInsets.zero,
+                    height: 200,
+                    child: buildBouquetList(),
+                  ),
+          )
+        ],
+      ),
     );
   }
 
@@ -97,7 +104,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
             onPressed: () async {
               await WebApiServices.deleteBouquet(_bouquets[index].id);
 
-              _getBouquets();
+              getBouquets();
             },
           ),
         ),
