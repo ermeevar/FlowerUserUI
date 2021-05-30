@@ -5,6 +5,7 @@ import 'package:flower_user_ui/entities/user.dart';
 import 'package:flower_user_ui/states/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.menu/main.menu.content.dart';
 import 'orders.observe/orders.observe.main.dart';
@@ -29,6 +30,12 @@ class NavigationMenuState extends State<NavigationMenu>
       OrdersObserveMain(),
       AccountObserve(),
     ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   getProfile() async {

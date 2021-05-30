@@ -6,6 +6,7 @@ import 'package:flower_user_ui/screens/registration.widgets/registration.main.me
 import 'package:flower_user_ui/entities/account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../navigation.menu.dart';
 
 class AuthorizationMainMenu extends StatefulWidget {
@@ -19,6 +20,12 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   AuthorizationMainMenuState() {
     getAccounts();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   getAccounts() async {
