@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class TemplateBouquetOrder extends StatefulWidget {
   Template _template;
@@ -415,6 +417,16 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         child: FlatButton(
           onPressed: () async {
             await WebApiServices.postOrder(order);
+
+            showTopSnackBar(
+              context,
+              CustomSnackBar.info(
+                icon: null,
+                backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+                message:
+                "Заказ оформлен",
+              ),
+            );
 
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(

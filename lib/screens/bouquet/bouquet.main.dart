@@ -11,6 +11,8 @@ import 'package:flower_user_ui/states/web.api.services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'decoration.selection.dart';
 import 'grass.selection.dart';
 
@@ -239,6 +241,19 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
         ),
         onPressed: () async {
           await postBouquet(bouquetCost);
+
+          newBouquet = new Bouquet();
+          products = [];
+
+          showTopSnackBar(
+            context,
+            CustomSnackBar.info(
+              icon: null,
+              backgroundColor: Color.fromRGBO(110, 53, 76, 1),
+              message:
+              "Шаблон сохранен",
+            ),
+          );
 
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
