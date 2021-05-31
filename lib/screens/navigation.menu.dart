@@ -102,6 +102,7 @@ class NavigationMenuState extends State<NavigationMenu>
 
   BottomNavigationBarItem getAccountItem() {
     return BottomNavigationBarItem(
+      backgroundColor: Colors.transparent,
       activeIcon: CircleAvatar(
         radius: 31,
         backgroundColor: Color.fromRGBO(110, 53, 76, 1),
@@ -129,6 +130,7 @@ class NavigationMenuState extends State<NavigationMenu>
 
   BottomNavigationBarItem getOrderItem() {
     return BottomNavigationBarItem(
+      backgroundColor: Colors.transparent,
       activeIcon: CircleAvatar(
         radius: 31,
         backgroundColor: Color.fromRGBO(110, 53, 76, 1),

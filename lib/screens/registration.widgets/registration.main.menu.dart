@@ -272,14 +272,15 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           ),
         ),
         Positioned(
-          top: 70,
+          top: 80,
           left: 30,
           child: IconButton(
-              icon: Icon(Icons.arrow_back),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.pop(context);
-              }),
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         Positioned(
           bottom: 20,

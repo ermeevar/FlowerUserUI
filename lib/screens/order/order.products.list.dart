@@ -44,19 +44,17 @@ class ProductsListState extends State<ProductsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(bottom: 10),
-        height: 260,
-        clipBehavior: Clip.none,
-        color: Color.fromRGBO(110, 53, 76, 1),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            getTitle(context),
-            getProductList(),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.only(bottom: 10),
+      height: 260,
+      clipBehavior: Clip.none,
+      color: Color.fromRGBO(110, 53, 76, 1),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          getTitle(context),
+          getProductList(),
+        ],
       ),
     );
   }

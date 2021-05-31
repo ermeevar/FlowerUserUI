@@ -7,18 +7,21 @@ class OrdersObserveMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: Text("Заказы",
-                style:
-                    Theme.of(context).textTheme.subtitle.copyWith(height: 2))),
-        Expanded(
-          child: OrdersList(),
-        )
-      ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              child: Text("Заказы",
+                  style:
+                  Theme.of(context).textTheme.subtitle.copyWith(height: 2))),
+          Expanded(
+            child: OrdersList(),
+          )
+        ],
+      ),
     );
   }
 }

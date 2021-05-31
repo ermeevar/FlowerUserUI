@@ -6,7 +6,6 @@ import 'package:flower_user_ui/screens/template/template.category.selection.dart
 import 'package:flower_user_ui/states/slider.shape.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MainMenuContent extends StatelessWidget {
   MainMenuContent();
