@@ -117,7 +117,16 @@ class DecorationSelectionState extends State<DecorationSelection> {
                                 ),
                                 color: Colors.black12,
                               )
-                            : _products[index].picture,
+                            : ClipOval(
+                                child: Image(
+                                  image: MemoryImage(
+                                    _products[index].picture,
+                                  ),
+                                  width: 120,
+                                  height: 120,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                         Container(
                           width: 140,
                           margin: EdgeInsets.only(top: 10),

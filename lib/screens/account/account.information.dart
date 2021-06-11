@@ -1,5 +1,5 @@
-import 'dart:typed_data';
 import 'package:flower_user_ui/entities/user.dart';
+import 'package:flower_user_ui/states/image.controller.dart';
 import 'package:flower_user_ui/states/profile.manipulation.dart';
 import 'package:flower_user_ui/states/web.api.services.dart';
 import 'package:flower_user_ui/screens/authorization.widgets/authorization.main.menu.dart';
@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountInformation extends StatefulWidget {
@@ -76,7 +75,7 @@ class AccountInformationState extends State<AccountInformation>
   GestureDetector getProfileImage() {
     return GestureDetector(
       onTap: () async {
-        await showOptionsForPhoto();
+        await showOptionsForPhoto(context);
       },
       child: Card(
         elevation: 10,
@@ -176,6 +175,50 @@ class AccountInformationState extends State<AccountInformation>
       ],
     );
   }
+
+  Future showOptionsForPhoto(context) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text(
+              'Выбрать из галереи',
+              style: Theme.of(context).textTheme.body1,
+            ),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              var pickedImage = await ImageController.getImageFromGallery();
+              if (pickedImage != null) {
+                setState(() async {
+                  ProfileManipulation.user.picture = pickedImage;
+                  await WebApiServices.putUser(ProfileManipulation.user);
+                  await ProfileManipulation.getUser(ProfileManipulation.account);
+                });
+              }
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text(
+              'Камера',
+              style: Theme.of(context).textTheme.body1,
+            ),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              var pickedImage = await ImageController.getImageFromCamera();
+              if (pickedImage != null) {
+                setState(() async{
+                  ProfileManipulation.user.picture = pickedImage;
+                  await WebApiServices.putUser(ProfileManipulation.user);
+                  await ProfileManipulation.getUser(ProfileManipulation.account);
+                });
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
   //#endregion
 
   //#region ChangeAccountInfo
@@ -203,8 +246,10 @@ class AccountInformationState extends State<AccountInformation>
         Container(
           padding: EdgeInsets.only(top: 20, bottom: 2),
           child: FlatButton(
-            onPressed: () {
+            onPressed: () async{
               _taped();
+              await WebApiServices.putUser(ProfileManipulation.user);
+              await ProfileManipulation.getUser(ProfileManipulation.account);
             },
             padding: EdgeInsets.zero,
             child: Container(
@@ -234,7 +279,7 @@ class AccountInformationState extends State<AccountInformation>
         ],
         onChanged: (phone) {
           setState(() {
-            this._user.phone = phone;
+            ProfileManipulation.user.phone = phone;
           });
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
@@ -257,7 +302,7 @@ class AccountInformationState extends State<AccountInformation>
       child: TextFormField(
         onChanged: (surname) {
           setState(() {
-            this._user.surname = surname;
+            ProfileManipulation.user.surname = surname;
           });
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
@@ -304,64 +349,11 @@ class AccountInformationState extends State<AccountInformation>
             icon: Icon(Icons.navigate_next, size: 30),
             padding: EdgeInsets.zero,
             color: Color.fromRGBO(130, 147, 153, 1),
-            onPressed: () {
+            onPressed: () async{
               _taped();
+              await ProfileManipulation.getUser(ProfileManipulation.account);
             }),
       ],
-    );
-  }
-  //#endregion
-
-  //#region ImageController
-  Future getImageFromGallery() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
-
-    setState(() {
-      if (pickedFile != null) {
-        ProfileManipulation.user.picture = _newImageBytes;
-      }
-    });
-  }
-
-  Future getImageFromCamera() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
-
-    setState(() {
-      if (pickedFile != null) {
-        ProfileManipulation.user.picture = _newImageBytes;
-      }
-    });
-  }
-
-  Future showOptionsForPhoto() async {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            child: Text(
-              'Выбрать из галереи',
-              style: Theme.of(context).textTheme.body1,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-              getImageFromGallery();
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Text(
-              'Камера',
-              style: Theme.of(context).textTheme.body1,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-              getImageFromCamera();
-            },
-          ),
-        ],
-      ),
     );
   }
   //#endregion

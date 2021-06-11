@@ -240,6 +240,24 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
           color: Color.fromRGBO(130, 147, 153, 1),
         ),
         onPressed: () async {
+          if (newBouquet.storeId == null ||
+              products
+                      .where((element) => element.productCategoryId == 1)
+                      .length ==
+                  0 || newBouquet.name == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Букет не собран"),
+                action: SnackBarAction(
+                  label: "Понятно",
+                  onPressed: () {
+                    // Code to execute.
+                  },
+                ),
+              ),
+            );
+          }
+
           await postBouquet(bouquetCost);
 
           newBouquet = new Bouquet();
@@ -250,8 +268,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
             CustomSnackBar.info(
               icon: null,
               backgroundColor: Color.fromRGBO(110, 53, 76, 1),
-              message:
-              "Шаблон сохранен",
+              message: "Шаблон сохранен",
             ),
           );
 
@@ -259,7 +276,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               MaterialPageRoute(
                 builder: (context) => NavigationMenu(),
               ),
-                  (Route<dynamic> route) => false);
+              (Route<dynamic> route) => false);
         },
       ),
     );
@@ -292,7 +309,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               products
                       .where((element) => element.productCategoryId == 1)
                       .length ==
-                  0) {
+                  0|| newBouquet.name == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Букет не собран"),

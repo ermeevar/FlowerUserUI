@@ -114,7 +114,7 @@ class BouquetOrderState extends State<BouquetOrder> {
         children: [
           Container(
             child: Text(
-              _bouquet.name,
+              _bouquet.name == null ? "" : _bouquet.name,
               overflow: TextOverflow.clip,
               softWrap: true,
               style: Theme.of(context).textTheme.body1.copyWith(

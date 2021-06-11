@@ -26,7 +26,7 @@ class User {
     surname: json["surname"],
     name: json["name"],
     phone: json["phone"],
-    picture: json["picture"],
+    picture: json["picture"]!= null? base64.decode(json["picture"]) : json["picture"],
     accountId: json["accountId"],
   );
 
@@ -43,7 +43,7 @@ class User {
     "surname": surname,
     "name": name,
     "phone": phone,
-    "picture": picture,
+    "picture": picture != null? base64.encode(picture) : null,
     "accountId": accountId,
   };
 }

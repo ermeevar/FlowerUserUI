@@ -1,4 +1,5 @@
 import 'package:flower_user_ui/entities/store.dart';
+import 'package:flower_user_ui/states/profile.manipulation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/states/web.api.services.dart';
@@ -133,7 +134,14 @@ class StoreSelectionState extends State<StoreSelection> {
                 color: Colors.black38,
                 size: 50,
               )
-            : _stores[index].picture,
+            : ClipOval(
+                child: Image(
+                  image: MemoryImage(_stores[index].picture),
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
+              ),
         backgroundColor: Colors.transparent);
   }
 

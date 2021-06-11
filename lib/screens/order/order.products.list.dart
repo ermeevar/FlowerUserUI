@@ -90,7 +90,13 @@ class ProductsListState extends State<ProductsList> {
               ),
               color: Colors.black12,
             )
-          : _products[index].picture,
+          : Image(
+              image: MemoryImage(
+                _products[index].picture,
+              ),
+              width: 140,
+              fit: BoxFit.cover,
+            ),
     );
   }
 

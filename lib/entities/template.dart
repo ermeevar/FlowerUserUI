@@ -26,7 +26,7 @@ class Template {
     name: json["name"],
     templateCategoryId: json["templateCategoryId"],
     storeId: json["storeId"],
-    picture: json["picture"],
+    picture: json["picture"] != null? base64.decode(json["picture"]) : json["picture"],
     cost: json["cost"].toDouble(),
   );
 
@@ -34,7 +34,7 @@ class Template {
     "name": name,
     "templateCategoryId": templateCategoryId,
     "storeId": storeId,
-    "picture": picture,
+    "picture": picture != null? base64.encode(picture) : null,
     "cost": cost,
   };
 }

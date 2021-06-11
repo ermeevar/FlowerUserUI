@@ -113,7 +113,16 @@ class TemplateSelectionState extends State<TemplateSelection> {
                                   ),
                                   color: Colors.black12,
                                 )
-                              : _templates[index].picture,
+                              : ClipOval(
+                                  child: Image(
+                                    image: MemoryImage(
+                                      _templates[index].picture,
+                                    ),
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                           Container(
                             width: 140,
                             margin: EdgeInsets.only(top: 10),
@@ -128,7 +137,9 @@ class TemplateSelectionState extends State<TemplateSelection> {
                             ),
                           ),
                           Text(
-                            Calc.roundDouble(_templates[index].cost, 2).toString() + " ₽",
+                            Calc.roundDouble(_templates[index].cost, 2)
+                                    .toString() +
+                                " ₽",
                             style: Theme.of(context).textTheme.body1,
                           ),
                         ],

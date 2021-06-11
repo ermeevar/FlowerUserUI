@@ -142,7 +142,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
     return Padding(
       padding: EdgeInsets.zero,
       child: Text(
-        _bouquets[index].name,
+        _bouquets[index].name == null ? "" : _bouquets[index].name,
         overflow: TextOverflow.ellipsis,
         softWrap: true,
         textAlign: TextAlign.center,
