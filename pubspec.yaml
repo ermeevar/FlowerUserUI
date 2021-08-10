@@ -5,7 +5,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   cached_network_image: ^3.1.0
@@ -14,7 +14,6 @@ dependencies:
   connectivity: ^3.0.6
   crypt: ^4.0.1
   cupertino_icons: ^1.0.3
-  dfunc: ^0.7.2
   dio: ^4.0.0
   dio_http_cache: ^0.3.0
   flutter:
@@ -43,25 +42,31 @@ dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: "resources/images/icon.png"
-  image_path_android: "resources/images/icon.png"
-  adaptive_icon_background: "resources/images/gradient.png"
-  adaptive_icon_foreground: "resources/images/logo.png"
+  image_path_ios: "assets/images/icon.png"
+  image_path_android: "assets/images/icon.png"
+  adaptive_icon_background: "assets/images/gradient.png"
+  adaptive_icon_foreground: "assets/images/logo.png"
 
 dev_dependencies:
+  build_runner: ^2.1.1
+  flutter_gen_runner: ^3.1.1
   flutter_test:
     sdk: flutter
 
+flutter_gen:
+  output: lib/presentation/utils
+  line_length: 80
+
 flutter:
   assets:
-    - resources/
-    - resources/images/
+    - assets/images/
+    - assets/fonts/
   fonts:
     - family: Philosopher
       fonts:
-        - asset: resources/fonts/Philosopher.ttf
+        - asset: assets/fonts/Philosopher.ttf
     - family: SourceSansPro
       fonts:
-        - asset: resources/fonts/SourceSansPro.ttf
+        - asset: assets/fonts/SourceSansPro.ttf
 
   uses-material-design: true

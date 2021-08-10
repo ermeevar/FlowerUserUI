@@ -1,6 +1,7 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/circle_progress_bar.dart';
+import 'package:flower_user_ui/presentation/utils/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -196,7 +197,7 @@ class NavigationMenuState extends State<NavigationMenu>
       color: Colors.white,
       image: DecorationImage(
         image: _selectedIndex == 0
-            ? const AssetImage("resources/images/background.menu.jpg")
+            ? AssetImage(Assets.images.backgroundMenu.path)
             : const AssetImage(""),
         fit: BoxFit.cover,
       ),
