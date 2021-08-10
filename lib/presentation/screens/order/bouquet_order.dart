@@ -48,7 +48,7 @@ class BouquetOrderState extends State<BouquetOrder> {
 
   _getShops() async {
     await ApiService.fetchShops().then((response) {
-      var shopsData = shopFromJson(response.data);
+      var shopsData = shopFromJson(response.data as String);
       setState(() {
         _shops = shopsData
             .where((element) => element.storeId == _bouquet!.storeId)
@@ -73,7 +73,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Widget _header(context) {
+  Widget _header(BuildContext context) {
     return Container(
       padding: EdgeInsets.zero,
       child: Row(
@@ -103,7 +103,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Widget _nameAndCostInfo(context) {
+  Widget _nameAndCostInfo(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
@@ -136,7 +136,7 @@ class BouquetOrderState extends State<BouquetOrder> {
   }
 
   //#region Order information
-  Widget _orderInfo(context) {
+  Widget _orderInfo(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
@@ -152,7 +152,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Padding getCardButton(context) {
+  Padding getCardButton(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(20),
       child: order.card == null
@@ -188,7 +188,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Row getShop(context) {
+  Row getShop(BuildContext context) {
     return Row(
       children: [
         SizedBox(
@@ -224,7 +224,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Container getPhone(context) {
+  Container getPhone(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -247,7 +247,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Container getName(context) {
+  Container getName(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -266,7 +266,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Container getSurname(context) {
+  Container getSurname(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -286,7 +286,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Row getDate(context) {
+  Row getDate(BuildContext context) {
     return Row(
       children: [
         SizedBox(
@@ -409,7 +409,7 @@ class BouquetOrderState extends State<BouquetOrder> {
   }
   //#endregion
 
-  Widget _orderButton(context) {
+  Widget _orderButton(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Container(

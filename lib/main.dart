@@ -7,19 +7,20 @@ import 'internal/utils/certificate.dart';
 import 'presentation/screens/authorization_widgets/authorization_main_menu.dart';
 
 void main() {
-  HttpOverrides.global = new Certificate();
+  HttpOverrides.global = Certificate();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   Future<bool> isAuthorized() async {
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
 
-    if (prefs.getInt('AccountId') == null || prefs.getInt('AccountId') == 0)
+    if (prefs.getInt('AccountId') == null || prefs.getInt('AccountId') == 0) {
       return false;
-    else
+    } else {
       return true;
+    }
   }
 
   @override
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             bodyText1: TextStyle(
                 fontSize: 15,
                 fontFamily: "SourceSansPro",
@@ -50,11 +51,11 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none),
           ),
-          snackBarTheme: SnackBarThemeData(
+          snackBarTheme: const SnackBarThemeData(
             backgroundColor: Color.fromRGBO(110, 53, 76, 1),
             actionTextColor: Colors.white,
           ),
-          inputDecorationTheme: InputDecorationTheme(
+          inputDecorationTheme: const InputDecorationTheme(
               labelStyle: TextStyle(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ))),
-          bottomSheetTheme: BottomSheetThemeData(
+          bottomSheetTheme: const BottomSheetThemeData(
               backgroundColor: Color.fromRGBO(130, 147, 153, 1),
               shape: RoundedRectangleBorder(
                   borderRadius:

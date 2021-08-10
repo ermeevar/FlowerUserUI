@@ -19,7 +19,7 @@ class AccountObserveState extends State<AccountObserve> {
           getTitle(context),
           AccountInformation(),
           Container(
-            padding: EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20),
             height: 250,
             child: AccountBouquets(),
           ),
@@ -32,13 +32,13 @@ class AccountObserveState extends State<AccountObserve> {
     return Row(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Text(
             "Личный кабинет",
             style: Theme.of(context).textTheme.subtitle1!.copyWith(height: 2),
           ),
         ),
-        Spacer()
+        const Spacer()
       ],
     );
   }

@@ -9,11 +9,12 @@ import 'package:flutter/services.dart';
 import '../navigation_menu.dart';
 
 class AuthorizationMainMenu extends StatefulWidget {
+  @override
   AuthorizationMainMenuState createState() => AuthorizationMainMenuState();
 }
 
 class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
-  Account _account = Account();
+  final Account _account = Account();
   bool isWrong = false;
 
   AuthorizationMainMenuState() {
@@ -26,7 +27,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
-  getAccounts() async {
+  Future<void> getAccounts() async {
     await ApiService.fetchAccounts().then((response) {
       setState(() {});
     });
@@ -51,10 +52,9 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   Center buildContent(BuildContext context) {
     return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Spacer(),
+          const Spacer(),
           Text(
             "Вход",
             style: Theme.of(context).textTheme.headline6,
@@ -64,7 +64,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           getWrongAccountError(context),
           signIn(context),
           signUp(context),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );
@@ -72,7 +72,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   Container signUp(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: TextButton(
         onPressed: () async {
           await Navigator.push(
@@ -80,7 +80,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
             MaterialPageRoute(builder: (context) => RegistrationMainMenu()),
           );
         },
-        child: new Text(
+        child: Text(
           "Зарегистрироваться",
           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 fontWeight: FontWeight.bold,
@@ -92,10 +92,10 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   Container signIn(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 80),
+      padding: const EdgeInsets.only(top: 80),
       child: TextButton(
         onPressed: () async {
-          User? accUser = await ProfileService.getUser(_account);
+          final User? accUser = await ProfileService.getUser(_account);
 
           if (accUser == null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -122,17 +122,17 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
               (Route<dynamic> route) => false);
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 90),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 90),
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(
               Radius.circular(40),
             ),
           ),
-          child: new Text(
+          child: Text(
             "ВОЙТИ",
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Color.fromRGBO(110, 53, 76, 1),
+                  color: const Color.fromRGBO(110, 53, 76, 1),
                 ),
           ),
         ),
@@ -142,7 +142,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   Padding getWrongAccountError(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 30),
+      padding: const EdgeInsets.only(top: 30),
       child: isWrong
           ? Text(
               "Пароль или логин введен неправильно",
@@ -154,17 +154,17 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   Padding getPassword(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 30),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 30),
       child: TextFormField(
         obscureText: true,
         onChanged: (password) {
           setState(() {
-            this._account.passwordHash = password;
+            _account.passwordHash = password;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -178,16 +178,16 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   Padding getLogin(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 40),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 40),
       child: TextFormField(
         onChanged: (login) {
           setState(() {
-            this._account.login = login;
+            _account.login = login;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -209,7 +209,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           child: Container(
             width: 15,
             height: 15,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -221,7 +221,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           child: Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -233,7 +233,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           child: Container(
             width: 100,
             height: 100,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -245,7 +245,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           child: Container(
             width: 150,
             height: 150,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -257,7 +257,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           child: Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -269,7 +269,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           child: Container(
             width: 20,
             height: 20,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -283,7 +283,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

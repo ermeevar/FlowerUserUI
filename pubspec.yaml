@@ -10,6 +10,7 @@ environment:
 dependencies:
   cached_network_image: ^3.1.0
   camera: ^0.8.1+7
+  collection: ^1.15.0-nullsafety.4
   connectivity: ^3.0.6
   crypt: ^4.0.1
   cupertino_icons: ^1.0.3
@@ -33,11 +34,11 @@ dependencies:
   sembast: ^3.1.0+2
   sembast_web: ^2.0.0+2
   shared_preferences: ^2.0.6
+  stacked: ^2.2.3
   supercharged: ^2.0.0
   supercharged_dart: ^2.0.0
   top_snackbar_flutter: ^1.0.0
   velocity_x: ^3.3.0
-  collection: ^1.15.0-nullsafety.4
 
 flutter_icons:
   ios: true

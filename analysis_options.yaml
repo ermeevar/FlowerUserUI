@@ -3,7 +3,6 @@
 # linter:
 #  rules:
 #   sort_pub_dependencies : false
-
 # analyzer:
 #   exclude:
 #     - "**/*.g.dart"

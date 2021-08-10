@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/domain/services/api_service.dart';
 import 'package:flower_user_ui/domain/services/profile_service.dart';
@@ -16,7 +18,7 @@ class AccountInformation extends StatefulWidget {
 
 class AccountInformationState extends State<AccountInformation>
     with SingleTickerProviderStateMixin {
-  User _user = User();
+  final User _user = User();
   bool _isTab = false;
   final picker = ImagePicker();
 
@@ -28,23 +30,20 @@ class AccountInformationState extends State<AccountInformation>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: AnimatedContainer(
-        child: _isTab ? _change(context) : _read(context),
-        duration: Duration(seconds: 1),
-      ),
+    return AnimatedContainer(
+      duration: const Duration(seconds: 1),
+      child: _isTab ? _change(context) : _read(context),
     );
   }
 
   //#region ReadAccountInfo
-  Widget _read(context) {
+  Widget _read(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-            children: [Spacer(), getMenuButton()],
+            children: [const Spacer(), getMenuButton()],
           ),
           getProfileImage(),
           getLogin(context),
@@ -54,12 +53,12 @@ class AccountInformationState extends State<AccountInformation>
     );
   }
 
-  Text getName(context) {
-    return Text(ProfileService.user.name! + " " + ProfileService.user.surname!,
+  Text getName(BuildContext context) {
+    return Text("${ProfileService.user.name!} ${ProfileService.user.surname!}",
         style: Theme.of(context).textTheme.bodyText1);
   }
 
-  Text getLogin(context) {
+  Text getLogin(BuildContext context) {
     return Text(
       ProfileService.account != null ? ProfileService.account!.login! : "Error",
       style: Theme.of(context)
@@ -76,19 +75,20 @@ class AccountInformationState extends State<AccountInformation>
       },
       child: Card(
         elevation: 10,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 60,
           child: ProfileService.user.picture == null
-              ? Icon(
+              ? const Icon(
                   Icons.supervisor_account_outlined,
                   color: Colors.black38,
                   size: 50,
                 )
               : ClipOval(
                   child: Image(
-                    image: MemoryImage(ProfileService.user.picture),
+                    image:
+                        MemoryImage(ProfileService.user.picture as Uint8List),
                     width: 120,
                     height: 120,
                     fit: BoxFit.cover,
@@ -102,13 +102,13 @@ class AccountInformationState extends State<AccountInformation>
   PopupMenuButton<dynamic> getMenuButton() {
     return PopupMenuButton(
       color: Colors.white,
-      icon: Icon(Icons.more_horiz, color: Color.fromRGBO(130, 147, 153, 1)),
+      icon:
+          const Icon(Icons.more_horiz, color: Color.fromRGBO(130, 147, 153, 1)),
       itemBuilder: (context) => [
         PopupMenuItem(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(
+              const Icon(
                 Icons.edit,
                 size: 25,
                 color: Color.fromRGBO(130, 147, 153, 1),
@@ -118,10 +118,10 @@ class AccountInformationState extends State<AccountInformation>
                   _taped();
                   Navigator.pop(context);
                 },
-                child: new Text(
+                child: Text(
                   "Изменить",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
+                        color: const Color.fromRGBO(130, 147, 153, 1),
                       ),
                 ),
               )
@@ -130,36 +130,36 @@ class AccountInformationState extends State<AccountInformation>
         ),
         PopupMenuItem(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(
+              const Icon(
                 Icons.exit_to_app,
                 size: 25,
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
               TextButton(
-                  onPressed: () async {
-                    await onAuthorizationPage();
-                  },
-                  child: new Text("Выйти",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Color.fromRGBO(130, 147, 153, 1))))
+                onPressed: () async {
+                  await onAuthorizationPage();
+                },
+                child: Text(
+                  "Выйти",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: const Color.fromRGBO(130, 147, 153, 1),
+                      ),
+                ),
+              )
             ],
           ),
         ),
         PopupMenuItem(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(Icons.delete, size: 25, color: Colors.red),
-              new TextButton(
+              const Icon(Icons.delete, size: 25, color: Colors.red),
+              TextButton(
                   onPressed: () async {
                     await ApiService.deleteAccount(ProfileService.account!.id);
                     await onAuthorizationPage();
                   },
-                  child: new Text("Удалить",
+                  child: Text("Удалить",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1!
@@ -171,19 +171,32 @@ class AccountInformationState extends State<AccountInformation>
     );
   }
 
-  Future showOptionsForPhoto(context) async {
+  Future showOptionsForPhoto(BuildContext context) async {
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final pickedImage = await ImageController.getImageFromGallery();
+              if (pickedImage != null) {
+                setState(() async {
+                  ProfileService.user.picture = pickedImage;
+                  await ApiService.putUser(ProfileService.user);
+                  await ProfileService.getUser(ProfileService.account);
+                });
+              }
+            },
             child: Text(
               'Выбрать из галереи',
               style: Theme.of(context).textTheme.bodyText1,
             ),
+          ),
+          CupertinoActionSheetAction(
             onPressed: () async {
               Navigator.of(context).pop();
-              var pickedImage = await ImageController.getImageFromGallery();
+              final pickedImage = await ImageController.getImageFromCamera();
               if (pickedImage != null) {
                 setState(() async {
                   ProfileService.user.picture = pickedImage;
@@ -192,23 +205,10 @@ class AccountInformationState extends State<AccountInformation>
                 });
               }
             },
-          ),
-          CupertinoActionSheetAction(
             child: Text(
               'Камера',
               style: Theme.of(context).textTheme.bodyText1,
             ),
-            onPressed: () async {
-              Navigator.of(context).pop();
-              var pickedImage = await ImageController.getImageFromCamera();
-              if (pickedImage != null) {
-                setState(() async {
-                  ProfileService.user.picture = pickedImage;
-                  await ApiService.putUser(ProfileService.user);
-                  await ProfileService.getUser(ProfileService.account);
-                });
-              }
-            },
           ),
         ],
       ),
@@ -217,10 +217,10 @@ class AccountInformationState extends State<AccountInformation>
   //#endregion
 
   //#region ChangeAccountInfo
-  Widget _change(context) {
+  Widget _change(BuildContext context) {
     return Form(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             getBackButton(),
@@ -234,12 +234,12 @@ class AccountInformationState extends State<AccountInformation>
     );
   }
 
-  Row getSaveButton(context) {
+  Row getSaveButton(BuildContext context) {
     return Row(
       children: [
-        Spacer(),
+        const Spacer(),
         Container(
-          padding: EdgeInsets.only(top: 20, bottom: 2),
+          padding: const EdgeInsets.only(top: 20, bottom: 2),
           child: TextButton(
             onPressed: () async {
               _taped();
@@ -247,14 +247,14 @@ class AccountInformationState extends State<AccountInformation>
               await ProfileService.getUser(ProfileService.account);
             },
             child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
                 color: Color.fromRGBO(130, 147, 153, 1),
                 borderRadius: BorderRadius.all(
                   Radius.circular(20),
                 ),
               ),
-              child: new Text("Сохранить",
+              child: Text("Сохранить",
                   style: Theme.of(context).textTheme.bodyText2),
             ),
           ),
@@ -263,9 +263,9 @@ class AccountInformationState extends State<AccountInformation>
     );
   }
 
-  Container getPhone(context) {
+  Container getPhone(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         keyboardType: TextInputType.phone,
         inputFormatters: [
@@ -276,11 +276,10 @@ class AccountInformationState extends State<AccountInformation>
             ProfileService.user.phone = phone;
           });
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue:
-            ProfileService.user.phone != null ? ProfileService.user.phone : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        initialValue: ProfileService.user.phone ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Телефон",
           prefixText: "+7 ",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -289,21 +288,19 @@ class AccountInformationState extends State<AccountInformation>
     );
   }
 
-  Padding getSurnameField(context) {
+  Padding getSurnameField(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         onChanged: (surname) {
           setState(() {
             ProfileService.user.surname = surname;
           });
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileService.user.surname != null
-            ? ProfileService.user.surname
-            : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        initialValue: ProfileService.user.surname ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Фамилия",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -311,21 +308,20 @@ class AccountInformationState extends State<AccountInformation>
     );
   }
 
-  Padding getNameField(context) {
+  Padding getNameField(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         onChanged: (name) {
           setState(() {
-            this._user.name = name;
+            _user.name = name;
           });
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        key: Key("name"),
-        initialValue:
-            ProfileService.user.name != null ? ProfileService.user.name : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        key: const Key("name"),
+        initialValue: ProfileService.user.name ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Имя",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -336,11 +332,11 @@ class AccountInformationState extends State<AccountInformation>
   Row getBackButton() {
     return Row(
       children: [
-        Spacer(),
+        const Spacer(),
         IconButton(
-            icon: Icon(Icons.navigate_next, size: 30),
+            icon: const Icon(Icons.navigate_next, size: 30),
             padding: EdgeInsets.zero,
-            color: Color.fromRGBO(130, 147, 153, 1),
+            color: const Color.fromRGBO(130, 147, 153, 1),
             onPressed: () async {
               _taped();
               await ProfileService.getUser(ProfileService.account);
@@ -350,8 +346,8 @@ class AccountInformationState extends State<AccountInformation>
   }
   //#endregion
 
-  onAuthorizationPage() async {
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Future<void> onAuthorizationPage() async {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
 
     prefs.setInt("AccountId", 0);

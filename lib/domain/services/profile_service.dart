@@ -13,33 +13,35 @@ class ProfileService {
     Account? accountBD;
 
     await ApiService.fetchAccounts().then((response) {
-      var accountData = accountFromJson(response.data);
-      accountBD = accountData.firstWhereOrNull(
-          (element) => element.login == account!.login && element.role == "user");
+      final accountData = accountFromJson(response.data as String);
+      accountBD = accountData.firstWhereOrNull((element) =>
+          element.login == account!.login && element.role == "user");
     });
     if (accountBD == null) return null;
 
-    final crypto = Crypt.sha256(account!.passwordHash!, salt: accountBD!.salt);
+    final crypto =
+        Crypt.sha256(account!.passwordHash!, salt: accountBD!.salt.toString());
 
     if (accountBD!.passwordHash == crypto.hash) {
       return accountBD;
-    } else
+    } else {
       return null;
+    }
   }
 
   static Future<User?> getUser(Account? account) async {
-    Account? accountBD = await getAccount(account);
+    final Account? accountBD = await getAccount(account);
 
     if (accountBD == null) return null;
 
     User? user;
     await ApiService.fetchUsers().then((response) {
-      var userData = userFromJson(response.data);
+      final userData = userFromJson(response.data as String);
       user =
           userData.firstWhere((element) => element.accountId == accountBD.id);
     });
 
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
 
     prefs.setInt("AccountId", accountBD.id!);
@@ -56,17 +58,17 @@ class ProfileService {
     List<Account> _accounts = [];
 
     await ApiService.fetchAccounts().then((response) {
-      var accountData = accountFromJson(response.data);
+      final accountData = accountFromJson(response.data as String);
       _accounts = accountData.toList();
     });
 
-    for (var item in _accounts) {
+    for (final item in _accounts) {
       if (item.login == account.login) return false;
     }
 
     await ApiService.postAccount(account);
     await ApiService.fetchAccounts().then((response) {
-      var accountData = accountFromJson(response.data);
+      final accountData = accountFromJson(response.data as String);
       _accounts = accountData.toList();
     });
 

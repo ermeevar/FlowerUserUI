@@ -18,8 +18,8 @@ class NavigationMenu extends StatefulWidget {
 class NavigationMenuState extends State<NavigationMenu>
     with TickerProviderStateMixin {
   static final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+      GlobalKey<RefreshIndicatorState>();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   int _selectedIndex = 0;
   late List<Widget> _pages;
 
@@ -37,17 +37,17 @@ class NavigationMenuState extends State<NavigationMenu>
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
-  getProfile() async {
+  Future<void> loadProfile() async {
     final SharedPreferences prefs = await _prefs;
 
     await ApiService.fetchAccounts().then((response) {
-      var accountData = accountFromJson(response.data);
+      final accountData = accountFromJson(response.data as String);
       ProfileService.account = accountData
           .firstWhere((element) => element.id == prefs.getInt('AccountId'));
     });
 
     await ApiService.fetchUsers().then((response) {
-      var userData = userFromJson(response.data);
+      final userData = userFromJson(response.data as String);
       ProfileService.user = userData
           .firstWhere((element) => element.id == prefs.getInt('UserId'));
     });
@@ -56,7 +56,7 @@ class NavigationMenuState extends State<NavigationMenu>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getProfile(),
+        future: loadProfile(),
         builder: (context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -104,7 +104,7 @@ class NavigationMenuState extends State<NavigationMenu>
   }
 
   BottomNavigationBarItem getAccountItem() {
-    return BottomNavigationBarItem(
+    return const BottomNavigationBarItem(
       backgroundColor: Colors.transparent,
       activeIcon: CircleAvatar(
         radius: 31,
@@ -132,7 +132,7 @@ class NavigationMenuState extends State<NavigationMenu>
   }
 
   BottomNavigationBarItem getOrderItem() {
-    return BottomNavigationBarItem(
+    return const BottomNavigationBarItem(
       backgroundColor: Colors.transparent,
       activeIcon: CircleAvatar(
         radius: 31,
@@ -160,7 +160,7 @@ class NavigationMenuState extends State<NavigationMenu>
   }
 
   BottomNavigationBarItem getHomeItem() {
-    return BottomNavigationBarItem(
+    return const BottomNavigationBarItem(
       activeIcon: CircleAvatar(
         radius: 31,
         backgroundColor: Color.fromRGBO(110, 53, 76, 1),
@@ -197,8 +197,8 @@ class NavigationMenuState extends State<NavigationMenu>
       color: Colors.white,
       image: DecorationImage(
         image: _selectedIndex == 0
-            ? AssetImage("resources/images/background.menu.jpg")
-            : AssetImage(""),
+            ? const AssetImage("resources/images/background.menu.jpg")
+            : const AssetImage(""),
         fit: BoxFit.cover,
       ),
     );

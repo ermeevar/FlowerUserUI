@@ -1,5 +1,6 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 import 'package:flower_user_ui/presentation/screens/bouquet/store_selection.dart';
 import 'package:flower_user_ui/presentation/screens/navigation_menu.dart';
 import 'package:flower_user_ui/presentation/screens/order/bouquet_order.dart';
@@ -8,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+
 import 'decoration_selection.dart';
 import 'flower_selection.dart';
 import 'grass_selection.dart';
-import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
 class BouquetMainMenu extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class BouquetMainMenu extends StatefulWidget {
 }
 
 class BouquetMainMenuState extends State<BouquetMainMenu> {
-  int _countOfPages = 4;
+  final int _countOfPages = 4;
   int _stepIndex = 0;
   String swipeDirection = "";
   static Bouquet newBouquet = Bouquet();
@@ -54,14 +55,14 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
   //#region NavigationController
   //#region IndexController
-  addStepIndex() {
+  void addStepIndex() {
     if (_stepIndex >= _countOfPages - 1) return;
     setState(() {
       _stepIndex++;
     });
   }
 
-  removeStepIndex() {
+  void removeStepIndex() {
     if (_stepIndex <= 0) return;
     setState(() {
       _stepIndex--;
@@ -76,7 +77,6 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   Expanded swipeController() {
     return Expanded(
       child: GestureDetector(
-        child: getStep(),
         onPanUpdate: (details) {
           swipeDirection = details.delta.dx < 0 ? 'left' : 'right';
         },
@@ -88,6 +88,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
             removeStepIndex();
           }
         },
+        child: getStep(),
       ),
     );
   }
@@ -95,12 +96,11 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
   Container buildDoteStepper() {
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: DotStepper(
         dotCount: _countOfPages,
         dotRadius: 6,
         activeStep: _stepIndex,
-        shape: Shape.circle,
         spacing: 7,
         indicator: Indicator.worm,
         onDotTapped: (tappedDotIndex) {
@@ -108,11 +108,11 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
             _stepIndex = tappedDotIndex;
           });
         },
-        fixedDotDecoration: FixedDotDecoration(
+        fixedDotDecoration: const FixedDotDecoration(
             strokeWidth: 1,
             strokeColor: Color.fromRGBO(130, 147, 153, 1),
             color: Colors.white),
-        indicatorDecoration: IndicatorDecoration(
+        indicatorDecoration: const IndicatorDecoration(
           color: Color.fromRGBO(130, 147, 153, 1),
           strokeColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -123,22 +123,22 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   FloatingActionButton showBouquetInfo() {
     return FloatingActionButton(
       onPressed: () => _showBouquetInformation(),
-      backgroundColor: Color.fromRGBO(130, 147, 153, 1),
-      child: Icon(Icons.list),
+      backgroundColor: const Color.fromRGBO(130, 147, 153, 1),
+      child: const Icon(Icons.list),
     );
   }
 
-  Widget _header(context) {
+  Widget _header(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back_ios, size: 30),
+            icon: const Icon(Icons.arrow_back_ios, size: 30),
             padding: EdgeInsets.zero,
-            color: Color.fromRGBO(130, 147, 153, 1),
+            color: const Color.fromRGBO(130, 147, 153, 1),
             onPressed: () {
-              newBouquet = new Bouquet();
+              newBouquet = Bouquet();
               products = [];
               Navigator.pop(context);
             },
@@ -155,7 +155,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   //#region BouquetInfo
   Future<void> _showBouquetInformation() {
     double bouquetCost = 0;
-    for (var item in products) {
+    for (final item in products) {
       bouquetCost += item.cost!;
     }
 
@@ -165,14 +165,14 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: getBouquetName(context),
-          content: products.length == 0
+          content: products.isEmpty
               ? showNullSelectedFlowerError(context)
               : StatefulBuilder(builder: (context, setState) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       getCommonCost(bouquetCost, context),
-                      Container(
+                      SizedBox(
                         width: 300,
                         height: 300,
                         child: ListView.builder(
@@ -185,22 +185,23 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                                 getSelectedFlowerName(index, context),
                                 getSelectedFlowerCost(index, context),
                                 IconButton(
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.delete_outline,
                                     size: 20,
                                     color: Colors.red,
                                   ),
                                   padding: EdgeInsets.zero,
-                                  color: Color.fromRGBO(130, 147, 153, 1),
+                                  color: const Color.fromRGBO(130, 147, 153, 1),
                                   onPressed: () {
                                     setState(
                                       () {
                                         bouquetCost = 0;
                                         products.remove(products[index]);
-                                        if (products.length != 0)
-                                          for (var item in products) {
+                                        if (products.isNotEmpty) {
+                                          for (final Product item in products) {
                                             bouquetCost += item.cost!;
                                           }
+                                        }
                                       },
                                     );
                                   },
@@ -232,20 +233,19 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
     return SizedBox(
       width: 80,
       child: IconButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.save_alt,
           color: Color.fromRGBO(130, 147, 153, 1),
         ),
         onPressed: () async {
           if (newBouquet.storeId == null ||
               products
-                      .where((element) => element.productCategoryId == 1)
-                      .length ==
-                  0 ||
+                  .where((element) => element.productCategoryId == 1)
+                  .isEmpty ||
               newBouquet.name == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Букет не собран"),
+                content: const Text("Букет не собран"),
                 action: SnackBarAction(
                   label: "Понятно",
                   onPressed: () {
@@ -258,12 +258,12 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
           await postBouquet(bouquetCost);
 
-          newBouquet = new Bouquet();
+          newBouquet = Bouquet();
           products = [];
 
           showTopSnackBar(
             context,
-            CustomSnackBar.info(
+            const CustomSnackBar.info(
               backgroundColor: Color.fromRGBO(110, 53, 76, 1),
               message: "Шаблон сохранен",
             ),
@@ -280,61 +280,55 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   }
 
   //#region ButtonsOfBouquetInfo
-  Container getBackButton(BuildContext context) {
-    return Container(
-      //padding: EdgeInsets.all(10),
-      child: TextButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: new Text(
-          "Назад",
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
-              ),
-        ),
+  Widget getBackButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      child: Text(
+        "Назад",
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: const Color.fromRGBO(130, 147, 153, 1),
+            ),
       ),
     );
   }
 
-  Container getOrderButton(BuildContext context, double bouquetCost) {
-    return Container(
-      child: TextButton(
-        onPressed: () async {
-          if (newBouquet.storeId == null ||
-              products
-                      .where((element) => element.productCategoryId == 1)
-                      .length ==
-                  0 ||
-              newBouquet.name == null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Букет не собран"),
-                action: SnackBarAction(
-                  label: "Понятно",
-                  onPressed: () {
-                    // Code to execute.
-                  },
-                ),
+  Widget getOrderButton(BuildContext context, double bouquetCost) {
+    return TextButton(
+      onPressed: () async {
+        if (newBouquet.storeId == null ||
+            products
+                .where((element) => element.productCategoryId == 1)
+                .isEmpty ||
+            newBouquet.name == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text("Букет не собран"),
+              action: SnackBarAction(
+                label: "Понятно",
+                onPressed: () {
+                  // Code to execute.
+                },
               ),
-            );
-          } else {
-            Bouquet? postedBouquet = await postBouquet(bouquetCost);
+            ),
+          );
+        } else {
+          final Bouquet? postedBouquet = await postBouquet(bouquetCost);
 
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => BouquetOrder(postedBouquet),
-                ),
-                (Route<dynamic> route) => false);
-          }
-        },
-        child: new Text(
-          "Заказать",
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
-                fontWeight: FontWeight.bold,
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => BouquetOrder(postedBouquet),
               ),
-        ),
+              (Route<dynamic> route) => false);
+        }
+      },
+      child: Text(
+        "Заказать",
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: const Color.fromRGBO(130, 147, 153, 1),
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }
@@ -347,12 +341,12 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
     Bouquet? postedBouquet;
     await ApiService.fetchBouquets().then((response) {
-      var bouquetsData = bouquetFromJson(response.data);
+      final bouquetsData = bouquetFromJson(response.data as String);
       postedBouquet = bouquetsData.last;
     });
 
-    for (var item in BouquetMainMenuState.products) {
-      BouquetProduct middleBouquetProduct = BouquetProduct();
+    for (final item in BouquetMainMenuState.products) {
+      final BouquetProduct middleBouquetProduct = BouquetProduct();
       middleBouquetProduct.bouquetId = postedBouquet!.id;
       middleBouquetProduct.productId = item.id;
       await ApiService.postBouquetProduct(middleBouquetProduct);
@@ -364,12 +358,12 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
   //#region SelectedProductInfo
   Text getSelectedFlowerCost(int index, BuildContext context) {
-    return Text(products[index].cost!.roundDouble(2).toString() + " ₽",
+    return Text("${products[index].cost!.roundDouble(2)} ₽",
         style: Theme.of(context).textTheme.bodyText1);
   }
 
-  Container getSelectedFlowerName(int index, BuildContext context) {
-    return Container(
+  Widget getSelectedFlowerName(int index, BuildContext context) {
+    return SizedBox(
       width: 150,
       child: Text(products[index].name!,
           overflow: TextOverflow.ellipsis,
@@ -380,11 +374,9 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
   Text getCommonCost(double bouquetCost, BuildContext context) {
     return Text(
-      bouquetCost.roundDouble(1).toString() + " ₽",
-      style: Theme.of(context)
-          .textTheme
-          .bodyText1!
-          .copyWith(color: Color.fromRGBO(130, 147, 153, 1), fontSize: 25),
+      "${bouquetCost.roundDouble(1)} ₽",
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          color: const Color.fromRGBO(130, 147, 153, 1), fontSize: 25),
     );
   }
   //#endregion
@@ -393,7 +385,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   Center showNullSelectedFlowerError(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         color: Colors.white,
         child: Text(
           "Цветы не выбраны",
@@ -403,14 +395,12 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
     );
   }
 
-  Container getBouquetName(BuildContext context) {
-    return Container(
-      child: Text(
-        newBouquet.name != null ? newBouquet.name! : "Пустое название",
-        overflow: TextOverflow.ellipsis,
-        softWrap: true,
-        style: Theme.of(context).textTheme.headline6,
-      ),
+  Widget getBouquetName(BuildContext context) {
+    return Text(
+      newBouquet.name != null ? newBouquet.name! : "Пустое название",
+      overflow: TextOverflow.ellipsis,
+      softWrap: true,
+      style: Theme.of(context).textTheme.headline6,
     );
   }
 }

@@ -17,9 +17,9 @@ class FlowerSelectionState extends State<FlowerSelection> {
     _getStoreProducts();
   }
 
-  _getStoreProducts() {
+  Future<void> _getStoreProducts() async {
     ApiService.fetchProducts().then((response) {
-      var storeproductsData = productFromJson(response.data);
+      final storeproductsData = productFromJson(response.data as String);
       setState(() {
         _products = storeproductsData
             .where((element) =>
@@ -42,7 +42,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
 
   Expanded showNonSelectedStoreError(BuildContext context) {
     return Expanded(
-      child: _products.length == 0
+      child: _products.isEmpty
           ? Center(
               child: Text("Сеть не выбрана",
                   style: Theme.of(context).textTheme.bodyText1))
@@ -52,7 +52,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
 
   Padding getProductTitle(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20, top: 20),
+      padding: const EdgeInsets.only(bottom: 20, top: 20),
       child: Text(
         "Цветы",
         style: Theme.of(context).textTheme.bodyText1,
@@ -63,7 +63,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
   //#region ProductList
   Widget _storeProductsList(context) {
     return GridView.builder(
-      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.8,
       ),
@@ -85,46 +85,47 @@ class FlowerSelectionState extends State<FlowerSelection> {
             elevation: 10,
             clipBehavior: Clip.antiAlias,
             child: Container(
-              margin: EdgeInsets.only(bottom: 20, right: 10, left: 10, top: 5),
+              margin: const EdgeInsets.only(
+                  bottom: 20, right: 10, left: 10, top: 5),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _products[index].picture == null
-                      ? Container(
-                          width: 140,
-                          height: 140,
-                          child: Icon(
-                            Icons.image_outlined,
-                            color: Colors.black38,
-                            size: 50,
-                          ),
-                          color: Colors.black12,
-                        )
-                      : ClipOval(
-                          child: Image(
-                            image: MemoryImage(
-                              _products[index].picture!,
-                            ),
-                            width: 120,
-                            height: 120,
-                            fit: BoxFit.cover,
-                          ),
+                  if (_products[index].picture == null)
+                    Container(
+                      width: 140,
+                      height: 140,
+                      color: Colors.black12,
+                      child: const Icon(
+                        Icons.image_outlined,
+                        color: Colors.black38,
+                        size: 50,
+                      ),
+                    )
+                  else
+                    ClipOval(
+                      child: Image(
+                        image: MemoryImage(
+                          _products[index].picture!,
                         ),
+                        width: 120,
+                        height: 120,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   Container(
                     width: 140,
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Text(
                       _products[index].name!,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: Color.fromRGBO(55, 50, 52, 1),
+                            color: const Color.fromRGBO(55, 50, 52, 1),
                           ),
                     ),
                   ),
                   Text(
-                    _products[index].cost.toString() + " ₽",
+                    "${_products[index].cost} ₽",
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
@@ -167,8 +168,8 @@ class FlowerSelectionState extends State<FlowerSelection> {
                     child: Slider(
                       value: _count.toDouble(),
                       divisions: 20,
-                      activeColor: Color.fromRGBO(130, 147, 153, 1),
-                      inactiveColor: Color.fromRGBO(130, 147, 153, 130),
+                      activeColor: const Color.fromRGBO(130, 147, 153, 1),
+                      inactiveColor: const Color.fromRGBO(130, 147, 153, 130),
                       max: 20,
                       min: 1,
                       label: "$_count",
@@ -193,7 +194,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
   Container getAddButton(
       int _count, Product selectedProduct, BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: TextButton(
         onPressed: () {
           if (_count != 0) {
@@ -203,7 +204,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Цветок добавлен"),
+                content: const Text("Цветок добавлен"),
                 action: SnackBarAction(
                   label: "Понятно",
                   onPressed: () {
@@ -214,10 +215,10 @@ class FlowerSelectionState extends State<FlowerSelection> {
             );
           }
         },
-        child: new Text(
+        child: Text(
           "Сохранить",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-              color: Color.fromRGBO(130, 147, 153, 1),
+              color: const Color.fromRGBO(130, 147, 153, 1),
               fontWeight: FontWeight.bold),
         ),
       ),

@@ -18,7 +18,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   getAccounts() async {
     await ApiService.fetchAccounts().then((response) {
-      var accountData = accountFromJson(response.data);
+      var accountData = accountFromJson(response.data as String);
       setState(() {
         _accounts = accountData.toList();
       });

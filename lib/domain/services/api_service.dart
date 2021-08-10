@@ -8,30 +8,33 @@ class ApiService {
   static Dio dio = Dio();
 
   //#region Server
-  static String _androidEmulatorLoopback = "185.246.67.169";
-  static String _port = "5004";
-  static String _baseUrl = "http://$_androidEmulatorLoopback:$_port";
+  static const String _androidEmulatorLoopback = "185.246.67.169";
+  static const String _port = "5004";
+  static const String _baseUrl = "http://$_androidEmulatorLoopback:$_port";
   //#endregion
 
   //#region URL's
-  static String _storeUrl = _baseUrl + "/stores/";
-  static String _shopUrl = _baseUrl + "/shops/";
-  static String _productUrl = _baseUrl + "/products/";
-  static String _orderUrl = _baseUrl + "/orders/";
-  static String _bouquetUrl = _baseUrl + "/bouquets/";
-  static String _bouquetProductUrl = _baseUrl + "/bouquetproducts/";
-  static String _orderStatusUrl = _baseUrl + "/orderstatuses/";
-  static String _accountUrl = _baseUrl + "/accounts/";
-  static String _templateUrl = _baseUrl + "/templates/";
-  static String _templateCategoryUrl = _baseUrl + "/templatecategories/";
-  static String _productCategoryUrl = _baseUrl + "/productcategories/";
-  static String _userUrl = _baseUrl + "/users/";
+  static const String _storeUrl = "$_baseUrl/stores/";
+  static const String _shopUrl = "$_baseUrl/shops/";
+  static const String _productUrl = "$_baseUrl/products/";
+  static const String _orderUrl = "$_baseUrl/orders/";
+  static const String _bouquetUrl = "$_baseUrl/bouquets/";
+  static const String _bouquetProductUrl = "$_baseUrl/bouquetproducts/";
+  static const String _orderStatusUrl = "$_baseUrl/orderstatuses/";
+  static const String _accountUrl = "$_baseUrl/accounts/";
+  static const String _templateUrl = "$_baseUrl/templates/";
+  static const String _templateCategoryUrl = "$_baseUrl/templatecategories/";
+  static const String _productCategoryUrl = "$_baseUrl/productcategories/";
+  static const String _userUrl = "$_baseUrl/users/";
   //#endregion
+
+  static const Duration longDuration = Duration(days: 7);
+  static const Duration shortDuration = Duration(days: 1);
 
   ApiService() {
     dio.interceptors.add(
-        DioCacheManager(CacheConfig(baseUrl: "http://1185.246.67.169"))
-            .interceptor);
+        DioCacheManager(CacheConfig(baseUrl: _androidEmulatorLoopback))
+            .interceptor as Interceptor);
   }
 
   static Map<String, String> header = {
@@ -41,95 +44,95 @@ class ApiService {
 
   //#region GET response strings
   static Future fetchShops() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _shopUrl,
-      options: buildCacheOptions(Duration(days: 7)),
+      options: buildCacheOptions(longDuration),
     );
   }
 
   static Future fetchStores() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _storeUrl,
-      options: buildCacheOptions(Duration(days: 7)),
+      options: buildCacheOptions(longDuration),
     );
   }
 
   static Future fetchProductCategories() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _productCategoryUrl,
-      options: buildCacheOptions(Duration(days: 7)),
+      options: buildCacheOptions(longDuration),
     );
   }
 
   static Future fetchAccounts() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _accountUrl,
-      options: buildCacheOptions(Duration(days: 7)),
+      options: buildCacheOptions(longDuration),
     );
   }
 
   static Future fetchOrders() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _orderUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchBouquets() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _bouquetUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchOrderStatuses() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _orderStatusUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchProducts() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _productUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchBouquetProducts() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _bouquetProductUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchTemplates() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _templateUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchTemplateCategories() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _templateCategoryUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
 
   static Future fetchUsers() async {
-    return await Dio().get<String>(
+    return Dio().get<String>(
       _userUrl,
-      options: buildCacheOptions(Duration(days: 1)),
+      options: buildCacheOptions(shortDuration),
     );
   }
   //#endregion
 
   //#region POST
   static Future postShop(Shop shop) async {
-    var reverseShop = shop.toJson();
-    var shopJson = json.encode(reverseShop);
-    var response = await dio.post(_shopUrl,
+    final reverseShop = shop.toJson();
+    final shopJson = json.encode(reverseShop);
+    final response = await dio.post(_shopUrl,
         options: Options(
             headers: {HttpHeaders.contentTypeHeader: "application/json"}),
         data: shopJson);
@@ -137,9 +140,9 @@ class ApiService {
   }
 
   static Future postStore(Store store) async {
-    var reverseStore = store.toJson();
-    var storeJson = json.encode(reverseStore);
-    var response = await dio.post(_storeUrl,
+    final reverseStore = store.toJson();
+    final storeJson = json.encode(reverseStore);
+    final response = await dio.post(_storeUrl,
         options: Options(
             headers: {HttpHeaders.contentTypeHeader: "application/json"}),
         data: storeJson);
@@ -147,49 +150,49 @@ class ApiService {
   }
 
   static Future postAccount(Account account) async {
-    var reverseAccount = account.toJson();
-    var accountJson = json.encode(reverseAccount);
-    var response = await dio.post(_accountUrl,
+    final reverseAccount = account.toJson();
+    final accountJson = json.encode(reverseAccount);
+    final response = await dio.post(_accountUrl,
         options: Options(headers: header), data: accountJson);
     return response.statusCode;
   }
 
   static Future postOrder(Order order) async {
-    var reverseOrder = order.toJson();
-    var orderJson = json.encode(reverseOrder);
-    var response = await dio.post(_orderUrl,
+    final reverseOrder = order.toJson();
+    final orderJson = json.encode(reverseOrder);
+    final response = await dio.post(_orderUrl,
         options: Options(headers: header), data: orderJson);
     return response.statusCode;
   }
 
   static Future postBouquet(Bouquet bouquet) async {
-    var reverseBouquet = bouquet.toJson();
-    var bouquetJson = json.encode(reverseBouquet);
-    var response = await dio.post(_bouquetUrl,
+    final reverseBouquet = bouquet.toJson();
+    final bouquetJson = json.encode(reverseBouquet);
+    final response = await dio.post(_bouquetUrl,
         options: Options(headers: header), data: bouquetJson);
     return response.statusCode;
   }
 
   static Future postProduct(Product product) async {
-    var reverseProduct = product.toJson();
-    var productJson = json.encode(reverseProduct);
-    var response = await dio.post(_productUrl,
+    final reverseProduct = product.toJson();
+    final productJson = json.encode(reverseProduct);
+    final response = await dio.post(_productUrl,
         options: Options(headers: header), data: productJson);
     return response.statusCode;
   }
 
   static Future postBouquetProduct(BouquetProduct bouquetProduct) async {
-    var reverseBouquetProduct = bouquetProduct.toJson();
-    var bouquetProductJson = json.encode(reverseBouquetProduct);
-    var response = await dio.post(_bouquetProductUrl,
+    final reverseBouquetProduct = bouquetProduct.toJson();
+    final bouquetProductJson = json.encode(reverseBouquetProduct);
+    final response = await dio.post(_bouquetProductUrl,
         options: Options(headers: header), data: bouquetProductJson);
     return response.statusCode;
   }
 
   static Future postUser(User user) async {
-    var reverseUser = user.toJson();
-    var userJson = json.encode(reverseUser);
-    var response = await dio.post(_userUrl,
+    final reverseUser = user.toJson();
+    final userJson = json.encode(reverseUser);
+    final response = await dio.post(_userUrl,
         options: Options(headers: header), data: userJson);
     return response.statusCode;
   }
@@ -197,57 +200,57 @@ class ApiService {
 
   //#region PUT
   static Future putShop(Shop shop) async {
-    var reverseShop = shop.toJsonUpdate();
-    var shopJson = json.encode(reverseShop);
-    var response = await dio.put(_shopUrl + shop.id.toString(),
+    final reverseShop = shop.toJsonUpdate();
+    final shopJson = json.encode(reverseShop);
+    final response = await dio.put(_shopUrl + shop.id.toString(),
         queryParameters: header, data: shopJson);
     return response.statusCode;
   }
 
   static Future putStore(Store store) async {
-    var reverseStore = store.toJsonUpdate();
-    var storeJson = json.encode(reverseStore);
-    var response = await dio.put(_storeUrl + store.id.toString(),
+    final reverseStore = store.toJsonUpdate();
+    final storeJson = json.encode(reverseStore);
+    final response = await dio.put(_storeUrl + store.id.toString(),
         queryParameters: header, data: storeJson);
     return response.statusCode;
   }
 
   static Future putAccount(Account account) async {
-    var reverseAccount = account.toJsonUpdate();
-    var accountJson = json.encode(reverseAccount);
-    var response = await dio.put(_accountUrl + account.id.toString(),
+    final reverseAccount = account.toJsonUpdate();
+    final accountJson = json.encode(reverseAccount);
+    final response = await dio.put(_accountUrl + account.id.toString(),
         queryParameters: header, data: accountJson);
     return response.statusCode;
   }
 
   static Future putOrder(Order order) async {
-    var reverseOrder = order.toJsonUpdate();
-    var orderJson = json.encode(reverseOrder);
-    var response = await dio.put(_orderUrl + order.id.toString(),
+    final reverseOrder = order.toJsonUpdate();
+    final orderJson = json.encode(reverseOrder);
+    final response = await dio.put(_orderUrl + order.id.toString(),
         queryParameters: header, data: orderJson);
     return response.statusCode;
   }
 
   static Future putBouquet(Bouquet bouquet) async {
-    var reverseBouquet = bouquet.toJsonUpdate();
-    var bouquetJson = json.encode(reverseBouquet);
-    var response = await dio.put(_bouquetUrl + bouquet.id.toString(),
+    final reverseBouquet = bouquet.toJsonUpdate();
+    final bouquetJson = json.encode(reverseBouquet);
+    final response = await dio.put(_bouquetUrl + bouquet.id.toString(),
         queryParameters: header, data: bouquetJson);
     return response.statusCode;
   }
 
   static Future putProduct(Product product) async {
-    var reverseProduct = product.toJsonUpdate();
-    var productJson = json.encode(reverseProduct);
-    var response = await dio.put(_productUrl + product.id.toString(),
+    final reverseProduct = product.toJsonUpdate();
+    final productJson = json.encode(reverseProduct);
+    final response = await dio.put(_productUrl + product.id.toString(),
         queryParameters: header, data: productJson);
     return response.statusCode;
   }
 
   static Future putBouquetProduct(BouquetProduct bouquetProduct) async {
-    var reverseBouquetProduct = bouquetProduct.toJsonUpdate();
-    var bouquetProductJson = json.encode(reverseBouquetProduct);
-    var response = await dio.put(
+    final reverseBouquetProduct = bouquetProduct.toJsonUpdate();
+    final bouquetProductJson = json.encode(reverseBouquetProduct);
+    final response = await dio.put(
         _bouquetProductUrl + bouquetProduct.id.toString(),
         queryParameters: header,
         data: bouquetProductJson);
@@ -255,9 +258,9 @@ class ApiService {
   }
 
   static Future putUser(User user) async {
-    var reverseUser = user.toJsonUpdate();
-    var userJson = json.encode(reverseUser);
-    var response = await dio.put(_userUrl + user.id.toString(),
+    final reverseUser = user.toJsonUpdate();
+    final userJson = json.encode(reverseUser);
+    final response = await dio.put(_userUrl + user.id.toString(),
         queryParameters: header, data: userJson);
     return response.statusCode;
   }
@@ -265,42 +268,42 @@ class ApiService {
 
   //#region DELETE
   static Future deleteShop(int id) async {
-    var response = await dio.delete(_shopUrl + id.toString());
+    final response = await dio.delete(_shopUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteStore(int id) async {
-    var response = await dio.delete(_storeUrl + id.toString());
+    final response = await dio.delete(_storeUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteAccount(int? id) async {
-    var response = await dio.delete(_accountUrl + id.toString());
+    final response = await dio.delete(_accountUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteOrder(int id) async {
-    var response = await dio.delete(_orderUrl + id.toString());
+    final response = await dio.delete(_orderUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteBouquet(int? id) async {
-    var response = await dio.delete(_bouquetUrl + id.toString());
+    final response = await dio.delete(_bouquetUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteProduct(int id) async {
-    var response = await dio.delete(_productUrl + id.toString());
+    final response = await dio.delete(_productUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteBouquetProduct(int id) async {
-    var response = await dio.delete(_bouquetProductUrl + id.toString());
+    final response = await dio.delete(_bouquetProductUrl + id.toString());
     return response.statusCode;
   }
 
   static Future deleteUser(int id) async {
-    var response = await dio.delete(_userUrl + id.toString());
+    final response = await dio.delete(_userUrl + id.toString());
     return response.statusCode;
   }
   //#endregion

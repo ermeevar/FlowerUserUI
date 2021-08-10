@@ -20,7 +20,8 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
   //#region GetData
   _getTemplateCategories() async {
     await ApiService.fetchTemplateCategories().then((response) {
-      var templateCategoriesData = templateCategoryFromJson(response.data);
+      var templateCategoriesData =
+          templateCategoryFromJson(response.data as String);
       setState(() {
         _templateCategories = templateCategoriesData;
       });
@@ -29,7 +30,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
 
   _getTemplates() async {
     await ApiService.fetchTemplates().then((response) {
-      var templateData = templateFromJson(response.data);
+      var templateData = templateFromJson(response.data as String);
       setState(() {
         _templates = templateData;
       });
@@ -53,7 +54,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
     );
   }
 
-  Container _header(context) {
+  Container _header(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Row(

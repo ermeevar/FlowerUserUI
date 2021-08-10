@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flower_user_ui/domain/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/slider_shape.dart';
 import 'package:flower_user_ui/presentation/screens/bouquet/bouquet_main.dart';
@@ -31,7 +33,7 @@ class MainMenuContent extends StatelessWidget {
     );
   }
 
-  Widget _accountInfo(context) {
+  Widget _accountInfo(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -54,7 +56,8 @@ class MainMenuContent extends StatelessWidget {
                         )
                       : ClipOval(
                           child: Image(
-                            image: MemoryImage(ProfileService.user.picture),
+                            image: MemoryImage(
+                                ProfileService.user.picture as Uint8List),
                             width: 40,
                             height: 40,
                             fit: BoxFit.cover,
@@ -70,7 +73,7 @@ class MainMenuContent extends StatelessWidget {
   }
 
   //#region Cards
-  Widget _bouquetCards(context) {
+  Widget _bouquetCards(BuildContext context) {
     return Container(
       padding: EdgeInsets.zero,
       height: 335,
@@ -85,7 +88,7 @@ class MainMenuContent extends StatelessWidget {
     );
   }
 
-  Container buildRandomCard(context) {
+  Container buildRandomCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 30),
       height: 300,
@@ -125,7 +128,7 @@ class MainMenuContent extends StatelessWidget {
     );
   }
 
-  Container buildTemplateCard(context) {
+  Container buildTemplateCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 30),
       height: 300,
@@ -167,7 +170,7 @@ class MainMenuContent extends StatelessWidget {
     );
   }
 
-  Container buildBouquetCard(context) {
+  Container buildBouquetCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 30),
       height: 300,
@@ -209,7 +212,7 @@ class MainMenuContent extends StatelessWidget {
     );
   }
 
-  Future<void> _showCountOfProductDialog(context) async {
+  Future<void> _showCountOfProductDialog(BuildContext context) async {
     double _cost = 300;
     return showDialog<void>(
       context: context,

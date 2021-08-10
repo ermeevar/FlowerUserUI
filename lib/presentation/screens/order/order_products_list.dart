@@ -24,14 +24,14 @@ class ProductsListState extends State<ProductsList> {
   _getProducts() async {
     late List<BouquetProduct> middleProducts;
     await ApiService.fetchBouquetProducts().then((response) {
-      var bouquetProductsData = bouquetProductFromJson(response.data);
+      var bouquetProductsData = bouquetProductFromJson(response.data as String);
       middleProducts = bouquetProductsData
           .where((element) => element.bouquetId == bouquetId)
           .toList();
     });
 
     await ApiService.fetchProducts().then((response) {
-      var productsData = productFromJson(response.data);
+      var productsData = productFromJson(response.data as String);
       setState(() {
         _products = productsData
             .where((element) =>

@@ -18,7 +18,7 @@ class StoreSelectionState extends State<StoreSelection> {
 
   _getStores() {
     ApiService.fetchStores().then((response) {
-      var storesData = storeFromJson(response.data);
+      var storesData = storeFromJson(response.data as String);
       setState(() {
         _stores = storesData;
       });

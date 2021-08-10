@@ -26,7 +26,7 @@ class TemplateSelectionState extends State<TemplateSelection> {
 
   _getTemplates() async {
     await ApiService.fetchTemplates().then((response) {
-      var templateData = templateFromJson(response.data);
+      var templateData = templateFromJson(response.data as String);
       setState(() {
         _templates = templateData
             .where(
@@ -52,7 +52,7 @@ class TemplateSelectionState extends State<TemplateSelection> {
     );
   }
 
-  Container _header(context) {
+  Container _header(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Row(

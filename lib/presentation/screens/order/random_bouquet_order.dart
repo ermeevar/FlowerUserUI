@@ -46,7 +46,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   _getShops() async {
     await ApiService.fetchShops().then((response) {
-      var shopsData = shopFromJson(response.data);
+      var shopsData = shopFromJson(response.data as String);
       setState(() {
         _shops = shopsData;
       });
@@ -68,7 +68,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Widget _header(context) {
+  Widget _header(BuildContext context) {
     return Container(
       padding: EdgeInsets.zero,
       child: Row(
@@ -95,7 +95,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Widget _nameAndCostInfo(context) {
+  Widget _nameAndCostInfo(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
@@ -126,7 +126,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   }
 
   //#region Order information
-  Widget _orderInfo(context) {
+  Widget _orderInfo(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
@@ -142,7 +142,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Padding getCardButton(context) {
+  Padding getCardButton(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(20),
       child: order.card == null
@@ -175,7 +175,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Row getShop(context) {
+  Row getShop(BuildContext context) {
     return Row(
       children: [
         SizedBox(
@@ -211,7 +211,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Container getPhone(context) {
+  Container getPhone(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -234,7 +234,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Container getName(context) {
+  Container getName(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -253,7 +253,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Container getSurname(context) {
+  Container getSurname(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -273,7 +273,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Row getDate(context) {
+  Row getDate(BuildContext context) {
     return Row(
       children: [
         SizedBox(
@@ -396,7 +396,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   }
   //#endregion
 
-  Widget _orderButton(context) {
+  Widget _orderButton(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Container(

@@ -18,7 +18,7 @@ class GrassSelectionState extends State<GrassSelection> {
 
   _getStoreProducts() {
     ApiService.fetchProducts().then((response) {
-      var storeproductsData = productFromJson(response.data);
+      var storeproductsData = productFromJson(response.data as String);
       setState(() {
         _products = storeproductsData
             .where((element) =>

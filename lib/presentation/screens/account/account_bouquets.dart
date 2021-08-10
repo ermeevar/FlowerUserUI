@@ -22,7 +22,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
 
   Future<void> getBouquets() {
     return ApiService.fetchBouquets().then((response) {
-      var bouquetData = bouquetFromJson(response.data);
+      final bouquetData = bouquetFromJson(response.data as String);
       setState(() {
         _bouquets = bouquetData.reversed
             .where((element) => element.userId == ProfileService.user.id)
@@ -34,14 +34,14 @@ class AccountBouquetsState extends State<AccountBouquets> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      color: Color.fromRGBO(110, 53, 76, 1),
+      color: const Color.fromRGBO(110, 53, 76, 1),
       key: NavigationMenuState.refreshIndicatorKey,
       onRefresh: getBouquets,
       child: Column(
         children: [
           getBouquetTitle(context),
           Expanded(
-            child: _bouquets.length == 0
+            child: _bouquets.isEmpty
                 ? getNullBouquetError()
                 : Container(
                     padding: EdgeInsets.zero,
@@ -70,15 +70,14 @@ class AccountBouquetsState extends State<AccountBouquets> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      margin: EdgeInsets.only(top: 10, right: 10, left: 20, bottom: 10),
-      color: Color.fromRGBO(130, 147, 153, 1),
+      margin: const EdgeInsets.only(top: 10, right: 10, left: 20, bottom: 10),
+      color: const Color.fromRGBO(130, 147, 153, 1),
       elevation: 5,
       child: Container(
         width: 200,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             getDeleteButton(index),
             getBouquetItemName(index, context),
@@ -93,11 +92,11 @@ class AccountBouquetsState extends State<AccountBouquets> {
   Row getDeleteButton(int index) {
     return Row(
       children: [
-        Spacer(),
+        const Spacer(),
         SizedBox(
           height: 30,
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.delete,
               color: Colors.white,
             ),
@@ -114,7 +113,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
 
   Padding getBouquetItemOrder(BuildContext context, int index) {
     return Padding(
-      padding: EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 15),
       child: OutlinedButton(
         onPressed: () {
           Navigator.push(
@@ -132,8 +131,8 @@ class AccountBouquetsState extends State<AccountBouquets> {
 
   Padding getBouquetItemCost(int index, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: Text(_bouquets[index].cost!.roundDouble(2).toString() + " ₽",
+      padding: const EdgeInsets.only(top: 10),
+      child: Text("${_bouquets[index].cost!.roundDouble(2)} ₽",
           style: Theme.of(context).textTheme.bodyText1),
     );
   }
@@ -156,15 +155,15 @@ class AccountBouquetsState extends State<AccountBouquets> {
   //#endregion
 
   Center getNullBouquetError() =>
-      Center(child: Text("У вас нет ни одного букета"));
+      const Center(child: Text("У вас нет ни одного букета"));
 
   Container getBouquetTitle(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, bottom: 5),
+      padding: const EdgeInsets.only(left: 20, bottom: 5),
       child: Row(
         children: [
           Text("Мои букеты", style: Theme.of(context).textTheme.subtitle1),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );
