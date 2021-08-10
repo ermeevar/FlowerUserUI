@@ -7,7 +7,6 @@ class Connection {
         connectivityResult != ConnectivityResult.wifi) {
       return false;
     }
-
     return true;
   }
 }

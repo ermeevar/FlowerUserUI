@@ -179,7 +179,8 @@ class AccountInformationState extends State<AccountInformation>
           CupertinoActionSheetAction(
             onPressed: () async {
               Navigator.of(context).pop();
-              final pickedImage = await ImageController.getImageFromGallery();
+              final pickedImage =
+                  await ImageController.getImage(source: ImageSource.gallery);
               if (pickedImage != null) {
                 setState(() async {
                   ProfileService.user.picture = pickedImage;
@@ -196,7 +197,8 @@ class AccountInformationState extends State<AccountInformation>
           CupertinoActionSheetAction(
             onPressed: () async {
               Navigator.of(context).pop();
-              final pickedImage = await ImageController.getImageFromCamera();
+              final pickedImage =
+                  await ImageController.getImage(source: ImageSource.camera);
               if (pickedImage != null) {
                 setState(() async {
                   ProfileService.user.picture = pickedImage;
