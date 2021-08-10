@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
 class MainMenuContent extends StatelessWidget {
-  MainMenuContent();
+  const MainMenuContent();
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +38,18 @@ class MainMenuContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+          padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
           child: Row(
             children: [
               Text(ProfileService.account!.login!,
                   style: Theme.of(context).textTheme.bodyText2),
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 20,
                   child: ProfileService.user.picture == null
-                      ? Icon(
+                      ? const Icon(
                           Icons.supervisor_account_outlined,
                           color: Colors.black38,
                           size: 20,
@@ -90,7 +90,7 @@ class MainMenuContent extends StatelessWidget {
 
   Container buildRandomCard(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 30),
+      margin: const EdgeInsets.only(left: 30),
       height: 300,
       width: 230,
       child: Card(
@@ -102,18 +102,18 @@ class MainMenuContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
               child:
                   Icon(Icons.add_shopping_cart, color: Colors.white, size: 60),
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text("Случайный букет",
                   style: Theme.of(context).textTheme.subtitle1),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: OutlinedButton(
                 onPressed: () {
                   _showCountOfProductDialog(context);
@@ -130,7 +130,7 @@ class MainMenuContent extends StatelessWidget {
 
   Container buildTemplateCard(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 30),
+      margin: const EdgeInsets.only(left: 30),
       height: 300,
       width: 230,
       child: Card(
@@ -142,17 +142,17 @@ class MainMenuContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
               child: Icon(Icons.image_outlined, color: Colors.white, size: 60),
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text("Букет по шаблону",
                   style: Theme.of(context).textTheme.subtitle1),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: OutlinedButton(
                 onPressed: () async {
                   await Navigator.push(
@@ -172,7 +172,7 @@ class MainMenuContent extends StatelessWidget {
 
   Container buildBouquetCard(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 30),
+      margin: const EdgeInsets.only(left: 30),
       height: 300,
       width: 230,
       child: Card(
@@ -184,17 +184,17 @@ class MainMenuContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
               child: Icon(Icons.add, color: Colors.white, size: 60),
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text("Новый букет",
                   style: Theme.of(context).textTheme.headline6),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: OutlinedButton(
                 onPressed: () {
                   Navigator.push(
@@ -229,7 +229,7 @@ class MainMenuContent extends StatelessWidget {
                 child: ListBody(
                   children: <Widget>[
                     Text(
-                      "Цена:" + _cost.roundDouble(2).toString() + " ₽",
+                      "Цена:${_cost.roundDouble(2)} ₽",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2!
@@ -242,8 +242,8 @@ class MainMenuContent extends StatelessWidget {
                       child: Slider(
                         value: _cost,
                         divisions: 97,
-                        activeColor: Color.fromRGBO(130, 147, 153, 1),
-                        inactiveColor: Color.fromRGBO(130, 147, 153, 130),
+                        activeColor: const Color.fromRGBO(130, 147, 153, 1),
+                        inactiveColor: const Color.fromRGBO(130, 147, 153, 130),
                         max: 10000,
                         min: 300,
                         label: _cost.roundDouble(2).toString(),
@@ -257,21 +257,21 @@ class MainMenuContent extends StatelessWidget {
               ),
               actions: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: new Text(
+                    child: Text(
                       "Назад",
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            color: Color.fromRGBO(130, 147, 153, 1),
+                            color: const Color.fromRGBO(130, 147, 153, 1),
                           ),
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: TextButton(
                     onPressed: () async {
                       await Navigator.push(
@@ -280,10 +280,10 @@ class MainMenuContent extends StatelessWidget {
                               builder: (context) => RandomBouquetOrder(_cost)));
                       Navigator.pop(context);
                     },
-                    child: new Text(
+                    child: Text(
                       "Заказать",
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Color.fromRGBO(130, 147, 153, 1),
+                          color: const Color.fromRGBO(130, 147, 153, 1),
                           fontWeight: FontWeight.bold),
                     ),
                   ),

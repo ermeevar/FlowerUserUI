@@ -9,7 +9,7 @@ import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
 class TemplateSelection extends StatefulWidget {
   final TemplateCategory _templateCategory;
-  TemplateSelection(this._templateCategory);
+  const TemplateSelection(this._templateCategory);
 
   @override
   TemplateSelectionState createState() =>
@@ -17,16 +17,16 @@ class TemplateSelection extends StatefulWidget {
 }
 
 class TemplateSelectionState extends State<TemplateSelection> {
-  TemplateCategory _templateCategory;
+  final TemplateCategory _templateCategory;
   List<Template> _templates = [];
 
   TemplateSelectionState(this._templateCategory) {
     _getTemplates();
   }
 
-  _getTemplates() async {
+  Future<void> _getTemplates() async {
     await ApiService.fetchTemplates().then((response) {
-      var templateData = templateFromJson(response.data as String);
+      final templateData = templateFromJson(response.data as String);
       setState(() {
         _templates = templateData
             .where(
@@ -54,13 +54,13 @@ class TemplateSelectionState extends State<TemplateSelection> {
 
   Container _header(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back_ios, size: 30),
+            icon: const Icon(Icons.arrow_back_ios, size: 30),
             padding: EdgeInsets.zero,
-            color: Color.fromRGBO(130, 147, 153, 1),
+            color: const Color.fromRGBO(130, 147, 153, 1),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -74,9 +74,9 @@ class TemplateSelectionState extends State<TemplateSelection> {
   Expanded _createTemplatesListView(context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: GridView.builder(
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.8,
           ),
@@ -97,36 +97,36 @@ class TemplateSelectionState extends State<TemplateSelection> {
                     elevation: 10,
                     clipBehavior: Clip.antiAlias,
                     child: Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                           bottom: 20, right: 10, left: 10, top: 5),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _templates[index].picture == null
-                              ? Container(
-                                  width: 140,
-                                  height: 140,
-                                  child: Icon(
-                                    Icons.image_outlined,
-                                    color: Colors.black38,
-                                    size: 50,
-                                  ),
-                                  color: Colors.black12,
-                                )
-                              : ClipOval(
-                                  child: Image(
-                                    image: MemoryImage(
-                                      _templates[index].picture as Uint8List,
-                                    ),
-                                    width: 120,
-                                    height: 120,
-                                    fit: BoxFit.cover,
-                                  ),
+                          if (_templates[index].picture == null)
+                            Container(
+                              width: 140,
+                              height: 140,
+                              color: Colors.black12,
+                              child: const Icon(
+                                Icons.image_outlined,
+                                color: Colors.black38,
+                                size: 50,
+                              ),
+                            )
+                          else
+                            ClipOval(
+                              child: Image(
+                                image: MemoryImage(
+                                  _templates[index].picture as Uint8List,
                                 ),
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           Container(
                             width: 140,
-                            margin: EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 10),
                             child: Text(
                               _templates[index].name!,
                               overflow: TextOverflow.ellipsis,
@@ -135,13 +135,12 @@ class TemplateSelectionState extends State<TemplateSelection> {
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(
-                                    color: Color.fromRGBO(55, 50, 52, 1),
+                                    color: const Color.fromRGBO(55, 50, 52, 1),
                                   ),
                             ),
                           ),
                           Text(
-                            _templates[index].cost!.roundDouble(2).toString() +
-                                " ₽",
+                            "${_templates[index].cost!.roundDouble(2)} ₽",
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],

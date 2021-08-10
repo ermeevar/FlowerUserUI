@@ -16,9 +16,9 @@ class GrassSelectionState extends State<GrassSelection> {
     _getStoreProducts();
   }
 
-  _getStoreProducts() {
+  Future<void> _getStoreProducts() async {
     ApiService.fetchProducts().then((response) {
-      var storeproductsData = productFromJson(response.data as String);
+      final storeproductsData = productFromJson(response.data as String);
       setState(() {
         _products = storeproductsData
             .where((element) =>
@@ -41,7 +41,7 @@ class GrassSelectionState extends State<GrassSelection> {
 
   Expanded getNonSelectedStoreError(BuildContext context) {
     return Expanded(
-      child: _products.length == 0
+      child: _products.isEmpty
           ? Center(
               child: Text("Сеть не выбрана",
                   style: Theme.of(context).textTheme.bodyText1))
@@ -51,7 +51,7 @@ class GrassSelectionState extends State<GrassSelection> {
 
   Padding getGrassTitle(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20, top: 20),
+      padding: const EdgeInsets.only(bottom: 20, top: 20),
       child: Text(
         "Зелень",
         style: Theme.of(context).textTheme.bodyText1,
@@ -61,7 +61,7 @@ class GrassSelectionState extends State<GrassSelection> {
 
   Widget _storeProductsList(context) {
     return GridView.builder(
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.8,
         ),
@@ -72,7 +72,7 @@ class GrassSelectionState extends State<GrassSelection> {
               GestureDetector(
                 onTap: () {
                   bool isHasInBouquet = false;
-                  for (var item in BouquetMainMenuState.products) {
+                  for (final item in BouquetMainMenuState.products) {
                     if (item.id == _products[index].id) {
                       isHasInBouquet = true;
                     }
@@ -85,8 +85,8 @@ class GrassSelectionState extends State<GrassSelection> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: !isHasInBouquet
-                          ? Text("Зелень добавлена в букет")
-                          : Text("Зелень уже присутствует в букете"),
+                          ? const Text("Зелень добавлена в букет")
+                          : const Text("Зелень уже присутствует в букете"),
                       action: SnackBarAction(
                         label: "Понятно",
                         onPressed: () {
@@ -100,48 +100,50 @@ class GrassSelectionState extends State<GrassSelection> {
                   elevation: 10,
                   clipBehavior: Clip.antiAlias,
                   child: Container(
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                         bottom: 20, right: 10, left: 10, top: 5),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _products[index].picture == null
-                            ? Container(
-                                width: 140,
-                                height: 140,
-                                child: Icon(
-                                  Icons.image_outlined,
-                                  color: Colors.black38,
-                                  size: 50,
-                                ),
-                                color: Colors.black12,
-                              )
-                            : ClipOval(
-                                child: Image(
-                                  image: MemoryImage(
-                                    _products[index].picture!,
-                                  ),
-                                  width: 120,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                ),
+                        if (_products[index].picture == null)
+                          Container(
+                            width: 140,
+                            height: 140,
+                            color: Colors.black12,
+                            child: const Icon(
+                              Icons.image_outlined,
+                              color: Colors.black38,
+                              size: 50,
+                            ),
+                          )
+                        else
+                          ClipOval(
+                            child: Image(
+                              image: MemoryImage(
+                                _products[index].picture!,
                               ),
+                              width: 120,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         Container(
                           width: 140,
-                          margin: EdgeInsets.only(top: 10),
+                          margin: const EdgeInsets.only(top: 10),
                           child: Text(
                             _products[index].name!,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
-                            style:
-                                Theme.of(context).textTheme.headline6!.copyWith(
-                                      color: Color.fromRGBO(55, 50, 52, 1),
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(
+                                  color: const Color.fromRGBO(55, 50, 52, 1),
+                                ),
                           ),
                         ),
                         Text(
-                          _products[index].cost.toString() + " ₽",
+                          "${_products[index].cost} ₽",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],

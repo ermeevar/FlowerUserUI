@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ProductsList extends StatefulWidget {
   final int? bouquetId;
 
-  ProductsList(this.bouquetId) {}
+  const ProductsList(this.bouquetId);
 
   @override
   ProductsListState createState() => ProductsListState(this.bouquetId);
@@ -21,17 +21,18 @@ class ProductsListState extends State<ProductsList> {
     _getProducts();
   }
 
-  _getProducts() async {
+  Future<void> _getProducts() async {
     late List<BouquetProduct> middleProducts;
     await ApiService.fetchBouquetProducts().then((response) {
-      var bouquetProductsData = bouquetProductFromJson(response.data as String);
+      final bouquetProductsData =
+          bouquetProductFromJson(response.data as String);
       middleProducts = bouquetProductsData
           .where((element) => element.bouquetId == bouquetId)
           .toList();
     });
 
     await ApiService.fetchProducts().then((response) {
-      var productsData = productFromJson(response.data as String);
+      final productsData = productFromJson(response.data as String);
       setState(() {
         _products = productsData
             .where((element) =>
@@ -44,10 +45,9 @@ class ProductsListState extends State<ProductsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       height: 260,
-      clipBehavior: Clip.none,
-      color: Color.fromRGBO(110, 53, 76, 1),
+      color: const Color.fromRGBO(110, 53, 76, 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,7 +60,7 @@ class ProductsListState extends State<ProductsList> {
 
   Expanded getProductList() {
     return Expanded(
-      child: _products.length != 0
+      child: _products.isNotEmpty
           ? Padding(
               padding: EdgeInsets.zero,
               child: ListView.builder(
@@ -76,18 +76,18 @@ class ProductsListState extends State<ProductsList> {
 
   Card getValue(int index, BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 10, right: 10, left: 20, bottom: 10),
+      margin: const EdgeInsets.only(top: 10, right: 10, left: 20, bottom: 10),
       elevation: 5,
-      color: Color.fromRGBO(55, 50, 52, 1),
+      color: const Color.fromRGBO(55, 50, 52, 1),
       child: _products[index].picture == null
           ? Container(
               width: 140,
-              child: Icon(
+              color: Colors.black12,
+              child: const Icon(
                 Icons.image_outlined,
                 color: Colors.white,
                 size: 50,
               ),
-              color: Colors.black12,
             )
           : Image(
               image: MemoryImage(
@@ -101,7 +101,7 @@ class ProductsListState extends State<ProductsList> {
 
   Container getTitle(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
+      padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
       child: Row(
         children: [
           Text(
@@ -111,7 +111,7 @@ class ProductsListState extends State<ProductsList> {
                 .subtitle1!
                 .copyWith(color: Colors.white),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

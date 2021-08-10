@@ -227,15 +227,15 @@ class FlowerSelectionState extends State<FlowerSelection> {
 
   Container getBackButton(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: TextButton(
         onPressed: () {
           Navigator.pop(context);
         },
-        child: new Text(
+        child: Text(
           "Назад",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
+                color: const Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
       ),

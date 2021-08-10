@@ -13,16 +13,16 @@ import '../navigation_menu.dart';
 class RandomBouquetOrder extends StatefulWidget {
   final double _cost;
 
-  RandomBouquetOrder(this._cost) {}
+  const RandomBouquetOrder(this._cost);
 
   @override
   RandomBouquetOrderState createState() => RandomBouquetOrderState(_cost);
 }
 
 class RandomBouquetOrderState extends State<RandomBouquetOrder> {
-  Order order = new Order();
+  Order order = Order();
   bool isSelectedCard = false;
-  double _cost;
+  final double _cost;
   List<Shop> _shops = [];
 
   RandomBouquetOrderState(this._cost) {
@@ -30,12 +30,12 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   }
 
   //#region Set data
-  _setOrderInitialData() async {
+  Future<void> _setOrderInitialData() async {
     await _getShops();
 
     setState(() {
       order.userId = ProfileService.user.id;
-      order.finish = DateTime.now().add(Duration(days: 1));
+      order.finish = DateTime.now().add(const Duration(days: 1));
       order.start = DateTime.now();
       order.shopId = _shops.first.id;
       order.orderStatusId = 1;
@@ -44,7 +44,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     });
   }
 
-  _getShops() async {
+  Future<void> _getShops() async {
     await ApiService.fetchShops().then((response) {
       var shopsData = shopFromJson(response.data as String);
       setState(() {
@@ -76,9 +76,9 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           SizedBox(
             width: 50,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, size: 25),
-              padding: EdgeInsets.only(left: 20),
-              color: Color.fromRGBO(130, 147, 153, 1),
+              icon: const Icon(Icons.arrow_back_ios, size: 25),
+              padding: const EdgeInsets.only(left: 20),
+              color: const Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
@@ -97,21 +97,18 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   Widget _nameAndCostInfo(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            child: Text(
-              "Букет от флориста",
-              overflow: TextOverflow.clip,
-              softWrap: true,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 23,
-                    color: Color.fromRGBO(130, 147, 153, 1),
-                  ),
-            ),
+          Text(
+            "Букет от флориста",
+            overflow: TextOverflow.clip,
+            softWrap: true,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  fontSize: 23,
+                  color: const Color.fromRGBO(130, 147, 153, 1),
+                ),
           ),
           Text(
             _cost.roundDouble(2).toString(),
@@ -128,7 +125,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   //#region Order information
   Widget _orderInfo(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
         children: [
           getDate(context),
@@ -144,7 +141,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   Padding getCardButton(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: order.card == null
           ? OutlinedButton(
               onPressed: () {
@@ -153,7 +150,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
               child: Text(
                 'Добавить открытку',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: Color.fromRGBO(110, 53, 76, 1),
+                      color: const Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
             )
@@ -164,10 +161,10 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                   isSelectedCard = false;
                 });
               },
-              child: new Text(
+              child: Text(
                 "Удалить открытку",
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: Color.fromRGBO(110, 53, 76, 1),
+                      color: const Color.fromRGBO(110, 53, 76, 1),
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -183,7 +180,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           child: IconButton(
             padding: EdgeInsets.zero,
             alignment: Alignment.centerLeft,
-            icon: Icon(
+            icon: const Icon(
               Icons.home,
               color: Color.fromRGBO(130, 147, 153, 1),
             ),
@@ -195,11 +192,11 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         Text(
           "Магазин: ",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
+                color: const Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
         Text(
-          _shops.length != 0
+          _shops.isNotEmpty
               ? _shops
                   .where((element) => element.id == order.shopId)
                   .first
@@ -213,7 +210,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   Container getPhone(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         keyboardType: TextInputType.phone,
         inputFormatters: [
@@ -222,10 +219,10 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         onChanged: (phone) {
           setState(() {});
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
         initialValue: ProfileService.user.phone,
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Телефон",
           prefixText: "+7 ",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -236,16 +233,15 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   Container getName(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         onChanged: (name) {
           setState(() {});
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue:
-            ProfileService.user.name != null ? ProfileService.user.name : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        initialValue: ProfileService.user.name ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Имя",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -255,17 +251,15 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   Container getSurname(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         onChanged: (surname) {
           setState(() {});
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileService.user.surname != null
-            ? ProfileService.user.surname
-            : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        initialValue: ProfileService.user.surname ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Фамилия",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -281,7 +275,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           child: IconButton(
             padding: EdgeInsets.zero,
             alignment: Alignment.centerLeft,
-            icon: Icon(
+            icon: const Icon(
               Icons.access_time,
               color: Color.fromRGBO(130, 147, 153, 1),
             ),
@@ -293,7 +287,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         Text(
           "Дата сборки:  ",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
+                color: const Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
         Text(
@@ -331,7 +325,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: new Text(
+                child: Text(
                   "Выбрать",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
@@ -366,7 +360,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                   itemExtent: 50,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Text(
                         _shops[index].address!,
                         style: Theme.of(context).textTheme.bodyText1,
@@ -379,7 +373,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: new Text(
+                child: Text(
                   "Выбрать",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
@@ -400,14 +394,14 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Container(
-        padding: EdgeInsets.only(top: 30, bottom: 20),
+        padding: const EdgeInsets.only(top: 30, bottom: 20),
         child: TextButton(
           onPressed: () async {
             await ApiService.postOrder(order);
 
             showTopSnackBar(
               context,
-              CustomSnackBar.info(
+              const CustomSnackBar.info(
                 backgroundColor: Color.fromRGBO(110, 53, 76, 1),
                 message: "Заказ оформлен",
               ),
@@ -421,8 +415,8 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           },
           child: Container(
             width: 150,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
                 color: Color.fromRGBO(130, 147, 153, 1),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Center(
@@ -454,9 +448,8 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                       order.card = card;
                     });
                   },
-                  minLines: null,
                   maxLines: null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(10),
                     border: OutlineInputBorder(),
                     labelText: 'Надпись',
@@ -467,27 +460,25 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
             ),
           ),
           actions: <Widget>[
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: new Text(
-                  "Назад",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                      ),
-                ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Назад",
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: const Color.fromRGBO(130, 147, 153, 1),
+                    ),
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text("Открытка добавлена"),
+                      content: const Text("Открытка добавлена"),
                       action: SnackBarAction(
                         label: "Понятно",
                         onPressed: () {
@@ -497,10 +488,10 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                     ),
                   );
                 },
-                child: new Text(
+                child: Text(
                   "Сохранить",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: Color.fromRGBO(130, 147, 153, 1),
+                      color: const Color.fromRGBO(130, 147, 153, 1),
                       fontWeight: FontWeight.bold),
                 ),
               ),

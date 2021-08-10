@@ -4,6 +4,7 @@ import 'package:flower_user_ui/presentation/screens/template/template_selection.
 import 'package:flutter/material.dart';
 
 class TemplateCategorySelection extends StatefulWidget {
+  @override
   TemplateCategorySelectionState createState() =>
       TemplateCategorySelectionState();
 }
@@ -18,9 +19,9 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
   }
 
   //#region GetData
-  _getTemplateCategories() async {
+  Future<void> _getTemplateCategories() async {
     await ApiService.fetchTemplateCategories().then((response) {
-      var templateCategoriesData =
+      final templateCategoriesData =
           templateCategoryFromJson(response.data as String);
       setState(() {
         _templateCategories = templateCategoriesData;
@@ -28,9 +29,9 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
     });
   }
 
-  _getTemplates() async {
+  Future<void> _getTemplates() async {
     await ApiService.fetchTemplates().then((response) {
-      var templateData = templateFromJson(response.data as String);
+      final templateData = templateFromJson(response.data as String);
       setState(() {
         _templates = templateData;
       });
@@ -56,13 +57,13 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
 
   Container _header(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Row(
         children: [
           IconButton(
-              icon: Icon(Icons.arrow_back_ios, size: 30),
+              icon: const Icon(Icons.arrow_back_ios, size: 30),
               padding: EdgeInsets.zero,
-              color: Color.fromRGBO(130, 147, 153, 1),
+              color: const Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
                 Navigator.pop(context);
               }),
@@ -75,9 +76,9 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
   Expanded _createTemplateCategoriesListView(context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.builder(
-          padding: EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 10),
           itemCount: _templateCategories.length,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -114,7 +115,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
   }
 
   Divider getDivider() {
-    return Divider(
+    return const Divider(
       color: Color.fromRGBO(130, 147, 153, 1),
       height: 1,
     );
@@ -122,15 +123,15 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
 
   Container getTemplateName(int index, BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 15),
+      margin: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
         children: [
           Text(
             _templateCategories[index].name!,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          Spacer(),
-          Icon(
+          const Spacer(),
+          const Icon(
             Icons.navigate_next,
             color: Color.fromRGBO(130, 147, 153, 1),
           )
@@ -141,9 +142,9 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
 
   Container getCircleCountTemplates(int index, BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 10, top: 5, bottom: 5),
+      margin: const EdgeInsets.only(right: 10, top: 5, bottom: 5),
       child: CircleAvatar(
-        backgroundColor: Color.fromRGBO(130, 147, 153, 1),
+        backgroundColor: const Color.fromRGBO(130, 147, 153, 1),
         radius: 25,
         child: Text(
           _getCountOfCategories(_templateCategories[index]).toString(),

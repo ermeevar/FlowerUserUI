@@ -25,8 +25,8 @@ class NavigationMenuState extends State<NavigationMenu>
 
   NavigationMenuState() {
     _pages = <Widget>[
-      MainMenuContent(),
-      OrdersObserveMain(),
+      const MainMenuContent(),
+      const OrdersObserveMain(),
       AccountObserve(),
     ];
   }
@@ -64,7 +64,7 @@ class NavigationMenuState extends State<NavigationMenu>
             case ConnectionState.done:
               return buildNavigationMenu();
             case ConnectionState.none:
-              return Text("No connection");
+              return const Text("No connection");
             case ConnectionState.active:
               return vinousCircleProgressBarScaffold(this);
           }

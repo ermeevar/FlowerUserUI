@@ -4,21 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationMainMenu extends StatefulWidget {
+  @override
   RegistrationMainMenuState createState() => RegistrationMainMenuState();
 }
 
 class RegistrationMainMenuState extends State<RegistrationMainMenu> {
-  User _user = User();
-  Account _account = Account();
+  final User _user = User();
+  final Account _account = Account();
   late List<Account> _accounts;
 
   RegistrationMainMenuState() {
     getAccounts();
   }
 
-  getAccounts() async {
+  Future<void> getAccounts() async {
     await ApiService.fetchAccounts().then((response) {
-      var accountData = accountFromJson(response.data as String);
+      final accountData = accountFromJson(response.data as String);
       setState(() {
         _accounts = accountData.toList();
       });
@@ -44,10 +45,9 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
   Center buildContent(BuildContext context) {
     return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Spacer(),
+          const Spacer(),
           Text(
             "Регистрация",
             style: Theme.of(context).textTheme.headline6,
@@ -58,7 +58,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           getLogin(context),
           getPassword(context),
           getSaveButton(context),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );
@@ -66,12 +66,12 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   Container getSaveButton(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 50),
+      padding: const EdgeInsets.only(top: 50),
       child: TextButton(
         onPressed: () async {
-          if (await ProfileService.addUser(_account, _user) == true)
+          if (await ProfileService.addUser(_account, _user) == true) {
             Navigator.pop(context);
-          else
+          } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -86,16 +86,17 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
                 ),
               ),
             );
+          }
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 90),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 90),
+          decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(40))),
-          child: new Text(
+          child: Text(
             "СОХРАНИТЬ",
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Color.fromRGBO(110, 53, 76, 1),
+                  color: const Color.fromRGBO(110, 53, 76, 1),
                 ),
           ),
         ),
@@ -105,17 +106,17 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   Padding getPassword(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
         obscureText: true,
         onChanged: (password) {
           setState(() {
-            this._account.passwordHash = password;
+            _account.passwordHash = password;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -129,16 +130,16 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   Padding getLogin(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
         onChanged: (login) {
           setState(() {
-            this._account.login = login;
+            _account.login = login;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -151,16 +152,16 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   Padding getPhone(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
         onChanged: (phone) {
           setState(() {
-            this._user.phone = phone;
+            _user.phone = phone;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -173,16 +174,16 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   Padding getName(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
         onChanged: (name) {
           setState(() {
-            this._user.name = name;
+            _user.name = name;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -195,16 +196,16 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
 
   Padding getFirstName(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 40),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 40),
       child: TextFormField(
         onChanged: (surname) {
           setState(() {
-            this._user.surname = surname;
+            _user.surname = surname;
           });
         },
         cursorColor: Colors.white,
         style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
           ),
@@ -226,7 +227,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           child: Container(
             width: 15,
             height: 15,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -238,7 +239,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           child: Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -250,7 +251,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           child: Container(
             width: 100,
             height: 100,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -262,7 +263,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           child: Container(
             width: 150,
             height: 150,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -272,7 +273,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           top: 80,
           left: 30,
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             color: Colors.white,
             onPressed: () {
               Navigator.pop(context);
@@ -285,7 +286,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           child: Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -297,7 +298,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           child: Container(
             width: 20,
             height: 20,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
@@ -311,7 +312,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

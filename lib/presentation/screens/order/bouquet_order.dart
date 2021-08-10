@@ -14,16 +14,16 @@ import 'order_products_list.dart';
 class BouquetOrder extends StatefulWidget {
   final Bouquet? _bouquet;
 
-  BouquetOrder(this._bouquet) {}
+  const BouquetOrder(this._bouquet);
 
   @override
   BouquetOrderState createState() => BouquetOrderState(_bouquet);
 }
 
 class BouquetOrderState extends State<BouquetOrder> {
-  Order order = new Order();
+  Order order = Order();
   bool isSelectedCard = false;
-  Bouquet? _bouquet;
+  late final Bouquet? _bouquet;
   List<Shop> _shops = [];
 
   BouquetOrderState(this._bouquet) {
@@ -31,12 +31,12 @@ class BouquetOrderState extends State<BouquetOrder> {
   }
 
   //#region Set data
-  _setOrderInitialData() async {
+  Future<void> _setOrderInitialData() async {
     await _getShops();
 
     setState(() {
       order.userId = ProfileService.user.id;
-      order.finish = DateTime.now().add(Duration(days: 1));
+      order.finish = DateTime.now().add(const Duration(days: 1));
       order.start = DateTime.now();
       order.shopId = _shops.first.id;
       order.orderStatusId = 1;
@@ -46,9 +46,9 @@ class BouquetOrderState extends State<BouquetOrder> {
     });
   }
 
-  _getShops() async {
+  Future<void> _getShops() async {
     await ApiService.fetchShops().then((response) {
-      var shopsData = shopFromJson(response.data as String);
+      final shopsData = shopFromJson(response.data as String);
       setState(() {
         _shops = shopsData
             .where((element) => element.storeId == _bouquet!.storeId)
@@ -81,9 +81,9 @@ class BouquetOrderState extends State<BouquetOrder> {
           SizedBox(
             width: 50,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, size: 25),
-              padding: EdgeInsets.only(left: 20),
-              color: Color.fromRGBO(130, 147, 153, 1),
+              icon: const Icon(Icons.arrow_back_ios, size: 25),
+              padding: const EdgeInsets.only(left: 20),
+              color: const Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
                 BouquetMainMenuState.newBouquet = Bouquet();
                 BouquetMainMenuState.products = [];
@@ -105,26 +105,21 @@ class BouquetOrderState extends State<BouquetOrder> {
 
   Widget _nameAndCostInfo(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            child: Text(
-              _bouquet!.name == null ? "" : _bouquet!.name!,
-              overflow: TextOverflow.clip,
-              softWrap: true,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 23,
-                    color: Color.fromRGBO(130, 147, 153, 1),
-                  ),
-            ),
+          Text(
+            _bouquet!.name == null ? "" : _bouquet!.name!,
+            overflow: TextOverflow.clip,
+            softWrap: true,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  fontSize: 23,
+                  color: const Color.fromRGBO(130, 147, 153, 1),
+                ),
           ),
           Text(
-            order.cost != null
-                ? order.cost!.roundDouble(2).toString() + " ₽"
-                : "",
+            order.cost != null ? "${order.cost!.roundDouble(2)} ₽" : "",
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
@@ -138,7 +133,7 @@ class BouquetOrderState extends State<BouquetOrder> {
   //#region Order information
   Widget _orderInfo(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       child: Column(
         children: [
           getDate(context),
@@ -154,7 +149,7 @@ class BouquetOrderState extends State<BouquetOrder> {
 
   Padding getCardButton(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: order.card == null
           ? OutlinedButton(
               onPressed: () {
@@ -163,7 +158,7 @@ class BouquetOrderState extends State<BouquetOrder> {
               child: Text(
                 'Добавить открытку',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: Color.fromRGBO(110, 53, 76, 1),
+                      color: const Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
               // borderSide: BorderSide(
@@ -177,10 +172,10 @@ class BouquetOrderState extends State<BouquetOrder> {
                   isSelectedCard = false;
                 });
               },
-              child: new Text(
+              child: Text(
                 "Удалить открытку",
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: Color.fromRGBO(110, 53, 76, 1),
+                      color: const Color.fromRGBO(110, 53, 76, 1),
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -196,7 +191,7 @@ class BouquetOrderState extends State<BouquetOrder> {
           child: IconButton(
             padding: EdgeInsets.zero,
             alignment: Alignment.centerLeft,
-            icon: Icon(
+            icon: const Icon(
               Icons.home,
               color: Color.fromRGBO(130, 147, 153, 1),
             ),
@@ -208,11 +203,11 @@ class BouquetOrderState extends State<BouquetOrder> {
         Text(
           "Магазин: ",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
+                color: const Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
         Text(
-          _shops.length != 0
+          _shops.isNotEmpty
               ? _shops
                   .where((element) => element.id == order.shopId)
                   .first
@@ -226,7 +221,7 @@ class BouquetOrderState extends State<BouquetOrder> {
 
   Container getPhone(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         keyboardType: TextInputType.phone,
         inputFormatters: [
@@ -235,10 +230,10 @@ class BouquetOrderState extends State<BouquetOrder> {
         onChanged: (phone) {
           setState(() {});
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
         initialValue: ProfileService.user.phone,
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Телефон",
           prefixText: "+7 ",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -249,16 +244,15 @@ class BouquetOrderState extends State<BouquetOrder> {
 
   Container getName(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         onChanged: (name) {
           setState(() {});
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue:
-            ProfileService.user.name != null ? ProfileService.user.name : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        initialValue: ProfileService.user.name ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Имя",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -268,17 +262,15 @@ class BouquetOrderState extends State<BouquetOrder> {
 
   Container getSurname(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         onChanged: (surname) {
           setState(() {});
         },
-        cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileService.user.surname != null
-            ? ProfileService.user.surname
-            : "",
+        cursorColor: const Color.fromRGBO(130, 147, 153, 1),
+        initialValue: ProfileService.user.surname ?? "",
         style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "Фамилия",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
         ),
@@ -294,7 +286,7 @@ class BouquetOrderState extends State<BouquetOrder> {
           child: IconButton(
             padding: EdgeInsets.zero,
             alignment: Alignment.centerLeft,
-            icon: Icon(
+            icon: const Icon(
               Icons.access_time,
               color: Color.fromRGBO(130, 147, 153, 1),
             ),
@@ -306,7 +298,7 @@ class BouquetOrderState extends State<BouquetOrder> {
         Text(
           "Дата сборки:  ",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Color.fromRGBO(130, 147, 153, 1),
+                color: const Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
         Text(
@@ -344,7 +336,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: new Text(
+                child: Text(
                   "Выбрать",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
@@ -379,7 +371,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                   itemExtent: 50,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Text(
                         _shops[index].address!,
                         style: Theme.of(context).textTheme.bodyText1,
@@ -392,7 +384,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: new Text(
+                child: Text(
                   "Выбрать",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
@@ -413,7 +405,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Container(
-        padding: EdgeInsets.only(top: 30, bottom: 20),
+        padding: const EdgeInsets.only(top: 30, bottom: 20),
         child: TextButton(
           onPressed: () async {
             await ApiService.postOrder(order);
@@ -423,7 +415,7 @@ class BouquetOrderState extends State<BouquetOrder> {
 
             showTopSnackBar(
               context,
-              CustomSnackBar.info(
+              const CustomSnackBar.info(
                 backgroundColor: Color.fromRGBO(110, 53, 76, 1),
                 message: "Заказ оформлен",
               ),
@@ -437,8 +429,8 @@ class BouquetOrderState extends State<BouquetOrder> {
           },
           child: Container(
             width: 150,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
                 color: Color.fromRGBO(130, 147, 153, 1),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Center(
@@ -470,9 +462,8 @@ class BouquetOrderState extends State<BouquetOrder> {
                       order.card = card;
                     });
                   },
-                  minLines: null,
                   maxLines: null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(10),
                     border: OutlineInputBorder(),
                     labelText: 'Надпись',
@@ -483,27 +474,25 @@ class BouquetOrderState extends State<BouquetOrder> {
             ),
           ),
           actions: <Widget>[
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: new Text(
-                  "Назад",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: Color.fromRGBO(130, 147, 153, 1),
-                      ),
-                ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Назад",
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: const Color.fromRGBO(130, 147, 153, 1),
+                    ),
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text("Открытка добавлена"),
+                      content: const Text("Открытка добавлена"),
                       action: SnackBarAction(
                         label: "Понятно",
                         onPressed: () {
@@ -513,10 +502,10 @@ class BouquetOrderState extends State<BouquetOrder> {
                     ),
                   );
                 },
-                child: new Text(
+                child: Text(
                   "Сохранить",
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: Color.fromRGBO(130, 147, 153, 1),
+                      color: const Color.fromRGBO(130, 147, 153, 1),
                       fontWeight: FontWeight.bold),
                 ),
               ),

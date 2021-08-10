@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'orders_list.dart';
 
 class OrdersObserveMain extends StatelessWidget {
-  OrdersObserveMain();
+  const OrdersObserveMain();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class OrdersObserveMain extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Text("Заказы",
                   style: Theme.of(context)
                       .textTheme
