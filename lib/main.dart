@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:flower_user_ui/presentation/screens/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'internal/utils/certificate.dart';
 import 'presentation/screens/authorization_widgets/authorization_main_menu.dart';
 
 void main() {
-  HttpOverrides.global = Certificate();
   runApp(MyApp());
 }
 
@@ -56,56 +53,59 @@ class MyApp extends StatelessWidget {
             actionTextColor: Colors.white,
           ),
           inputDecorationTheme: const InputDecorationTheme(
-              labelStyle: TextStyle(
+            labelStyle: TextStyle(
+              color: Color.fromRGBO(130, 147, 153, 1),
+            ),
+            contentPadding: EdgeInsets.zero,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
-              contentPadding: EdgeInsets.zero,
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                color: Color.fromRGBO(130, 147, 153, 1),
-              ))),
+            ),
+          ),
           bottomSheetTheme: const BottomSheetThemeData(
               backgroundColor: Color.fromRGBO(130, 147, 153, 1),
               shape: RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(30))))),
       home: FutureBuilder<bool>(
-          future: isAuthorized(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Scaffold(
-                  body: Center(
-                    child: Text(
-                      "Загрузка...",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+        future: isAuthorized(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    "Загрузка...",
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
-                );
-              case ConnectionState.done:
-                return snapshot.data!
-                    ? NavigationMenu()
-                    : AuthorizationMainMenu();
-              case ConnectionState.none:
-                return Scaffold(
-                  body: Center(
-                    child: Text(
-                      "Нет сети",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+                ),
+              );
+            case ConnectionState.done:
+              return snapshot.data!
+                  ? NavigationMenu()
+                  : AuthorizationMainMenu();
+            case ConnectionState.none:
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    "Нет сети",
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
-                );
-              case ConnectionState.active:
-                return Scaffold(
-                  body: Center(
-                    child: Text(
-                      "Загрузка...",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+                ),
+              );
+            case ConnectionState.active:
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    "Загрузка...",
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
-                );
-            }
-          }),
+                ),
+              );
+          }
+        },
+      ),
     );
   }
 }

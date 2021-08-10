@@ -1,5 +1,5 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 import 'package:flower_user_ui/presentation/common_widgets/null_container.dart';
 import 'package:flower_user_ui/presentation/common_widgets/space_container.dart';

@@ -1,8 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/domain/services/api_service.dart';
-import 'package:flower_user_ui/domain/services/profile_service.dart';
+import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/internal/utils/image_controller.dart';
 import 'package:flower_user_ui/presentation/screens/authorization_widgets/authorization_main_menu.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flower_user_ui/internal/utils/json.dart';
+import 'package:flower_user_ui/data/utils/json.dart';
 
 List<TemplateCategory> templateCategoryFromJson(String str) =>
     Json.jsonListFromString(str)

@@ -1,13 +1,12 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/domain/services/api_service.dart';
-import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/circle_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'account/account_main.dart';
-import 'main.menu/main_menu_content.dart';
+import 'main_menu/main_menu_content.dart';
 import 'orders_observe/orders_observe_main.dart';
 
 class NavigationMenu extends StatefulWidget {

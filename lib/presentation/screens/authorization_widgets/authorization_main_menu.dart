@@ -1,6 +1,5 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/domain/services/api_service.dart';
-import 'package:flower_user_ui/domain/services/profile_service.dart';
+import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/null_container.dart';
 import 'package:flower_user_ui/presentation/screens/registration_widgets/registration_main_menu.dart';
 import 'package:flutter/cupertino.dart';

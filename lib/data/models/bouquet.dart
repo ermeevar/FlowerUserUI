@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flower_user_ui/internal/utils/json.dart';
+import 'package:flower_user_ui/data/utils/json.dart';
 
 List<Bouquet> bouquetFromJson(String str) =>
     Json.jsonListFromString(str).map((e) => Bouquet.fromJson(e)).toList();

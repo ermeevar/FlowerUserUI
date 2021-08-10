@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flower_user_ui/internal/utils/byte_list.dart';
-import 'package:flower_user_ui/internal/utils/json.dart';
+import 'package:flower_user_ui/data/utils/byte_list.dart';
+import 'package:flower_user_ui/data/utils/json.dart';
 
 List<Template> templateFromJson(String str) =>
     Json.jsonListFromString(str).map((e) => Template.fromJson(e)).toList();

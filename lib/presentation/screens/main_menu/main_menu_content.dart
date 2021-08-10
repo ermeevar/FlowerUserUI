@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/slider_shape.dart';
 import 'package:flower_user_ui/presentation/screens/bouquet/bouquet_main.dart';
 import 'package:flower_user_ui/presentation/screens/order/random_bouquet_order.dart';

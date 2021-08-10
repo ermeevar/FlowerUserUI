@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
+import 'package:flower_user_ui/data/utils/certificate.dart';
 
 // TODO: Тут весь класс нужно разбить на мелкие контроллеры с общим кодом, сделать нормальную поддержку тестовых сред и смены ip, таймаут
 class ApiService {
@@ -33,6 +34,7 @@ class ApiService {
   static const Duration shortDuration = Duration(days: 1);
 
   ApiService() {
+    HttpOverrides.global = Certificate();
     dio.interceptors.add(
         DioCacheManager(CacheConfig(baseUrl: _androidEmulatorLoopback))
             .interceptor as Interceptor);
