@@ -120,7 +120,7 @@ class StoreSelectionState extends State<StoreSelection> {
       _stores[index].name.toString(),
       overflow: TextOverflow.ellipsis,
       softWrap: true,
-      style: Theme.of(context).textTheme.bodyText1.copyWith(height: 2.5),
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 2.5),
     );
   }
 
@@ -135,7 +135,7 @@ class StoreSelectionState extends State<StoreSelection> {
               )
             : ClipOval(
                 child: Image(
-                  image: MemoryImage(_stores[index].picture),
+                  image: MemoryImage(_stores[index].picture!),
                   width: 120,
                   height: 120,
                   fit: BoxFit.cover,

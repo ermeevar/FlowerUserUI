@@ -15,11 +15,11 @@ class Account {
     this.role,
   });
 
-  int id;
-  String login;
-  String passwordHash;
+  int? id;
+  String? login;
+  String? passwordHash;
   dynamic salt;
-  String role;
+  String? role;
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
         id: json["id"],

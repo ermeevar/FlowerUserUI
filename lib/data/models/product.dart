@@ -18,12 +18,12 @@ class Product {
     this.storeId,
   });
 
-  int id;
-  String name;
-  Uint8List picture;
-  double cost;
-  int productCategoryId;
-  int storeId;
+  int? id;
+  String? name;
+  Uint8List? picture;
+  double? cost;
+  int? productCategoryId;
+  int? storeId;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
@@ -38,7 +38,7 @@ class Product {
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "picture": picture != null ? base64.encode(picture) : null,
+        "picture": picture != null ? base64.encode(picture!) : null,
         "cost": cost,
         "productCategoryId": productCategoryId,
         "storeId": storeId,
@@ -47,7 +47,7 @@ class Product {
   Map<String, dynamic> toJsonUpdate() => {
         "id": id,
         "name": name,
-        "picture": picture != null ? base64.encode(picture) : null,
+        "picture": picture != null ? base64.encode(picture!) : null,
         "cost": cost,
         "productCategoryId": productCategoryId,
         "storeId": storeId,

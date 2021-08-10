@@ -14,10 +14,10 @@ class Shop {
     this.accountId,
   });
 
-  int id;
-  String address;
-  int storeId;
-  int accountId;
+  int? id;
+  String? address;
+  int? storeId;
+  int? accountId;
 
   factory Shop.fromJson(Map<String, dynamic> json) => Shop(
         id: json["id"],

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:crypt/crypt.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,34 +6,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api_service.dart';
 
 class ProfileService {
-  static Account account;
-  static User user;
+  static Account? account;
+  static late User user;
 
-  static Future<Account> getAccount(Account account) async {
-    Account accountBD;
+  static Future<Account?> getAccount(Account? account) async {
+    Account? accountBD;
 
     await ApiService.fetchAccounts().then((response) {
       var accountData = accountFromJson(response.data);
-      accountBD = accountData.firstWhere(
-          (element) => element.login == account.login && element.role == "user",
-          orElse: () => null);
+      accountBD = accountData.firstWhereOrNull(
+          (element) => element.login == account!.login && element.role == "user");
     });
     if (accountBD == null) return null;
 
-    final crypto = Crypt.sha256(account.passwordHash, salt: accountBD.salt);
+    final crypto = Crypt.sha256(account!.passwordHash!, salt: accountBD!.salt);
 
-    if (accountBD.passwordHash == crypto.hash) {
+    if (accountBD!.passwordHash == crypto.hash) {
       return accountBD;
     } else
       return null;
   }
 
-  static Future<User> getUser(Account account) async {
-    Account accountBD = await getAccount(account);
+  static Future<User?> getUser(Account? account) async {
+    Account? accountBD = await getAccount(account);
 
     if (accountBD == null) return null;
 
-    User user;
+    User? user;
     await ApiService.fetchUsers().then((response) {
       var userData = userFromJson(response.data);
       user =
@@ -42,14 +42,14 @@ class ProfileService {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
 
-    prefs.setInt("AccountId", accountBD.id);
-    prefs.setInt("UserId", user.id);
+    prefs.setInt("AccountId", accountBD.id!);
+    prefs.setInt("UserId", user!.id!);
 
     return user;
   }
 
   static Future<bool> addUser(Account account, User user) async {
-    final crypto = Crypt.sha256(account.passwordHash);
+    final crypto = Crypt.sha256(account.passwordHash!);
     account.passwordHash = crypto.hash;
     account.salt = crypto.salt;
     account.role = "user";

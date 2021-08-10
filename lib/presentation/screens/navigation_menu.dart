@@ -21,7 +21,7 @@ class NavigationMenuState extends State<NavigationMenu>
       new GlobalKey<RefreshIndicatorState>();
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   int _selectedIndex = 0;
-  List<Widget> _pages;
+  late List<Widget> _pages;
 
   NavigationMenuState() {
     _pages = <Widget>[
@@ -65,7 +65,6 @@ class NavigationMenuState extends State<NavigationMenu>
               return buildNavigationMenu();
             case ConnectionState.none:
               return Text("No connection");
-              break;
             case ConnectionState.active:
               return vinousCircleProgressBarScaffold(this);
           }

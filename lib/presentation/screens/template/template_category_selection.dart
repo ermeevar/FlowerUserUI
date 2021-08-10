@@ -125,7 +125,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
       child: Row(
         children: [
           Text(
-            _templateCategories[index].name,
+            _templateCategories[index].name!,
             style: Theme.of(context).textTheme.bodyText1,
           ),
           Spacer(),
@@ -145,9 +145,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
         backgroundColor: Color.fromRGBO(130, 147, 153, 1),
         radius: 25,
         child: Text(
-          _getCountOfCategories(_templateCategories[index]) != null
-              ? _getCountOfCategories(_templateCategories[index]).toString()
-              : "0",
+          _getCountOfCategories(_templateCategories[index]).toString(),
           style: Theme.of(context).textTheme.bodyText2,
         ),
       ),

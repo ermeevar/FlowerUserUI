@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductsList extends StatefulWidget {
-  final int bouquetId;
+  final int? bouquetId;
 
   ProductsList(this.bouquetId) {}
 
@@ -15,14 +15,14 @@ class ProductsList extends StatefulWidget {
 
 class ProductsListState extends State<ProductsList> {
   List<Product> _products = [];
-  int bouquetId;
+  int? bouquetId;
 
   ProductsListState(this.bouquetId) {
     _getProducts();
   }
 
   _getProducts() async {
-    List<BouquetProduct> middleProducts;
+    late List<BouquetProduct> middleProducts;
     await ApiService.fetchBouquetProducts().then((response) {
       var bouquetProductsData = bouquetProductFromJson(response.data);
       middleProducts = bouquetProductsData
@@ -91,7 +91,7 @@ class ProductsListState extends State<ProductsList> {
             )
           : Image(
               image: MemoryImage(
-                _products[index].picture,
+                _products[index].picture!,
               ),
               width: 140,
               fit: BoxFit.cover,
@@ -108,7 +108,7 @@ class ProductsListState extends State<ProductsList> {
             "Состав букета",
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle1!
                 .copyWith(color: Colors.white),
           ),
           Spacer(),

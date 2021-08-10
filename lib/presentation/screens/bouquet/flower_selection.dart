@@ -104,7 +104,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
                       : ClipOval(
                           child: Image(
                             image: MemoryImage(
-                              _products[index].picture,
+                              _products[index].picture!,
                             ),
                             width: 120,
                             height: 120,
@@ -115,10 +115,10 @@ class FlowerSelectionState extends State<FlowerSelection> {
                     width: 140,
                     margin: EdgeInsets.only(top: 10),
                     child: Text(
-                      _products[index].name,
+                      _products[index].name!,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.headline6.copyWith(
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
                             color: Color.fromRGBO(55, 50, 52, 1),
                           ),
                     ),
@@ -147,7 +147,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
             title: Text(
-              selectedProduct.name,
+              selectedProduct.name!,
               style: Theme.of(context).textTheme.headline6,
             ),
             content: SingleChildScrollView(
@@ -157,7 +157,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
                     "Количество: $_count шт.",
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyText1!
                         .copyWith(height: 2),
                   ),
                   SliderTheme(
@@ -216,7 +216,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         },
         child: new Text(
           "Сохранить",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
               color: Color.fromRGBO(130, 147, 153, 1),
               fontWeight: FontWeight.bold),
         ),
@@ -233,7 +233,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         },
         child: new Text(
           "Назад",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),

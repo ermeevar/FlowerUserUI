@@ -35,7 +35,7 @@ class AccountObserveState extends State<AccountObserve> {
           padding: EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Text(
             "Личный кабинет",
-            style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2),
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(height: 2),
           ),
         ),
         Spacer()

@@ -133,7 +133,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
   Padding getBouquetItemCost(int index, BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
-      child: Text(_bouquets[index].cost.roundDouble(2).toString() + " ₽",
+      child: Text(_bouquets[index].cost!.roundDouble(2).toString() + " ₽",
           style: Theme.of(context).textTheme.bodyText1),
     );
   }
@@ -142,11 +142,11 @@ class AccountBouquetsState extends State<AccountBouquets> {
     return Padding(
       padding: EdgeInsets.zero,
       child: Text(
-        _bouquets[index].name == null ? "" : _bouquets[index].name,
+        _bouquets[index].name == null ? "" : _bouquets[index].name!,
         overflow: TextOverflow.ellipsis,
         softWrap: true,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodyText2.copyWith(
+        style: Theme.of(context).textTheme.bodyText2!.copyWith(
               //fontWeight: FontWeight.bold,
               fontSize: 20,
             ),

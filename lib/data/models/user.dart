@@ -16,12 +16,12 @@ class User {
     this.accountId,
   });
 
-  int id;
-  String surname;
-  String name;
-  String phone;
+  int? id;
+  String? surname;
+  String? name;
+  String? phone;
   dynamic picture;
-  int accountId;
+  int? accountId;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],

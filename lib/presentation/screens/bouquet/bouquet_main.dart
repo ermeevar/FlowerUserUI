@@ -156,7 +156,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   Future<void> _showBouquetInformation() {
     double bouquetCost = 0;
     for (var item in products) {
-      bouquetCost += item.cost;
+      bouquetCost += item.cost!;
     }
 
     return showDialog<void>(
@@ -199,7 +199,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
                                         products.remove(products[index]);
                                         if (products.length != 0)
                                           for (var item in products) {
-                                            bouquetCost += item.cost;
+                                            bouquetCost += item.cost!;
                                           }
                                       },
                                     );
@@ -264,7 +264,6 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
           showTopSnackBar(
             context,
             CustomSnackBar.info(
-              icon: null,
               backgroundColor: Color.fromRGBO(110, 53, 76, 1),
               message: "Шаблон сохранен",
             ),
@@ -290,7 +289,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
         },
         child: new Text(
           "Назад",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
@@ -320,7 +319,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               ),
             );
           } else {
-            Bouquet postedBouquet = await postBouquet(bouquetCost);
+            Bouquet? postedBouquet = await postBouquet(bouquetCost);
 
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -331,7 +330,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
         },
         child: new Text(
           "Заказать",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
                 fontWeight: FontWeight.bold,
               ),
@@ -340,13 +339,13 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
     );
   }
 
-  Future<Bouquet> postBouquet(double bouquetCost) async {
+  Future<Bouquet?> postBouquet(double bouquetCost) async {
     newBouquet.cost = bouquetCost;
     newBouquet.userId = ProfileService.user.id;
 
     await ApiService.postBouquet(BouquetMainMenuState.newBouquet);
 
-    Bouquet postedBouquet;
+    Bouquet? postedBouquet;
     await ApiService.fetchBouquets().then((response) {
       var bouquetsData = bouquetFromJson(response.data);
       postedBouquet = bouquetsData.last;
@@ -354,7 +353,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
     for (var item in BouquetMainMenuState.products) {
       BouquetProduct middleBouquetProduct = BouquetProduct();
-      middleBouquetProduct.bouquetId = postedBouquet.id;
+      middleBouquetProduct.bouquetId = postedBouquet!.id;
       middleBouquetProduct.productId = item.id;
       await ApiService.postBouquetProduct(middleBouquetProduct);
     }
@@ -365,14 +364,14 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
   //#region SelectedProductInfo
   Text getSelectedFlowerCost(int index, BuildContext context) {
-    return Text(products[index].cost.roundDouble(2).toString() + " ₽",
+    return Text(products[index].cost!.roundDouble(2).toString() + " ₽",
         style: Theme.of(context).textTheme.bodyText1);
   }
 
   Container getSelectedFlowerName(int index, BuildContext context) {
     return Container(
       width: 150,
-      child: Text(products[index].name,
+      child: Text(products[index].name!,
           overflow: TextOverflow.ellipsis,
           softWrap: true,
           style: Theme.of(context).textTheme.bodyText1),
@@ -384,7 +383,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
       bouquetCost.roundDouble(1).toString() + " ₽",
       style: Theme.of(context)
           .textTheme
-          .bodyText1
+          .bodyText1!
           .copyWith(color: Color.fromRGBO(130, 147, 153, 1), fontSize: 25),
     );
   }
@@ -398,7 +397,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
         color: Colors.white,
         child: Text(
           "Цветы не выбраны",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 15),
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 15),
         ),
       ),
     );
@@ -407,7 +406,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
   Container getBouquetName(BuildContext context) {
     return Container(
       child: Text(
-        newBouquet.name != null ? newBouquet.name : "Пустое название",
+        newBouquet.name != null ? newBouquet.name! : "Пустое название",
         overflow: TextOverflow.ellipsis,
         softWrap: true,
         style: Theme.of(context).textTheme.headline6,

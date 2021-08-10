@@ -12,8 +12,8 @@ class OrderStatus {
     this.name,
   });
 
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
         id: json["id"],

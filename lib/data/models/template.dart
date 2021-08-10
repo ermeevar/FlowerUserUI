@@ -16,12 +16,12 @@ class Template {
     this.cost,
   });
 
-  int id;
-  String name;
-  int templateCategoryId;
-  int storeId;
-  List<int> picture;
-  double cost;
+  int? id;
+  String? name;
+  int? templateCategoryId;
+  int? storeId;
+  List<int>? picture;
+  double? cost;
 
   factory Template.fromJson(Map<String, dynamic> json) => Template(
         id: json["id"],
@@ -38,7 +38,7 @@ class Template {
         "name": name,
         "templateCategoryId": templateCategoryId,
         "storeId": storeId,
-        "picture": picture != null ? base64.encode(picture) : null,
+        "picture": picture != null ? base64.encode(picture!) : null,
         "cost": cost,
       };
 }

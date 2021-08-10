@@ -55,16 +55,16 @@ class AccountInformationState extends State<AccountInformation>
   }
 
   Text getName(context) {
-    return Text(ProfileService.user.name + " " + ProfileService.user.surname,
+    return Text(ProfileService.user.name! + " " + ProfileService.user.surname!,
         style: Theme.of(context).textTheme.bodyText1);
   }
 
   Text getLogin(context) {
     return Text(
-      ProfileService.account != null ? ProfileService.account.login : "Error",
+      ProfileService.account != null ? ProfileService.account!.login! : "Error",
       style: Theme.of(context)
           .textTheme
-          .bodyText1
+          .bodyText1!
           .copyWith(height: 2, fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
@@ -120,7 +120,7 @@ class AccountInformationState extends State<AccountInformation>
                 },
                 child: new Text(
                   "Изменить",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                 ),
@@ -144,7 +144,7 @@ class AccountInformationState extends State<AccountInformation>
                   child: new Text("Выйти",
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: Color.fromRGBO(130, 147, 153, 1))))
             ],
           ),
@@ -156,13 +156,13 @@ class AccountInformationState extends State<AccountInformation>
               Icon(Icons.delete, size: 25, color: Colors.red),
               new TextButton(
                   onPressed: () async {
-                    await ApiService.deleteAccount(ProfileService.account.id);
+                    await ApiService.deleteAccount(ProfileService.account!.id);
                     await onAuthorizationPage();
                   },
                   child: new Text("Удалить",
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: Colors.red)))
             ],
           ),

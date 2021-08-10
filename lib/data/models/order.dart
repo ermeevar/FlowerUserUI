@@ -20,17 +20,17 @@ class Order {
     this.shopId,
   });
 
-  int id;
-  DateTime start;
-  DateTime finish;
-  bool isRandom;
-  int orderStatusId;
-  int userId;
-  double cost;
-  String card;
-  int bouquetId;
-  int templateId;
-  int shopId;
+  int? id;
+  DateTime? start;
+  DateTime? finish;
+  bool? isRandom;
+  int? orderStatusId;
+  int? userId;
+  double? cost;
+  String? card;
+  int? bouquetId;
+  int? templateId;
+  int? shopId;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         id: json["id"],
@@ -47,8 +47,8 @@ class Order {
       );
 
   Map<String, dynamic> toJson() => {
-        "start": start.toIso8601String(),
-        "finish": finish.toIso8601String(),
+        "start": start!.toIso8601String(),
+        "finish": finish!.toIso8601String(),
         "isRandom": isRandom,
         "orderStatusId": orderStatusId,
         "userId": userId,
@@ -61,8 +61,8 @@ class Order {
 
   Map<String, dynamic> toJsonUpdate() => {
         "id": id,
-        "start": start.toIso8601String(),
-        "finish": finish.toIso8601String(),
+        "start": start!.toIso8601String(),
+        "finish": finish!.toIso8601String(),
         "isRandom": isRandom,
         "orderStatusId": orderStatusId,
         "userId": userId,

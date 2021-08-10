@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/domain/services/api_service.dart';
 import 'package:flower_user_ui/presentation/screens/order/template_bouquet_order.dart';
@@ -115,7 +117,7 @@ class TemplateSelectionState extends State<TemplateSelection> {
                               : ClipOval(
                                   child: Image(
                                     image: MemoryImage(
-                                      _templates[index].picture,
+                                      _templates[index].picture as Uint8List,
                                     ),
                                     width: 120,
                                     height: 120,
@@ -126,19 +128,19 @@ class TemplateSelectionState extends State<TemplateSelection> {
                             width: 140,
                             margin: EdgeInsets.only(top: 10),
                             child: Text(
-                              _templates[index].name,
+                              _templates[index].name!,
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1
+                                  .subtitle1!
                                   .copyWith(
                                     color: Color.fromRGBO(55, 50, 52, 1),
                                   ),
                             ),
                           ),
                           Text(
-                            _templates[index].cost.roundDouble(2).toString() +
+                            _templates[index].cost!.roundDouble(2).toString() +
                                 " ₽",
                             style: Theme.of(context).textTheme.bodyText1,
                           ),

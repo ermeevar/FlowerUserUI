@@ -39,7 +39,7 @@ class MainMenuContent extends StatelessWidget {
           padding: EdgeInsets.only(top: 30, left: 10, right: 10),
           child: Row(
             children: [
-              Text(ProfileService.account.login,
+              Text(ProfileService.account!.login!,
                   style: Theme.of(context).textTheme.bodyText2),
               Padding(
                 padding: EdgeInsets.all(10),
@@ -229,7 +229,7 @@ class MainMenuContent extends StatelessWidget {
                       "Цена:" + _cost.roundDouble(2).toString() + " ₽",
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText2!
                           .copyWith(height: 2),
                     ),
                     SliderTheme(
@@ -261,7 +261,7 @@ class MainMenuContent extends StatelessWidget {
                     },
                     child: new Text(
                       "Назад",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                             color: Color.fromRGBO(130, 147, 153, 1),
                           ),
                     ),
@@ -271,17 +271,15 @@ class MainMenuContent extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   child: TextButton(
                     onPressed: () async {
-                      if (_cost != null)
-                        await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    RandomBouquetOrder(_cost)));
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RandomBouquetOrder(_cost)));
                       Navigator.pop(context);
                     },
                     child: new Text(
                       "Заказать",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: Color.fromRGBO(130, 147, 153, 1),
                           fontWeight: FontWeight.bold),
                     ),

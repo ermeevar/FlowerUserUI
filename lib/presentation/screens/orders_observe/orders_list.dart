@@ -146,8 +146,8 @@ class OrdersListState extends State<OrdersList>
         children: [
           Spacer(),
           Text(
-            getOrderStatusInOrder(_orders[index]).name,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
+            getOrderStatusInOrder(_orders[index])!.name!,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
@@ -169,8 +169,8 @@ class OrdersListState extends State<OrdersList>
           Padding(
             padding: EdgeInsets.only(left: 10),
             child: Text(
-              _orders[index].cost.roundDouble(2).toString() + " ₽",
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              _orders[index].cost!.roundDouble(2).toString() + " ₽",
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Color.fromRGBO(130, 157, 143, 1),
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -193,8 +193,8 @@ class OrdersListState extends State<OrdersList>
           Padding(
             padding: EdgeInsets.only(left: 10),
             child: Text(
-              _orders[index].cost.roundDouble(2).toString() + " ₽",
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              _orders[index].cost!.roundDouble(2).toString() + " ₽",
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Color.fromRGBO(130, 157, 143, 1),
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -214,20 +214,20 @@ class OrdersListState extends State<OrdersList>
           Text("Персональный букет",
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1
+                  .bodyText1!
                   .copyWith(fontWeight: FontWeight.bold)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(getBouquetInOrder(_orders[index]).name,
+                child: Text(getBouquetInOrder(_orders[index])!.name!,
                     style: Theme.of(context).textTheme.bodyText1),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                  _orders[index].cost.roundDouble(2).toString() + " ₽",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  _orders[index].cost!.roundDouble(2).toString() + " ₽",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Color.fromRGBO(130, 157, 143, 1),
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
@@ -253,7 +253,7 @@ class OrdersListState extends State<OrdersList>
   Padding getShop(int index, BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 20, top: 40),
-      child: Text("Пункт выдачи на " + getShopInOrder(_orders[index]).address,
+      child: Text("Пункт выдачи на " + getShopInOrder(_orders[index])!.address!,
           style: Theme.of(context).textTheme.bodyText1),
     );
   }
@@ -263,7 +263,7 @@ class OrdersListState extends State<OrdersList>
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Text(
         "Номер заказа: " + _orders[index].id.toString(),
-        style: Theme.of(context).textTheme.bodyText1.copyWith(
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
               color: Color.fromRGBO(110, 53, 76, 1),
             ),
       ),
@@ -275,29 +275,29 @@ class OrdersListState extends State<OrdersList>
       padding: EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Text(
         DateFormat('Букет на dd.MM.yyyy hh:mm')
-            .format(_orders[index].finish)
+            .format(_orders[index].finish!)
             .toString(),
         style: Theme.of(context)
             .textTheme
-            .bodyText1
+            .bodyText1!
             .copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
 
-  Shop getShopInOrder(Order order) {
+  Shop? getShopInOrder(Order order) {
     for (var item in _shops) {
       if (order.shopId == item.id) return item;
     }
   }
 
-  Bouquet getBouquetInOrder(Order order) {
+  Bouquet? getBouquetInOrder(Order order) {
     for (var item in _bouquets) {
       if (order.bouquetId == item.id) return item;
     }
   }
 
-  OrderStatus getOrderStatusInOrder(Order order) {
+  OrderStatus? getOrderStatusInOrder(Order order) {
     for (var item in _orderStatuses) {
       if (order.orderStatusId == item.id) return item;
     }

@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
                   ),
                 );
               case ConnectionState.done:
-                return snapshot.data
+                return snapshot.data!
                     ? NavigationMenu()
                     : AuthorizationMainMenu();
               case ConnectionState.none:

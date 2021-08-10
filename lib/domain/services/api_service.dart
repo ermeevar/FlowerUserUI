@@ -274,7 +274,7 @@ class ApiService {
     return response.statusCode;
   }
 
-  static Future deleteAccount(int id) async {
+  static Future deleteAccount(int? id) async {
     var response = await dio.delete(_accountUrl + id.toString());
     return response.statusCode;
   }
@@ -284,7 +284,7 @@ class ApiService {
     return response.statusCode;
   }
 
-  static Future deleteBouquet(int id) async {
+  static Future deleteBouquet(int? id) async {
     var response = await dio.delete(_bouquetUrl + id.toString());
     return response.statusCode;
   }

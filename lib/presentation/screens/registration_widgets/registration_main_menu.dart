@@ -10,7 +10,7 @@ class RegistrationMainMenu extends StatefulWidget {
 class RegistrationMainMenuState extends State<RegistrationMainMenu> {
   User _user = User();
   Account _account = Account();
-  List<Account> _accounts = [];
+  late List<Account> _accounts;
 
   RegistrationMainMenuState() {
     getAccounts();
@@ -94,7 +94,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
               borderRadius: BorderRadius.all(Radius.circular(40))),
           child: new Text(
             "СОХРАНИТЬ",
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
           ),

@@ -13,8 +13,8 @@ class ProductCategory {
     this.name,
   });
 
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   factory ProductCategory.fromJson(Map<String, dynamic> json) =>
       ProductCategory(

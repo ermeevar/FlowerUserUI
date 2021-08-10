@@ -120,7 +120,7 @@ class GrassSelectionState extends State<GrassSelection> {
                             : ClipOval(
                                 child: Image(
                                   image: MemoryImage(
-                                    _products[index].picture,
+                                    _products[index].picture!,
                                   ),
                                   width: 120,
                                   height: 120,
@@ -131,11 +131,11 @@ class GrassSelectionState extends State<GrassSelection> {
                           width: 140,
                           margin: EdgeInsets.only(top: 10),
                           child: Text(
-                            _products[index].name,
+                            _products[index].name!,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             style:
-                                Theme.of(context).textTheme.headline6.copyWith(
+                                Theme.of(context).textTheme.headline6!.copyWith(
                                       color: Color.fromRGBO(55, 50, 52, 1),
                                     ),
                           ),

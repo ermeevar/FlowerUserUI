@@ -33,7 +33,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   _setOrderInitialData() async {
     await _getShops();
 
-    await setState(() {
+    setState(() {
       order.userId = ProfileService.user.id;
       order.finish = DateTime.now().add(Duration(days: 1));
       order.start = DateTime.now();
@@ -107,17 +107,17 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
               "Букет от флориста",
               overflow: TextOverflow.clip,
               softWrap: true,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 23,
                     color: Color.fromRGBO(130, 147, 153, 1),
                   ),
             ),
           ),
           Text(
-            _cost != null ? _cost.roundDouble(2).toString() : "",
+            _cost.roundDouble(2).toString(),
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyText1!
                 .copyWith(fontWeight: FontWeight.bold, height: 2),
           ),
         ],
@@ -152,7 +152,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
               },
               child: Text(
                 'Добавить открытку',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
@@ -166,7 +166,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
               },
               child: new Text(
                 "Удалить открытку",
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Color.fromRGBO(110, 53, 76, 1),
                       fontWeight: FontWeight.bold,
                     ),
@@ -194,7 +194,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         ),
         Text(
           "Магазин: ",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
@@ -203,7 +203,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
               ? _shops
                   .where((element) => element.id == order.shopId)
                   .first
-                  .address
+                  .address!
               : "",
           style: Theme.of(context).textTheme.bodyText1,
         ),
@@ -292,14 +292,14 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         ),
         Text(
           "Дата сборки:  ",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
         Text(
           order.finish == null
               ? DateFormat('dd.MM.yyyy hh:mm').format(DateTime.now()).toString()
-              : DateFormat('dd.MM.yyyy hh:mm').format(order.finish).toString(),
+              : DateFormat('dd.MM.yyyy hh:mm').format(order.finish!).toString(),
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
@@ -308,7 +308,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   //#endregion
 
   //#region Dialogs
-  Future<DateTime> showDateTimeDialog() {
+  Future<DateTime?> showDateTimeDialog() {
     return showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
@@ -333,7 +333,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                 },
                 child: new Text(
                   "Выбрать",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 23,
@@ -347,7 +347,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     );
   }
 
-  Future<Widget> showShopsDialog() {
+  Future<Widget?> showShopsDialog() {
     return showDialog<Widget>(
       context: context,
       builder: (BuildContext context) {
@@ -368,7 +368,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                     return Container(
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        _shops[index].address,
+                        _shops[index].address!,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     );
@@ -381,7 +381,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                 },
                 child: new Text(
                   "Выбрать",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 23,
@@ -408,7 +408,6 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
             showTopSnackBar(
               context,
               CustomSnackBar.info(
-                icon: null,
                 backgroundColor: Color.fromRGBO(110, 53, 76, 1),
                 message: "Заказ оформлен",
               ),
@@ -475,7 +474,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                 },
                 child: new Text(
                   "Назад",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                 ),
@@ -500,7 +499,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                 },
                 child: new Text(
                   "Сохранить",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Color.fromRGBO(130, 147, 153, 1),
                       fontWeight: FontWeight.bold),
                 ),

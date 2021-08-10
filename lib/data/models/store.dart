@@ -18,13 +18,13 @@ class Store {
     this.accountId,
   });
 
-  int id;
-  String name;
-  String description;
-  Uint8List picture;
-  String firstPhone;
-  String secondPhone;
-  int accountId;
+  int? id;
+  String? name;
+  String? description;
+  Uint8List? picture;
+  String? firstPhone;
+  String? secondPhone;
+  int? accountId;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
         id: json["id"],
@@ -51,7 +51,7 @@ class Store {
         "id": id,
         "name": name,
         "description": description.toString(),
-        "picture": picture != null ? base64.encode(picture) : null,
+        "picture": picture != null ? base64.encode(picture!) : null,
         "firstPhone": firstPhone,
         "secondPhone": secondPhone,
         "accountId": accountId,

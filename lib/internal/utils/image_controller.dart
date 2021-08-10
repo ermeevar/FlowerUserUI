@@ -5,15 +5,18 @@ import 'package:image_picker/image_picker.dart';
 class ImageController {
   static final _picker = ImagePicker();
 
-  static Future<Uint8List> getImageFromGallery() async {
+  static Future<Uint8List?> getImageFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
-    return _newImageBytes;
+
+    if (pickedFile != null) {
+      return File(pickedFile.path).readAsBytes();
+    }
   }
 
-  static Future<Uint8List> getImageFromCamera() async {
+  static Future<Uint8List?> getImageFromCamera() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
-    return _newImageBytes;
+    if (pickedFile != null) {
+      return File(pickedFile.path).readAsBytes();
+    }
   }
 }

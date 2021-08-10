@@ -12,7 +12,7 @@ import '../navigation_menu.dart';
 import 'order_products_list.dart';
 
 class BouquetOrder extends StatefulWidget {
-  final Bouquet _bouquet;
+  final Bouquet? _bouquet;
 
   BouquetOrder(this._bouquet) {}
 
@@ -23,7 +23,7 @@ class BouquetOrder extends StatefulWidget {
 class BouquetOrderState extends State<BouquetOrder> {
   Order order = new Order();
   bool isSelectedCard = false;
-  Bouquet _bouquet;
+  Bouquet? _bouquet;
   List<Shop> _shops = [];
 
   BouquetOrderState(this._bouquet) {
@@ -34,14 +34,14 @@ class BouquetOrderState extends State<BouquetOrder> {
   _setOrderInitialData() async {
     await _getShops();
 
-    await setState(() {
+    setState(() {
       order.userId = ProfileService.user.id;
       order.finish = DateTime.now().add(Duration(days: 1));
       order.start = DateTime.now();
       order.shopId = _shops.first.id;
       order.orderStatusId = 1;
-      order.cost = _bouquet.cost;
-      order.bouquetId = _bouquet.id;
+      order.cost = _bouquet!.cost;
+      order.bouquetId = _bouquet!.id;
       order.isRandom = false;
     });
   }
@@ -51,7 +51,7 @@ class BouquetOrderState extends State<BouquetOrder> {
       var shopsData = shopFromJson(response.data);
       setState(() {
         _shops = shopsData
-            .where((element) => element.storeId == _bouquet.storeId)
+            .where((element) => element.storeId == _bouquet!.storeId)
             .toList();
       });
     });
@@ -66,7 +66,7 @@ class BouquetOrderState extends State<BouquetOrder> {
           _header(context),
           _nameAndCostInfo(context),
           _orderInfo(context),
-          ProductsList(_bouquet.id),
+          ProductsList(_bouquet!.id),
           _orderButton(context),
         ],
       ),
@@ -112,10 +112,10 @@ class BouquetOrderState extends State<BouquetOrder> {
         children: [
           Container(
             child: Text(
-              _bouquet.name == null ? "" : _bouquet.name,
+              _bouquet!.name == null ? "" : _bouquet!.name!,
               overflow: TextOverflow.clip,
               softWrap: true,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 23,
                     color: Color.fromRGBO(130, 147, 153, 1),
                   ),
@@ -123,11 +123,11 @@ class BouquetOrderState extends State<BouquetOrder> {
           ),
           Text(
             order.cost != null
-                ? order.cost.roundDouble(2).toString() + " ₽"
+                ? order.cost!.roundDouble(2).toString() + " ₽"
                 : "",
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyText1!
                 .copyWith(fontWeight: FontWeight.bold, height: 2),
           ),
         ],
@@ -162,7 +162,7 @@ class BouquetOrderState extends State<BouquetOrder> {
               },
               child: Text(
                 'Добавить открытку',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
@@ -179,7 +179,7 @@ class BouquetOrderState extends State<BouquetOrder> {
               },
               child: new Text(
                 "Удалить открытку",
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Color.fromRGBO(110, 53, 76, 1),
                       fontWeight: FontWeight.bold,
                     ),
@@ -207,7 +207,7 @@ class BouquetOrderState extends State<BouquetOrder> {
         ),
         Text(
           "Магазин: ",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
@@ -216,7 +216,7 @@ class BouquetOrderState extends State<BouquetOrder> {
               ? _shops
                   .where((element) => element.id == order.shopId)
                   .first
-                  .address
+                  .address!
               : "",
           style: Theme.of(context).textTheme.bodyText1,
         ),
@@ -305,14 +305,14 @@ class BouquetOrderState extends State<BouquetOrder> {
         ),
         Text(
           "Дата сборки:  ",
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
         Text(
           order.finish == null
               ? DateFormat('dd.MM.yyyy hh:mm').format(DateTime.now()).toString()
-              : DateFormat('dd.MM.yyyy hh:mm').format(order.finish).toString(),
+              : DateFormat('dd.MM.yyyy hh:mm').format(order.finish!).toString(),
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
@@ -321,7 +321,7 @@ class BouquetOrderState extends State<BouquetOrder> {
   //#endregion
 
   //#region Dialogs
-  Future<DateTime> showDateTimeDialog() {
+  Future<DateTime?> showDateTimeDialog() {
     return showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
@@ -346,7 +346,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                 },
                 child: new Text(
                   "Выбрать",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 23,
@@ -360,7 +360,7 @@ class BouquetOrderState extends State<BouquetOrder> {
     );
   }
 
-  Future<Widget> showShopsDialog() {
+  Future<Widget?> showShopsDialog() {
     return showDialog<Widget>(
       context: context,
       builder: (BuildContext context) {
@@ -381,7 +381,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                     return Container(
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        _shops[index].address,
+                        _shops[index].address!,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     );
@@ -394,7 +394,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                 },
                 child: new Text(
                   "Выбрать",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 23,
@@ -424,7 +424,6 @@ class BouquetOrderState extends State<BouquetOrder> {
             showTopSnackBar(
               context,
               CustomSnackBar.info(
-                icon: null,
                 backgroundColor: Color.fromRGBO(110, 53, 76, 1),
                 message: "Заказ оформлен",
               ),
@@ -491,7 +490,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                 },
                 child: new Text(
                   "Назад",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                 ),
@@ -516,7 +515,7 @@ class BouquetOrderState extends State<BouquetOrder> {
                 },
                 child: new Text(
                   "Сохранить",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Color.fromRGBO(130, 147, 153, 1),
                       fontWeight: FontWeight.bold),
                 ),

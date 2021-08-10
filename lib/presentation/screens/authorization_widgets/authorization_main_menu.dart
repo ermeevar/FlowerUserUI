@@ -82,7 +82,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
         },
         child: new Text(
           "Зарегистрироваться",
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -95,7 +95,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
       padding: EdgeInsets.only(top: 80),
       child: TextButton(
         onPressed: () async {
-          User accUser = await ProfileService.getUser(_account);
+          User? accUser = await ProfileService.getUser(_account);
 
           if (accUser == null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -131,7 +131,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           ),
           child: new Text(
             "ВОЙТИ",
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
           ),

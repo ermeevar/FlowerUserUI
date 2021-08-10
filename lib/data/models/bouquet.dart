@@ -15,11 +15,11 @@ class Bouquet {
     this.userId,
   });
 
-  int id;
-  String name;
-  double cost;
-  int storeId;
-  int userId;
+  int? id;
+  String? name;
+  double? cost;
+  int? storeId;
+  int? userId;
 
   factory Bouquet.fromJson(Map<String, dynamic> json) => Bouquet(
         id: json["id"],
@@ -31,7 +31,7 @@ class Bouquet {
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "cost": cost.toDouble(),
+        "cost": cost!.toDouble(),
         "storeId": storeId,
         "userId": userId,
       };
@@ -39,7 +39,7 @@ class Bouquet {
   Map<String, dynamic> toJsonUpdate() => {
         "id": id,
         "name": name,
-        "cost": cost.toDouble(),
+        "cost": cost!.toDouble(),
         "storeId": storeId,
         "userId": userId,
       };

@@ -14,9 +14,9 @@ class BouquetProduct {
     this.bouquetId,
   });
 
-  int id;
-  int productId;
-  int bouquetId;
+  int? id;
+  int? productId;
+  int? bouquetId;
 
   factory BouquetProduct.fromJson(Map<String, dynamic> json) => BouquetProduct(
         id: json["id"],
