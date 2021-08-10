@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/domain/services/api_service.dart';
 import 'package:flower_user_ui/presentation/screens/order/template_bouquet_order.dart';
@@ -12,15 +10,15 @@ class TemplateSelection extends StatefulWidget {
   const TemplateSelection(this._templateCategory);
 
   @override
-  TemplateSelectionState createState() =>
-      TemplateSelectionState(_templateCategory);
+  TemplateSelectionState createState() => TemplateSelectionState();
 }
 
 class TemplateSelectionState extends State<TemplateSelection> {
-  final TemplateCategory _templateCategory;
+  late final TemplateCategory _templateCategory;
   List<Template> _templates = [];
 
-  TemplateSelectionState(this._templateCategory) {
+  TemplateSelectionState() {
+    _templateCategory = widget._templateCategory;
     _getTemplates();
   }
 
@@ -112,18 +110,19 @@ class TemplateSelectionState extends State<TemplateSelection> {
                                 color: Colors.black38,
                                 size: 50,
                               ),
-                            )
-                          else
-                            ClipOval(
-                              child: Image(
-                                image: MemoryImage(
-                                  _templates[index].picture as Uint8List,
-                                ),
-                                width: 120,
-                                height: 120,
-                                fit: BoxFit.cover,
-                              ),
                             ),
+                          // else
+                          // ClipOval(
+                          //   child: Image(
+                          //     image: MemoryImage(
+                          //       _templates[index].picture as Uint8List,
+                          // TODO: выше используется значение которое null, что то тут не так
+                          //     ),
+                          //     width: 120,
+                          //     height: 120,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
                           Container(
                             width: 140,
                             margin: const EdgeInsets.only(top: 10),

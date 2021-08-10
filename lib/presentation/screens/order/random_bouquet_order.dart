@@ -16,16 +16,17 @@ class RandomBouquetOrder extends StatefulWidget {
   const RandomBouquetOrder(this._cost);
 
   @override
-  RandomBouquetOrderState createState() => RandomBouquetOrderState(_cost);
+  RandomBouquetOrderState createState() => RandomBouquetOrderState();
 }
 
 class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   Order order = Order();
   bool isSelectedCard = false;
-  final double _cost;
+  late final double _cost;
   List<Shop> _shops = [];
 
-  RandomBouquetOrderState(this._cost) {
+  RandomBouquetOrderState() {
+    _cost = widget._cost;
     _setOrderInitialData();
   }
 
@@ -46,7 +47,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
 
   Future<void> _getShops() async {
     await ApiService.fetchShops().then((response) {
-      var shopsData = shopFromJson(response.data as String);
+      final shopsData = shopFromJson(response.data as String);
       setState(() {
         _shops = shopsData;
       });
