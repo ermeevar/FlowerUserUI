@@ -66,7 +66,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
               onPressed: () {
                 Navigator.pop(context);
               }),
-          Text("Категории", style: Theme.of(context).textTheme.subtitle)
+          Text("Категории", style: Theme.of(context).textTheme.subtitle1)
         ],
       ),
     );
@@ -127,7 +127,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
         children: [
           Text(
             _templateCategories[index].name,
-            style: Theme.of(context).textTheme.body1,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           Spacer(),
           Icon(
@@ -149,7 +149,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
           _getCountOfCategories(_templateCategories[index]) != null
               ? _getCountOfCategories(_templateCategories[index]).toString()
               : "0",
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ),
     );

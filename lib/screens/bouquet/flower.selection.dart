@@ -3,7 +3,6 @@ import 'package:flower_user_ui/states/slider.shape.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/states/web.api.services.dart';
-import 'package:flutter/services.dart';
 import 'bouquet.main.dart';
 
 class FlowerSelection extends StatefulWidget {
@@ -46,7 +45,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
       child: _products.length == 0
           ? Center(
               child: Text("Сеть не выбрана",
-                  style: Theme.of(context).textTheme.body1))
+                  style: Theme.of(context).textTheme.bodyText1))
           : _storeProductsList(context),
     );
   }
@@ -56,7 +55,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
       padding: EdgeInsets.only(bottom: 20, top: 20),
       child: Text(
         "Цветы",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
       ),
     );
   }
@@ -119,14 +118,14 @@ class FlowerSelectionState extends State<FlowerSelection> {
                       _products[index].name,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
+                      style: Theme.of(context).textTheme.headline6.copyWith(
                             color: Color.fromRGBO(55, 50, 52, 1),
                           ),
                     ),
                   ),
                   Text(
                     _products[index].cost.toString() + " ₽",
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
               ),
@@ -149,15 +148,17 @@ class FlowerSelectionState extends State<FlowerSelection> {
           return AlertDialog(
             title: Text(
               selectedProduct.name,
-              style: Theme.of(context).textTheme.subtitle,
+              style: Theme.of(context).textTheme.headline6,
             ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text(
                     "Количество: $_count шт.",
-                    style:
-                        Theme.of(context).textTheme.body1.copyWith(height: 2),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(height: 2),
                   ),
                   SliderTheme(
                     data: SliderThemeData(
@@ -193,7 +194,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
       int _count, Product selectedProduct, BuildContext context) {
     return Container(
       padding: EdgeInsets.all(0),
-      child: FlatButton(
+      child: TextButton(
         onPressed: () {
           if (_count != 0) {
             for (int i = 0; i < _count; i++) {
@@ -215,7 +216,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
         },
         child: new Text(
           "Сохранить",
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
               color: Color.fromRGBO(130, 147, 153, 1),
               fontWeight: FontWeight.bold),
         ),
@@ -226,13 +227,13 @@ class FlowerSelectionState extends State<FlowerSelection> {
   Container getBackButton(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(0),
-      child: FlatButton(
+      child: TextButton(
         onPressed: () {
           Navigator.pop(context);
         },
         child: new Text(
           "Назад",
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),

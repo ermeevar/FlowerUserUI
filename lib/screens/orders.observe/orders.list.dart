@@ -149,7 +149,7 @@ class OrdersListState extends State<OrdersList>
           Spacer(),
           Text(
             getOrderStatusInOrder(_orders[index]).name,
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
@@ -167,12 +167,12 @@ class OrdersListState extends State<OrdersList>
         children: [
           Expanded(
               child: Text("Случайный букет",
-                  style: Theme.of(context).textTheme.body1)),
+                  style: Theme.of(context).textTheme.bodyText1)),
           Padding(
             padding: EdgeInsets.only(left: 10),
             child: Text(
               Calc.roundDouble(_orders[index].cost, 2).toString() + " ₽",
-              style: Theme.of(context).textTheme.body1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                   color: Color.fromRGBO(130, 157, 143, 1),
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -191,12 +191,12 @@ class OrdersListState extends State<OrdersList>
         children: [
           Expanded(
               child: Text("Букет по шаблону",
-                  style: Theme.of(context).textTheme.body1)),
+                  style: Theme.of(context).textTheme.bodyText1)),
           Padding(
             padding: EdgeInsets.only(left: 10),
             child: Text(
               Calc.roundDouble(_orders[index].cost, 2).toString() + " ₽",
-              style: Theme.of(context).textTheme.body1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                   color: Color.fromRGBO(130, 157, 143, 1),
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -216,20 +216,20 @@ class OrdersListState extends State<OrdersList>
           Text("Персональный букет",
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText1
                   .copyWith(fontWeight: FontWeight.bold)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Text(getBouquetInOrder(_orders[index]).name,
-                    style: Theme.of(context).textTheme.body1),
+                    style: Theme.of(context).textTheme.bodyText1),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
                   Calc.roundDouble(_orders[index].cost, 2).toString() + " ₽",
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                       color: Color.fromRGBO(130, 157, 143, 1),
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
@@ -256,7 +256,7 @@ class OrdersListState extends State<OrdersList>
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 20, top: 40),
       child: Text("Пункт выдачи на " + getShopInOrder(_orders[index]).address,
-          style: Theme.of(context).textTheme.body1),
+          style: Theme.of(context).textTheme.bodyText1),
     );
   }
 
@@ -265,7 +265,7 @@ class OrdersListState extends State<OrdersList>
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Text(
         "Номер заказа: " + _orders[index].id.toString(),
-        style: Theme.of(context).textTheme.body1.copyWith(
+        style: Theme.of(context).textTheme.bodyText1.copyWith(
               color: Color.fromRGBO(110, 53, 76, 1),
             ),
       ),
@@ -281,7 +281,7 @@ class OrdersListState extends State<OrdersList>
             .toString(),
         style: Theme.of(context)
             .textTheme
-            .body1
+            .bodyText1
             .copyWith(fontWeight: FontWeight.bold),
       ),
     );
@@ -311,7 +311,7 @@ class OrdersListState extends State<OrdersList>
       child: Container(
         color: Colors.white,
         child: Text("У вас нет ни одного заказа",
-            style: Theme.of(context).textTheme.body1),
+            style: Theme.of(context).textTheme.bodyText1),
       ),
     );
   }

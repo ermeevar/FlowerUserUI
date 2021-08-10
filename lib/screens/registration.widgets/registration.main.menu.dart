@@ -32,7 +32,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
-        overflow: Overflow.clip,
+        clipBehavior: Clip.antiAlias,
         children: [
           drawBackgroundGradient(context),
           drawBackgroundCircles(context),
@@ -52,7 +52,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           Spacer(),
           Text(
             "Регистрация",
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           getFirstName(context),
           getName(context),
@@ -69,7 +69,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
   Container getSaveButton(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 50),
-      child: FlatButton(
+      child: TextButton(
         onPressed: () async {
           if (await ProfileManipulation.addUser(_account, _user) == true)
             Navigator.pop(context);
@@ -78,7 +78,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
               SnackBar(
                 content: Text(
                   "Произошла ошибка",
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 action: SnackBarAction(
                   label: "Понятно",
@@ -89,7 +89,6 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
               ),
             );
         },
-        padding: EdgeInsets.zero,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 90),
           decoration: BoxDecoration(
@@ -97,7 +96,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
               borderRadius: BorderRadius.all(Radius.circular(40))),
           child: new Text(
             "СОХРАНИТЬ",
-            style: Theme.of(context).textTheme.body2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
           ),
@@ -117,7 +116,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
@@ -140,7 +139,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
@@ -162,7 +161,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
@@ -184,7 +183,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
@@ -206,7 +205,7 @@ class RegistrationMainMenuState extends State<RegistrationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,

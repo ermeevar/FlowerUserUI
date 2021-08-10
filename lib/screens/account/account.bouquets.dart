@@ -21,7 +21,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
   }
 
   Future<void> getBouquets() {
-    WebApiServices.fetchBouquets().then((response) {
+    return WebApiServices.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData.reversed
@@ -115,7 +115,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
   Padding getBouquetItemOrder(BuildContext context, int index) {
     return Padding(
       padding: EdgeInsets.only(top: 15),
-      child: OutlineButton(
+      child: OutlinedButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -124,8 +124,8 @@ class AccountBouquetsState extends State<AccountBouquets> {
             ),
           );
         },
-        child: Text('Заказать', style: Theme.of(context).textTheme.body2),
-        borderSide: BorderSide(color: Colors.white),
+        child: Text('Заказать', style: Theme.of(context).textTheme.bodyText2),
+        // : BorderSide(color: Colors.white),
       ),
     );
   }
@@ -134,7 +134,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Text(Calc.roundDouble(_bouquets[index].cost, 2).toString() + " ₽",
-          style: Theme.of(context).textTheme.body1),
+          style: Theme.of(context).textTheme.bodyText1),
     );
   }
 
@@ -146,7 +146,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
         overflow: TextOverflow.ellipsis,
         softWrap: true,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.body2.copyWith(
+        style: Theme.of(context).textTheme.bodyText2.copyWith(
               //fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
@@ -163,7 +163,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
       padding: EdgeInsets.only(left: 20, bottom: 5),
       child: Row(
         children: [
-          Text("Мои букеты", style: Theme.of(context).textTheme.subtitle),
+          Text("Мои букеты", style: Theme.of(context).textTheme.subtitle1),
           Spacer(),
         ],
       ),

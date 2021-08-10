@@ -6,13 +6,13 @@ class ImageController {
   static final _picker = ImagePicker();
 
   static Future<Uint8List> getImageFromGallery() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
     return _newImageBytes;
   }
 
   static Future<Uint8List> getImageFromCamera() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     Uint8List _newImageBytes = await File(pickedFile.path).readAsBytes();
     return _newImageBytes;
   }

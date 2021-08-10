@@ -44,7 +44,7 @@ class DecorationSelectionState extends State<DecorationSelection> {
       child: _products.length == 0
           ? Center(
               child: Text("Сеть не выбрана",
-                  style: Theme.of(context).textTheme.body1))
+                  style: Theme.of(context).textTheme.bodyText1))
           : _storeProductsList(context),
     );
   }
@@ -54,7 +54,7 @@ class DecorationSelectionState extends State<DecorationSelection> {
       padding: EdgeInsets.only(bottom: 20, top: 20),
       child: Text(
         "Украшения",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
       ),
     );
   }
@@ -135,14 +135,14 @@ class DecorationSelectionState extends State<DecorationSelection> {
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
+                                Theme.of(context).textTheme.headline6.copyWith(
                                       color: Color.fromRGBO(55, 50, 52, 1),
                                     ),
                           ),
                         ),
                         Text(
                           _products[index].cost.toString() + " ₽",
-                          style: Theme.of(context).textTheme.body1,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],
                     ),

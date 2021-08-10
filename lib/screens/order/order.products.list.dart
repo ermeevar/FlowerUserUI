@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductsList extends StatefulWidget {
-  int bouquetId;
+  final int bouquetId;
 
   ProductsList(this.bouquetId) {}
 
@@ -109,7 +109,7 @@ class ProductsListState extends State<ProductsList> {
             "Состав букета",
             style: Theme.of(context)
                 .textTheme
-                .subtitle
+                .subtitle1
                 .copyWith(color: Colors.white),
           ),
           Spacer(),

@@ -13,7 +13,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class TemplateBouquetOrder extends StatefulWidget {
-  Template _template;
+  final Template _template;
 
   TemplateBouquetOrder(this._template) {}
 
@@ -94,7 +94,8 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
               },
             ),
           ),
-          Text("Оформление заказа", style: Theme.of(context).textTheme.subtitle)
+          Text("Оформление заказа",
+              style: Theme.of(context).textTheme.subtitle1)
         ],
       ),
     );
@@ -112,7 +113,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
               _template.name,
               overflow: TextOverflow.clip,
               softWrap: true,
-              style: Theme.of(context).textTheme.body1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                     fontSize: 23,
                     color: Color.fromRGBO(130, 147, 153, 1),
                   ),
@@ -124,7 +125,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
                 : "",
             style: Theme.of(context)
                 .textTheme
-                .body1
+                .bodyText1
                 .copyWith(fontWeight: FontWeight.bold, height: 2),
           ),
         ],
@@ -153,21 +154,18 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
     return Padding(
       padding: EdgeInsets.all(20),
       child: order.card == null
-          ? OutlineButton(
+          ? OutlinedButton(
               onPressed: () {
                 _showCardDialog();
               },
               child: Text(
                 'Добавить открытку',
-                style: Theme.of(context).textTheme.body2.copyWith(
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
                       color: Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
-              borderSide: BorderSide(
-                color: Color.fromRGBO(110, 53, 76, 1),
-              ),
             )
-          : FlatButton(
+          : TextButton(
               onPressed: () {
                 setState(() {
                   order.card = null;
@@ -176,7 +174,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
               },
               child: new Text(
                 "Удалить открытку",
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText1.copyWith(
                       color: Color.fromRGBO(110, 53, 76, 1),
                       fontWeight: FontWeight.bold,
                     ),
@@ -204,7 +202,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         ),
         Text(
           "Магазин: ",
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
@@ -215,7 +213,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
                   .first
                   .address
               : "",
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
     );
@@ -234,7 +232,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
         initialValue: ProfileManipulation.user.phone,
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Телефон",
           prefixText: "+7 ",
@@ -255,7 +253,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         initialValue: ProfileManipulation.user.name != null
             ? ProfileManipulation.user.name
             : "",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Имя",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -275,7 +273,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         initialValue: ProfileManipulation.user.surname != null
             ? ProfileManipulation.user.surname
             : "",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Фамилия",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -303,7 +301,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         ),
         Text(
           "Дата сборки:  ",
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
         ),
@@ -311,7 +309,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
           order.finish == null
               ? DateFormat('dd.MM.yyyy hh:mm').format(DateTime.now()).toString()
               : DateFormat('dd.MM.yyyy hh:mm').format(order.finish).toString(),
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
     );
@@ -338,14 +336,13 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
                   },
                 ),
               ),
-              FlatButton(
-                padding: EdgeInsets.all(30),
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: new Text(
                   "Выбрать",
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 23,
@@ -381,20 +378,19 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
                       padding: EdgeInsets.all(10),
                       child: Text(
                         _shops[index].address,
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     );
                   },
                 ),
               ),
-              FlatButton(
-                padding: EdgeInsets.all(30),
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: new Text(
                   "Выбрать",
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 23,
@@ -414,7 +410,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
       onWillPop: () async => false,
       child: Container(
         padding: EdgeInsets.only(top: 30, bottom: 20),
-        child: FlatButton(
+        child: TextButton(
           onPressed: () async {
             await WebApiServices.postOrder(order);
 
@@ -433,15 +429,16 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
                 ),
                 (Route<dynamic> route) => false);
           },
-          padding: EdgeInsets.zero,
           child: Container(
             width: 150,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: Color.fromRGBO(130, 147, 153, 1),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
+              color: Color.fromRGBO(130, 147, 153, 1),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
             child: Center(
-              child: Text("Заказать", style: Theme.of(context).textTheme.body2),
+              child: Text("Заказать",
+                  style: Theme.of(context).textTheme.bodyText2),
             ),
           ),
         ),
@@ -450,7 +447,6 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
   }
 
   Future<void> _showCardDialog() async {
-    int _count = 0;
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -458,7 +454,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         return AlertDialog(
           title: Text(
             "Открытка",
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           content: SingleChildScrollView(
             child: ListBody(
@@ -483,13 +479,13 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
           ),
           actions: <Widget>[
             Container(
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: new Text(
                   "Назад",
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                         color: Color.fromRGBO(130, 147, 153, 1),
                       ),
                 ),
@@ -497,7 +493,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
             ),
             Container(
               padding: EdgeInsets.all(10),
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -514,7 +510,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
                 },
                 child: new Text(
                   "Сохранить",
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                       color: Color.fromRGBO(130, 147, 153, 1),
                       fontWeight: FontWeight.bold),
                 ),

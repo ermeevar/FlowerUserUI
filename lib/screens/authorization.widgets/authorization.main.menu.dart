@@ -16,7 +16,6 @@ class AuthorizationMainMenu extends StatefulWidget {
 class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   Account _account = Account();
   bool isWrong = false;
-  List<Account> _accounts = [];
 
   AuthorizationMainMenuState() {
     getAccounts();
@@ -30,10 +29,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   getAccounts() async {
     await WebApiServices.fetchAccounts().then((response) {
-      var accountsData = accountFromJson(response.data);
-      setState(() {
-        _accounts = accountsData;
-      });
+      setState(() {});
     });
   }
 
@@ -42,7 +38,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
-        overflow: Overflow.clip,
+        clipBehavior: Clip.antiAlias,
         children: [
           drawBackgroundGradient(context),
           drawBackgroundCircles(),
@@ -62,7 +58,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           Spacer(),
           Text(
             "Вход",
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           getLogin(context),
           getPassword(context),
@@ -78,17 +74,16 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   Container signUp(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 20),
-      child: FlatButton(
+      child: TextButton(
         onPressed: () async {
           await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => RegistrationMainMenu()),
           );
         },
-        padding: EdgeInsets.zero,
         child: new Text(
           "Зарегистрироваться",
-          style: Theme.of(context).textTheme.body2.copyWith(
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -99,7 +94,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   Container signIn(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 80),
-      child: FlatButton(
+      child: TextButton(
         onPressed: () async {
           User accUser = await ProfileManipulation.getUser(_account);
 
@@ -108,7 +103,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
               SnackBar(
                 content: Text(
                   "Пользователь не найден",
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 action: SnackBarAction(
                   label: "Понятно",
@@ -127,7 +122,6 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
               ),
               (Route<dynamic> route) => false);
         },
-        padding: EdgeInsets.zero,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 90),
           decoration: BoxDecoration(
@@ -138,7 +132,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           ),
           child: new Text(
             "ВОЙТИ",
-            style: Theme.of(context).textTheme.body2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
           ),
@@ -153,7 +147,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
       child: isWrong
           ? Text(
               "Пароль или логин введен неправильно",
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText2,
             )
           : nullContainer(),
     );
@@ -170,7 +164,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,
@@ -193,7 +187,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           });
         },
         cursorColor: Colors.white,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             color: Colors.white,

@@ -17,7 +17,7 @@ class OrdersObserveMain extends StatelessWidget {
               child: Text("Заказы",
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle
+                      .subtitle1
                       .copyWith(height: 2))),
           Expanded(
             child: OrdersList(),

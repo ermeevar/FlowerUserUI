@@ -64,6 +64,11 @@ class NavigationMenuState extends State<NavigationMenu>
               return vinousCircleProgressBarScaffold(this);
             case ConnectionState.done:
               return buildNavigationMenu();
+            case ConnectionState.none:
+              return Text("No connection");
+              break;
+            case ConnectionState.active:
+              return vinousCircleProgressBarScaffold(this);
           }
         });
   }

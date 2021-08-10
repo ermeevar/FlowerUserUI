@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TemplateSelection extends StatefulWidget {
-  TemplateCategory _templateCategory;
+  final TemplateCategory _templateCategory;
   TemplateSelection(this._templateCategory);
 
   @override
@@ -64,7 +64,7 @@ class TemplateSelectionState extends State<TemplateSelection> {
               Navigator.pop(context);
             },
           ),
-          Text("Шаблоны", style: Theme.of(context).textTheme.subtitle)
+          Text("Шаблоны", style: Theme.of(context).textTheme.subtitle1)
         ],
       ),
     );
@@ -130,17 +130,19 @@ class TemplateSelectionState extends State<TemplateSelection> {
                               _templates[index].name,
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
-                              style:
-                                  Theme.of(context).textTheme.subtitle.copyWith(
-                                        color: Color.fromRGBO(55, 50, 52, 1),
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1
+                                  .copyWith(
+                                    color: Color.fromRGBO(55, 50, 52, 1),
+                                  ),
                             ),
                           ),
                           Text(
                             Calc.roundDouble(_templates[index].cost, 2)
                                     .toString() +
                                 " ₽",
-                            style: Theme.of(context).textTheme.body1,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       ),

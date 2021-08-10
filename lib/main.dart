@@ -17,22 +17,22 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           textTheme: TextTheme(
-            body1: TextStyle(
+            bodyText1: TextStyle(
                 fontSize: 15,
                 fontFamily: "SourceSansPro",
                 color: Colors.black,
                 decoration: TextDecoration.none),
-            body2: TextStyle(
+            bodyText2: TextStyle(
                 fontSize: 15,
                 fontFamily: "SourceSansPro",
                 color: Colors.white,
                 decoration: TextDecoration.none),
-            title: TextStyle(
+            headline6: TextStyle(
                 fontSize: 25,
                 fontFamily: "Philosopher",
                 color: Colors.white,
                 decoration: TextDecoration.none),
-            subtitle: TextStyle(
+            subtitle2: TextStyle(
                 fontSize: 23,
                 fontFamily: "Philosopher",
                 color: Color.fromRGBO(110, 53, 76, 1),
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
                   body: Center(
                     child: Text(
                       "Загрузка...",
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                 );
@@ -74,6 +74,24 @@ class MyApp extends StatelessWidget {
                 return snapshot.data
                     ? NavigationMenu()
                     : AuthorizationMainMenu();
+              case ConnectionState.none:
+                return Scaffold(
+                  body: Center(
+                    child: Text(
+                      "Нет сети",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                );
+              case ConnectionState.active:
+                return Scaffold(
+                  body: Center(
+                    child: Text(
+                      "Загрузка...",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                );
             }
           }),
     );

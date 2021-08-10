@@ -40,7 +40,7 @@ class MainMenuContent extends StatelessWidget {
           child: Row(
             children: [
               Text(ProfileManipulation.account.login,
-                  style: Theme.of(context).textTheme.body2),
+                  style: Theme.of(context).textTheme.bodyText2),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: CircleAvatar(
@@ -108,17 +108,16 @@ class MainMenuContent extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10),
               child: Text("Случайный букет",
-                  style: Theme.of(context).textTheme.subtitle),
+                  style: Theme.of(context).textTheme.subtitle1),
             ),
             Padding(
               padding: EdgeInsets.all(20),
-              child: OutlineButton(
+              child: OutlinedButton(
                 onPressed: () {
                   _showCountOfProductDialog(context);
                 },
-                child:
-                    Text('Заказать', style: Theme.of(context).textTheme.body2),
-                borderSide: BorderSide(color: Colors.white),
+                child: Text('Заказать',
+                    style: Theme.of(context).textTheme.bodyText2),
               ),
             )
           ],
@@ -148,20 +147,19 @@ class MainMenuContent extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10),
               child: Text("Букет по шаблону",
-                  style: Theme.of(context).textTheme.subtitle),
+                  style: Theme.of(context).textTheme.subtitle1),
             ),
             Padding(
               padding: EdgeInsets.all(20),
-              child: OutlineButton(
+              child: OutlinedButton(
                 onPressed: () async {
                   await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => TemplateCategorySelection()));
                 },
-                child:
-                    Text('Выбрать', style: Theme.of(context).textTheme.body2),
-                borderSide: BorderSide(color: Colors.white),
+                child: Text('Выбрать',
+                    style: Theme.of(context).textTheme.bodyText2),
               ),
             )
           ],
@@ -191,20 +189,19 @@ class MainMenuContent extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10),
               child: Text("Новый букет",
-                  style: Theme.of(context).textTheme.subtitle),
+                  style: Theme.of(context).textTheme.headline6),
             ),
             Padding(
               padding: EdgeInsets.all(20),
-              child: OutlineButton(
+              child: OutlinedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BouquetMainMenu()));
                 },
-                child:
-                    Text('Создать', style: Theme.of(context).textTheme.body2),
-                borderSide: BorderSide(color: Colors.white),
+                child: Text('Создать',
+                    style: Theme.of(context).textTheme.bodyText2),
               ),
             )
           ],
@@ -224,15 +221,17 @@ class MainMenuContent extends StatelessWidget {
             return AlertDialog(
               title: Text(
                 "Выбор ценовой категории",
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.headline6,
               ),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
                     Text(
                       "Цена:" + Calc.roundDouble(_cost, 2).toString() + " ₽",
-                      style:
-                          Theme.of(context).textTheme.body1.copyWith(height: 2),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(height: 2),
                     ),
                     SliderTheme(
                       data: SliderThemeData(
@@ -257,13 +256,13 @@ class MainMenuContent extends StatelessWidget {
               actions: <Widget>[
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: new Text(
                       "Назад",
-                      style: Theme.of(context).textTheme.body1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
                             color: Color.fromRGBO(130, 147, 153, 1),
                           ),
                     ),
@@ -271,7 +270,7 @@ class MainMenuContent extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () async {
                       if (_cost != null)
                         await Navigator.push(
@@ -283,7 +282,7 @@ class MainMenuContent extends StatelessWidget {
                     },
                     child: new Text(
                       "Заказать",
-                      style: Theme.of(context).textTheme.body1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
                           color: Color.fromRGBO(130, 147, 153, 1),
                           fontWeight: FontWeight.bold),
                     ),

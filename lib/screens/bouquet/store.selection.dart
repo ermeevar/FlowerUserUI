@@ -1,5 +1,4 @@
 import 'package:flower_user_ui/entities/store.dart';
-import 'package:flower_user_ui/states/profile.manipulation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/states/web.api.services.dart';
@@ -42,7 +41,7 @@ class StoreSelectionState extends State<StoreSelection> {
       padding: EdgeInsets.only(bottom: 20),
       child: Text(
         "Сети магазинов",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
       ),
     );
   }
@@ -60,7 +59,7 @@ class StoreSelectionState extends State<StoreSelection> {
             ? BouquetMainMenuState.newBouquet.name
             : "",
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Наименование букета",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -121,7 +120,7 @@ class StoreSelectionState extends State<StoreSelection> {
       _stores[index].name.toString(),
       overflow: TextOverflow.ellipsis,
       softWrap: true,
-      style: Theme.of(context).textTheme.body1.copyWith(height: 2.5),
+      style: Theme.of(context).textTheme.bodyText1.copyWith(height: 2.5),
     );
   }
 

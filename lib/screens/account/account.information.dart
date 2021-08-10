@@ -57,7 +57,7 @@ class AccountInformationState extends State<AccountInformation>
   Text getName(context) {
     return Text(
         ProfileManipulation.user.name + " " + ProfileManipulation.user.surname,
-        style: Theme.of(context).textTheme.body1);
+        style: Theme.of(context).textTheme.bodyText1);
   }
 
   Text getLogin(context) {
@@ -67,7 +67,7 @@ class AccountInformationState extends State<AccountInformation>
           : "Error",
       style: Theme.of(context)
           .textTheme
-          .body1
+          .bodyText1
           .copyWith(height: 2, fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
@@ -116,17 +116,18 @@ class AccountInformationState extends State<AccountInformation>
                 size: 25,
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
-              FlatButton(
-                  onPressed: () {
-                    _taped();
-                    Navigator.pop(context);
-                  },
-                  padding: EdgeInsets.only(left: 10),
-                  child: new Text("Изменить",
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Color.fromRGBO(130, 147, 153, 1))))
+              TextButton(
+                onPressed: () {
+                  _taped();
+                  Navigator.pop(context);
+                },
+                child: new Text(
+                  "Изменить",
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        color: Color.fromRGBO(130, 147, 153, 1),
+                      ),
+                ),
+              )
             ],
           ),
         ),
@@ -139,15 +140,14 @@ class AccountInformationState extends State<AccountInformation>
                 size: 25,
                 color: Color.fromRGBO(130, 147, 153, 1),
               ),
-              FlatButton(
+              TextButton(
                   onPressed: () async {
                     await onAuthorizationPage();
                   },
-                  padding: EdgeInsets.only(left: 10),
                   child: new Text("Выйти",
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .bodyText1
                           .copyWith(color: Color.fromRGBO(130, 147, 153, 1))))
             ],
           ),
@@ -157,17 +157,16 @@ class AccountInformationState extends State<AccountInformation>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(Icons.delete, size: 25, color: Colors.red),
-              new FlatButton(
+              new TextButton(
                   onPressed: () async {
                     await WebApiServices.deleteAccount(
                         ProfileManipulation.account.id);
                     await onAuthorizationPage();
                   },
-                  padding: EdgeInsets.only(left: 10),
                   child: new Text("Удалить",
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .bodyText1
                           .copyWith(color: Colors.red)))
             ],
           ),
@@ -184,7 +183,7 @@ class AccountInformationState extends State<AccountInformation>
           CupertinoActionSheetAction(
             child: Text(
               'Выбрать из галереи',
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             onPressed: () async {
               Navigator.of(context).pop();
@@ -202,7 +201,7 @@ class AccountInformationState extends State<AccountInformation>
           CupertinoActionSheetAction(
             child: Text(
               'Камера',
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             onPressed: () async {
               Navigator.of(context).pop();
@@ -247,13 +246,12 @@ class AccountInformationState extends State<AccountInformation>
         Spacer(),
         Container(
           padding: EdgeInsets.only(top: 20, bottom: 2),
-          child: FlatButton(
+          child: TextButton(
             onPressed: () async {
               _taped();
               await WebApiServices.putUser(ProfileManipulation.user);
               await ProfileManipulation.getUser(ProfileManipulation.account);
             },
-            padding: EdgeInsets.zero,
             child: Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -263,7 +261,7 @@ class AccountInformationState extends State<AccountInformation>
                 ),
               ),
               child: new Text("Сохранить",
-                  style: Theme.of(context).textTheme.body2),
+                  style: Theme.of(context).textTheme.bodyText2),
             ),
           ),
         )
@@ -288,7 +286,7 @@ class AccountInformationState extends State<AccountInformation>
         initialValue: ProfileManipulation.user.phone != null
             ? ProfileManipulation.user.phone
             : "",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Телефон",
           prefixText: "+7 ",
@@ -311,7 +309,7 @@ class AccountInformationState extends State<AccountInformation>
         initialValue: ProfileManipulation.user.surname != null
             ? ProfileManipulation.user.surname
             : "",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Фамилия",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
@@ -334,7 +332,7 @@ class AccountInformationState extends State<AccountInformation>
         initialValue: ProfileManipulation.user.name != null
             ? ProfileManipulation.user.name
             : "",
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Имя",
           focusColor: Color.fromRGBO(130, 147, 153, 1),
