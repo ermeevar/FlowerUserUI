@@ -1,17 +1,16 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/bouquet/store.selection.dart';
-import 'package:flower_user_ui/presentation/screens/navigation.menu.dart';
-import 'package:flower_user_ui/presentation/screens/order/bouquet.order.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/presentation/screens/bouquet/store_selection.dart';
+import 'package:flower_user_ui/presentation/screens/navigation_menu.dart';
+import 'package:flower_user_ui/presentation/screens/order/bouquet_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'decoration.selection.dart';
-import 'flower.selection.dart';
-import 'grass.selection.dart';
+import 'decoration_selection.dart';
+import 'flower_selection.dart';
+import 'grass_selection.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
 class BouquetMainMenu extends StatefulWidget {
@@ -343,12 +342,12 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
 
   Future<Bouquet> postBouquet(double bouquetCost) async {
     newBouquet.cost = bouquetCost;
-    newBouquet.userId = ProfileManipulation.user.id;
+    newBouquet.userId = ProfileService.user.id;
 
-    await WebApiServices.postBouquet(BouquetMainMenuState.newBouquet);
+    await ApiService.postBouquet(BouquetMainMenuState.newBouquet);
 
     Bouquet postedBouquet;
-    await WebApiServices.fetchBouquets().then((response) {
+    await ApiService.fetchBouquets().then((response) {
       var bouquetsData = bouquetFromJson(response.data);
       postedBouquet = bouquetsData.last;
     });
@@ -357,7 +356,7 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
       BouquetProduct middleBouquetProduct = BouquetProduct();
       middleBouquetProduct.bouquetId = postedBouquet.id;
       middleBouquetProduct.productId = item.id;
-      await WebApiServices.postBouquetProduct(middleBouquetProduct);
+      await ApiService.postBouquetProduct(middleBouquetProduct);
     }
 
     return postedBouquet;

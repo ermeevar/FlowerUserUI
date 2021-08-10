@@ -1,6 +1,6 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/nullContainer.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/presentation/common_widgets/null_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +23,14 @@ class ProductsListState extends State<ProductsList> {
 
   _getProducts() async {
     List<BouquetProduct> middleProducts;
-    await WebApiServices.fetchBouquetProducts().then((response) {
+    await ApiService.fetchBouquetProducts().then((response) {
       var bouquetProductsData = bouquetProductFromJson(response.data);
       middleProducts = bouquetProductsData
           .where((element) => element.bouquetId == bouquetId)
           .toList();
     });
 
-    await WebApiServices.fetchProducts().then((response) {
+    await ApiService.fetchProducts().then((response) {
       var productsData = productFromJson(response.data);
       setState(() {
         _products = productsData

@@ -4,7 +4,7 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 
-class WebApiServices {
+class ApiService {
   static Dio dio = Dio();
 
   //#region Server
@@ -28,7 +28,7 @@ class WebApiServices {
   static String _userUrl = _baseUrl + "/users/";
   //#endregion
 
-  WebApiServices() {
+  ApiService() {
     dio.interceptors.add(
         DioCacheManager(CacheConfig(baseUrl: "http://1185.246.67.169"))
             .interceptor);

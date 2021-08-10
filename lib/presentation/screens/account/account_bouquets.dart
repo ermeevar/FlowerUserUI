@@ -1,12 +1,12 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/order/bouquet.order.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/domain/services/profile_service.dart';
+import 'package:flower_user_ui/presentation/screens/order/bouquet_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
-import '../navigation.menu.dart';
+import '../navigation_menu.dart';
 
 class AccountBouquets extends StatefulWidget {
   @override
@@ -21,11 +21,11 @@ class AccountBouquetsState extends State<AccountBouquets> {
   }
 
   Future<void> getBouquets() {
-    return WebApiServices.fetchBouquets().then((response) {
+    return ApiService.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData.reversed
-            .where((element) => element.userId == ProfileManipulation.user.id)
+            .where((element) => element.userId == ProfileService.user.id)
             .toList();
       });
     });
@@ -102,7 +102,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
               color: Colors.white,
             ),
             onPressed: () async {
-              await WebApiServices.deleteBouquet(_bouquets[index].id);
+              await ApiService.deleteBouquet(_bouquets[index].id);
 
               getBouquets();
             },

@@ -1,6 +1,6 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/template/template.selection.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/presentation/screens/template/template_selection.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCategorySelection extends StatefulWidget {
@@ -19,7 +19,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
 
   //#region GetData
   _getTemplateCategories() async {
-    await WebApiServices.fetchTemplateCategories().then((response) {
+    await ApiService.fetchTemplateCategories().then((response) {
       var templateCategoriesData = templateCategoryFromJson(response.data);
       setState(() {
         _templateCategories = templateCategoriesData;
@@ -28,7 +28,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
   }
 
   _getTemplates() async {
-    await WebApiServices.fetchTemplates().then((response) {
+    await ApiService.fetchTemplates().then((response) {
       var templateData = templateFromJson(response.data);
       setState(() {
         _templates = templateData;

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'account.bouquets.dart';
-import 'account.information.dart';
+import 'account_bouquets.dart';
+import 'account_information.dart';
 
 class AccountObserve extends StatefulWidget {
   @override

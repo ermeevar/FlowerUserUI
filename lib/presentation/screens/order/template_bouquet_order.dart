@@ -1,7 +1,5 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/bouquet/bouquet.main.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,25 +7,26 @@ import 'package:intl/intl.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
-import '../navigation.menu.dart';
-import 'order.products.list.dart';
 
-class BouquetOrder extends StatefulWidget {
-  final Bouquet _bouquet;
+import '../navigation_menu.dart';
 
-  BouquetOrder(this._bouquet) {}
+class TemplateBouquetOrder extends StatefulWidget {
+  final Template _template;
+
+  TemplateBouquetOrder(this._template) {}
 
   @override
-  BouquetOrderState createState() => BouquetOrderState(_bouquet);
+  TemplateBouquetOrderState createState() =>
+      TemplateBouquetOrderState(_template);
 }
 
-class BouquetOrderState extends State<BouquetOrder> {
+class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
   Order order = new Order();
   bool isSelectedCard = false;
-  Bouquet _bouquet;
+  Template _template;
   List<Shop> _shops = [];
 
-  BouquetOrderState(this._bouquet) {
+  TemplateBouquetOrderState(this._template) {
     _setOrderInitialData();
   }
 
@@ -36,23 +35,23 @@ class BouquetOrderState extends State<BouquetOrder> {
     await _getShops();
 
     await setState(() {
-      order.userId = ProfileManipulation.user.id;
+      order.userId = ProfileService.user.id;
       order.finish = DateTime.now().add(Duration(days: 1));
       order.start = DateTime.now();
       order.shopId = _shops.first.id;
+      order.templateId = _template.id;
       order.orderStatusId = 1;
-      order.cost = _bouquet.cost;
-      order.bouquetId = _bouquet.id;
+      order.cost = _template.cost;
       order.isRandom = false;
     });
   }
 
   _getShops() async {
-    await WebApiServices.fetchShops().then((response) {
+    await ApiService.fetchShops().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
         _shops = shopsData
-            .where((element) => element.storeId == _bouquet.storeId)
+            .where((element) => element.storeId == _template.storeId)
             .toList();
       });
     });
@@ -67,7 +66,6 @@ class BouquetOrderState extends State<BouquetOrder> {
           _header(context),
           _nameAndCostInfo(context),
           _orderInfo(context),
-          ProductsList(_bouquet.id),
           _orderButton(context),
         ],
       ),
@@ -86,9 +84,6 @@ class BouquetOrderState extends State<BouquetOrder> {
               padding: EdgeInsets.only(left: 20),
               color: Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
-                BouquetMainMenuState.newBouquet = Bouquet();
-                BouquetMainMenuState.products = [];
-
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => NavigationMenu(),
@@ -98,7 +93,7 @@ class BouquetOrderState extends State<BouquetOrder> {
             ),
           ),
           Text("Оформление заказа",
-              style: Theme.of(context).textTheme.headline6)
+              style: Theme.of(context).textTheme.subtitle1)
         ],
       ),
     );
@@ -113,7 +108,7 @@ class BouquetOrderState extends State<BouquetOrder> {
         children: [
           Container(
             child: Text(
-              _bouquet.name == null ? "" : _bouquet.name,
+              _template.name,
               overflow: TextOverflow.clip,
               softWrap: true,
               style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -123,8 +118,8 @@ class BouquetOrderState extends State<BouquetOrder> {
             ),
           ),
           Text(
-            order.cost != null
-                ? order.cost.roundDouble(2).toString() + " ₽"
+            _template.cost != null
+                ? _template.cost.roundDouble(2).toString()
                 : "",
             style: Theme.of(context)
                 .textTheme
@@ -167,9 +162,6 @@ class BouquetOrderState extends State<BouquetOrder> {
                       color: Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
-              // borderSide: BorderSide(
-              //   color: Color.fromRGBO(110, 53, 76, 1),
-              // ),
             )
           : TextButton(
               onPressed: () {
@@ -237,7 +229,7 @@ class BouquetOrderState extends State<BouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.phone,
+        initialValue: ProfileService.user.phone,
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Телефон",
@@ -256,9 +248,8 @@ class BouquetOrderState extends State<BouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.name != null
-            ? ProfileManipulation.user.name
-            : "",
+        initialValue:
+            ProfileService.user.name != null ? ProfileService.user.name : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Имя",
@@ -276,8 +267,8 @@ class BouquetOrderState extends State<BouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.surname != null
-            ? ProfileManipulation.user.surname
+        initialValue: ProfileService.user.surname != null
+            ? ProfileService.user.surname
             : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
@@ -418,10 +409,7 @@ class BouquetOrderState extends State<BouquetOrder> {
         padding: EdgeInsets.only(top: 30, bottom: 20),
         child: TextButton(
           onPressed: () async {
-            await WebApiServices.postOrder(order);
-
-            BouquetMainMenuState.newBouquet = Bouquet();
-            BouquetMainMenuState.products = [];
+            await ApiService.postOrder(order);
 
             showTopSnackBar(
               context,
@@ -442,8 +430,9 @@ class BouquetOrderState extends State<BouquetOrder> {
             width: 150,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: Color.fromRGBO(130, 147, 153, 1),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
+              color: Color.fromRGBO(130, 147, 153, 1),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
             child: Center(
               child: Text("Заказать",
                   style: Theme.of(context).textTheme.bodyText2),

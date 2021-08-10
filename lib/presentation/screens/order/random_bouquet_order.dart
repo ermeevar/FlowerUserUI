@@ -1,6 +1,5 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,25 +8,24 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
-import '../navigation.menu.dart';
+import '../navigation_menu.dart';
 
-class TemplateBouquetOrder extends StatefulWidget {
-  final Template _template;
+class RandomBouquetOrder extends StatefulWidget {
+  final double _cost;
 
-  TemplateBouquetOrder(this._template) {}
+  RandomBouquetOrder(this._cost) {}
 
   @override
-  TemplateBouquetOrderState createState() =>
-      TemplateBouquetOrderState(_template);
+  RandomBouquetOrderState createState() => RandomBouquetOrderState(_cost);
 }
 
-class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
+class RandomBouquetOrderState extends State<RandomBouquetOrder> {
   Order order = new Order();
   bool isSelectedCard = false;
-  Template _template;
+  double _cost;
   List<Shop> _shops = [];
 
-  TemplateBouquetOrderState(this._template) {
+  RandomBouquetOrderState(this._cost) {
     _setOrderInitialData();
   }
 
@@ -36,24 +34,21 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
     await _getShops();
 
     await setState(() {
-      order.userId = ProfileManipulation.user.id;
+      order.userId = ProfileService.user.id;
       order.finish = DateTime.now().add(Duration(days: 1));
       order.start = DateTime.now();
       order.shopId = _shops.first.id;
-      order.templateId = _template.id;
       order.orderStatusId = 1;
-      order.cost = _template.cost;
-      order.isRandom = false;
+      order.cost = _cost;
+      order.isRandom = true;
     });
   }
 
   _getShops() async {
-    await WebApiServices.fetchShops().then((response) {
+    await ApiService.fetchShops().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
-        _shops = shopsData
-            .where((element) => element.storeId == _template.storeId)
-            .toList();
+        _shops = shopsData;
       });
     });
   }
@@ -109,7 +104,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         children: [
           Container(
             child: Text(
-              _template.name,
+              "Букет от флориста",
               overflow: TextOverflow.clip,
               softWrap: true,
               style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -119,9 +114,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
             ),
           ),
           Text(
-            _template.cost != null
-                ? _template.cost.roundDouble(2).toString()
-                : "",
+            _cost != null ? _cost.roundDouble(2).toString() : "",
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
@@ -230,7 +223,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.phone,
+        initialValue: ProfileService.user.phone,
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Телефон",
@@ -249,9 +242,8 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.name != null
-            ? ProfileManipulation.user.name
-            : "",
+        initialValue:
+            ProfileService.user.name != null ? ProfileService.user.name : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Имя",
@@ -269,8 +261,8 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.surname != null
-            ? ProfileManipulation.user.surname
+        initialValue: ProfileService.user.surname != null
+            ? ProfileService.user.surname
             : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
@@ -411,7 +403,7 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
         padding: EdgeInsets.only(top: 30, bottom: 20),
         child: TextButton(
           onPressed: () async {
-            await WebApiServices.postOrder(order);
+            await ApiService.postOrder(order);
 
             showTopSnackBar(
               context,
@@ -432,9 +424,8 @@ class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
             width: 150,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color.fromRGBO(130, 147, 153, 1),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
+                color: Color.fromRGBO(130, 147, 153, 1),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Center(
               child: Text("Заказать",
                   style: Theme.of(context).textTheme.bodyText2),

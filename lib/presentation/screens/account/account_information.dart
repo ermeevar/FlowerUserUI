@@ -1,8 +1,8 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/image.controller.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/authorization.widgets/authorization.main.menu.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/domain/services/profile_service.dart';
+import 'package:flower_user_ui/internal/utils/image_controller.dart';
+import 'package:flower_user_ui/presentation/screens/authorization_widgets/authorization_main_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,16 +55,13 @@ class AccountInformationState extends State<AccountInformation>
   }
 
   Text getName(context) {
-    return Text(
-        ProfileManipulation.user.name + " " + ProfileManipulation.user.surname,
+    return Text(ProfileService.user.name + " " + ProfileService.user.surname,
         style: Theme.of(context).textTheme.bodyText1);
   }
 
   Text getLogin(context) {
     return Text(
-      ProfileManipulation.account != null
-          ? ProfileManipulation.account.login
-          : "Error",
+      ProfileService.account != null ? ProfileService.account.login : "Error",
       style: Theme.of(context)
           .textTheme
           .bodyText1
@@ -83,7 +80,7 @@ class AccountInformationState extends State<AccountInformation>
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 60,
-          child: ProfileManipulation.user.picture == null
+          child: ProfileService.user.picture == null
               ? Icon(
                   Icons.supervisor_account_outlined,
                   color: Colors.black38,
@@ -91,7 +88,7 @@ class AccountInformationState extends State<AccountInformation>
                 )
               : ClipOval(
                   child: Image(
-                    image: MemoryImage(ProfileManipulation.user.picture),
+                    image: MemoryImage(ProfileService.user.picture),
                     width: 120,
                     height: 120,
                     fit: BoxFit.cover,
@@ -159,8 +156,7 @@ class AccountInformationState extends State<AccountInformation>
               Icon(Icons.delete, size: 25, color: Colors.red),
               new TextButton(
                   onPressed: () async {
-                    await WebApiServices.deleteAccount(
-                        ProfileManipulation.account.id);
+                    await ApiService.deleteAccount(ProfileService.account.id);
                     await onAuthorizationPage();
                   },
                   child: new Text("Удалить",
@@ -190,10 +186,9 @@ class AccountInformationState extends State<AccountInformation>
               var pickedImage = await ImageController.getImageFromGallery();
               if (pickedImage != null) {
                 setState(() async {
-                  ProfileManipulation.user.picture = pickedImage;
-                  await WebApiServices.putUser(ProfileManipulation.user);
-                  await ProfileManipulation.getUser(
-                      ProfileManipulation.account);
+                  ProfileService.user.picture = pickedImage;
+                  await ApiService.putUser(ProfileService.user);
+                  await ProfileService.getUser(ProfileService.account);
                 });
               }
             },
@@ -208,10 +203,9 @@ class AccountInformationState extends State<AccountInformation>
               var pickedImage = await ImageController.getImageFromCamera();
               if (pickedImage != null) {
                 setState(() async {
-                  ProfileManipulation.user.picture = pickedImage;
-                  await WebApiServices.putUser(ProfileManipulation.user);
-                  await ProfileManipulation.getUser(
-                      ProfileManipulation.account);
+                  ProfileService.user.picture = pickedImage;
+                  await ApiService.putUser(ProfileService.user);
+                  await ProfileService.getUser(ProfileService.account);
                 });
               }
             },
@@ -249,8 +243,8 @@ class AccountInformationState extends State<AccountInformation>
           child: TextButton(
             onPressed: () async {
               _taped();
-              await WebApiServices.putUser(ProfileManipulation.user);
-              await ProfileManipulation.getUser(ProfileManipulation.account);
+              await ApiService.putUser(ProfileService.user);
+              await ProfileService.getUser(ProfileService.account);
             },
             child: Container(
               padding: EdgeInsets.all(10),
@@ -279,13 +273,12 @@ class AccountInformationState extends State<AccountInformation>
         ],
         onChanged: (phone) {
           setState(() {
-            ProfileManipulation.user.phone = phone;
+            ProfileService.user.phone = phone;
           });
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.phone != null
-            ? ProfileManipulation.user.phone
-            : "",
+        initialValue:
+            ProfileService.user.phone != null ? ProfileService.user.phone : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Телефон",
@@ -302,12 +295,12 @@ class AccountInformationState extends State<AccountInformation>
       child: TextFormField(
         onChanged: (surname) {
           setState(() {
-            ProfileManipulation.user.surname = surname;
+            ProfileService.user.surname = surname;
           });
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.surname != null
-            ? ProfileManipulation.user.surname
+        initialValue: ProfileService.user.surname != null
+            ? ProfileService.user.surname
             : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
@@ -329,9 +322,8 @@ class AccountInformationState extends State<AccountInformation>
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
         key: Key("name"),
-        initialValue: ProfileManipulation.user.name != null
-            ? ProfileManipulation.user.name
-            : "",
+        initialValue:
+            ProfileService.user.name != null ? ProfileService.user.name : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Имя",
@@ -351,7 +343,7 @@ class AccountInformationState extends State<AccountInformation>
             color: Color.fromRGBO(130, 147, 153, 1),
             onPressed: () async {
               _taped();
-              await ProfileManipulation.getUser(ProfileManipulation.account);
+              await ProfileService.getUser(ProfileService.account);
             }),
       ],
     );

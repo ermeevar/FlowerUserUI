@@ -1,6 +1,6 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/order/template.bouquet.order.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/presentation/screens/order/template_bouquet_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
@@ -23,7 +23,7 @@ class TemplateSelectionState extends State<TemplateSelection> {
   }
 
   _getTemplates() async {
-    await WebApiServices.fetchTemplates().then((response) {
+    await ApiService.fetchTemplates().then((response) {
       var templateData = templateFromJson(response.data);
       setState(() {
         _templates = templateData

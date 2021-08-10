@@ -1,9 +1,9 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/slider.shape.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/presentation/common_widgets/slider_shape.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'bouquet.main.dart';
+import 'bouquet_main.dart';
 
 class FlowerSelection extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class FlowerSelectionState extends State<FlowerSelection> {
   }
 
   _getStoreProducts() {
-    WebApiServices.fetchProducts().then((response) {
+    ApiService.fetchProducts().then((response) {
       var storeproductsData = productFromJson(response.data);
       setState(() {
         _products = storeproductsData

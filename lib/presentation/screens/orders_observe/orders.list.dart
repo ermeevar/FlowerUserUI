@@ -1,13 +1,13 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/nullContainer.dart';
-import 'package:flower_user_ui/internal/utils/spaceContainer.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
+import 'package:flower_user_ui/presentation/common_widgets/null_container.dart';
+import 'package:flower_user_ui/presentation/common_widgets/space_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../navigation.menu.dart';
+import '../navigation_menu.dart';
 
 class OrdersList extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class OrdersListState extends State<OrdersList>
   }
 
   _getOrders() async {
-    await WebApiServices.fetchOrders().then((response) {
+    await ApiService.fetchOrders().then((response) {
       var ordersData = orderFromJson(response.data);
       setState(() {
         _orders = ordersData.reversed.toList();
@@ -46,7 +46,7 @@ class OrdersListState extends State<OrdersList>
   }
 
   _getShops() async {
-    await WebApiServices.fetchShops().then((response) {
+    await ApiService.fetchShops().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
         _shops = shopsData;
@@ -55,7 +55,7 @@ class OrdersListState extends State<OrdersList>
   }
 
   _getBouquets() async {
-    await WebApiServices.fetchBouquets().then((response) {
+    await ApiService.fetchBouquets().then((response) {
       var bouquetData = bouquetFromJson(response.data);
       setState(() {
         _bouquets = bouquetData;
@@ -64,7 +64,7 @@ class OrdersListState extends State<OrdersList>
   }
 
   _getOrderStatuses() async {
-    await WebApiServices.fetchOrderStatuses().then((response) {
+    await ApiService.fetchOrderStatuses().then((response) {
       var orderStatusesData = orderStatusFromJson(response.data);
       setState(() {
         _orderStatuses = orderStatusesData;

@@ -1,6 +1,6 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/presentation/screens/bouquet/bouquet_main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,25 +8,25 @@ import 'package:intl/intl.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
+import '../navigation_menu.dart';
+import 'order_products_list.dart';
 
-import '../navigation.menu.dart';
+class BouquetOrder extends StatefulWidget {
+  final Bouquet _bouquet;
 
-class RandomBouquetOrder extends StatefulWidget {
-  final double _cost;
-
-  RandomBouquetOrder(this._cost) {}
+  BouquetOrder(this._bouquet) {}
 
   @override
-  RandomBouquetOrderState createState() => RandomBouquetOrderState(_cost);
+  BouquetOrderState createState() => BouquetOrderState(_bouquet);
 }
 
-class RandomBouquetOrderState extends State<RandomBouquetOrder> {
+class BouquetOrderState extends State<BouquetOrder> {
   Order order = new Order();
   bool isSelectedCard = false;
-  double _cost;
+  Bouquet _bouquet;
   List<Shop> _shops = [];
 
-  RandomBouquetOrderState(this._cost) {
+  BouquetOrderState(this._bouquet) {
     _setOrderInitialData();
   }
 
@@ -35,21 +35,24 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
     await _getShops();
 
     await setState(() {
-      order.userId = ProfileManipulation.user.id;
+      order.userId = ProfileService.user.id;
       order.finish = DateTime.now().add(Duration(days: 1));
       order.start = DateTime.now();
       order.shopId = _shops.first.id;
       order.orderStatusId = 1;
-      order.cost = _cost;
-      order.isRandom = true;
+      order.cost = _bouquet.cost;
+      order.bouquetId = _bouquet.id;
+      order.isRandom = false;
     });
   }
 
   _getShops() async {
-    await WebApiServices.fetchShops().then((response) {
+    await ApiService.fetchShops().then((response) {
       var shopsData = shopFromJson(response.data);
       setState(() {
-        _shops = shopsData;
+        _shops = shopsData
+            .where((element) => element.storeId == _bouquet.storeId)
+            .toList();
       });
     });
   }
@@ -63,6 +66,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           _header(context),
           _nameAndCostInfo(context),
           _orderInfo(context),
+          ProductsList(_bouquet.id),
           _orderButton(context),
         ],
       ),
@@ -81,6 +85,9 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
               padding: EdgeInsets.only(left: 20),
               color: Color.fromRGBO(130, 147, 153, 1),
               onPressed: () {
+                BouquetMainMenuState.newBouquet = Bouquet();
+                BouquetMainMenuState.products = [];
+
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => NavigationMenu(),
@@ -90,7 +97,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
             ),
           ),
           Text("Оформление заказа",
-              style: Theme.of(context).textTheme.subtitle1)
+              style: Theme.of(context).textTheme.headline6)
         ],
       ),
     );
@@ -105,7 +112,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         children: [
           Container(
             child: Text(
-              "Букет от флориста",
+              _bouquet.name == null ? "" : _bouquet.name,
               overflow: TextOverflow.clip,
               softWrap: true,
               style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -115,7 +122,9 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
             ),
           ),
           Text(
-            _cost != null ? _cost.roundDouble(2).toString() : "",
+            order.cost != null
+                ? order.cost.roundDouble(2).toString() + " ₽"
+                : "",
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
@@ -157,6 +166,9 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
                       color: Color.fromRGBO(110, 53, 76, 1),
                     ),
               ),
+              // borderSide: BorderSide(
+              //   color: Color.fromRGBO(110, 53, 76, 1),
+              // ),
             )
           : TextButton(
               onPressed: () {
@@ -224,7 +236,7 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.phone,
+        initialValue: ProfileService.user.phone,
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Телефон",
@@ -243,9 +255,8 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.name != null
-            ? ProfileManipulation.user.name
-            : "",
+        initialValue:
+            ProfileService.user.name != null ? ProfileService.user.name : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           labelText: "Имя",
@@ -263,8 +274,8 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
           setState(() {});
         },
         cursorColor: Color.fromRGBO(130, 147, 153, 1),
-        initialValue: ProfileManipulation.user.surname != null
-            ? ProfileManipulation.user.surname
+        initialValue: ProfileService.user.surname != null
+            ? ProfileService.user.surname
             : "",
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
@@ -405,7 +416,10 @@ class RandomBouquetOrderState extends State<RandomBouquetOrder> {
         padding: EdgeInsets.only(top: 30, bottom: 20),
         child: TextButton(
           onPressed: () async {
-            await WebApiServices.postOrder(order);
+            await ApiService.postOrder(order);
+
+            BouquetMainMenuState.newBouquet = Bouquet();
+            BouquetMainMenuState.products = [];
 
             showTopSnackBar(
               context,

@@ -1,8 +1,8 @@
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/slider.shape.dart';
-import 'package:flower_user_ui/presentation/screens/bouquet/bouquet.main.dart';
-import 'package:flower_user_ui/presentation/screens/order/random.bouquet.order.dart';
-import 'package:flower_user_ui/presentation/screens/template/template.category.selection.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/presentation/common_widgets/slider_shape.dart';
+import 'package:flower_user_ui/presentation/screens/bouquet/bouquet_main.dart';
+import 'package:flower_user_ui/presentation/screens/order/random_bouquet_order.dart';
+import 'package:flower_user_ui/presentation/screens/template/template_category_selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
@@ -39,14 +39,14 @@ class MainMenuContent extends StatelessWidget {
           padding: EdgeInsets.only(top: 30, left: 10, right: 10),
           child: Row(
             children: [
-              Text(ProfileManipulation.account.login,
+              Text(ProfileService.account.login,
                   style: Theme.of(context).textTheme.bodyText2),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 20,
-                  child: ProfileManipulation.user.picture == null
+                  child: ProfileService.user.picture == null
                       ? Icon(
                           Icons.supervisor_account_outlined,
                           color: Colors.black38,
@@ -54,8 +54,7 @@ class MainMenuContent extends StatelessWidget {
                         )
                       : ClipOval(
                           child: Image(
-                            image:
-                                MemoryImage(ProfileManipulation.user.picture),
+                            image: MemoryImage(ProfileService.user.picture),
                             width: 40,
                             height: 40,
                             fit: BoxFit.cover,

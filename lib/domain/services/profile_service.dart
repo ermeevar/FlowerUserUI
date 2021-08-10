@@ -1,16 +1,17 @@
 import 'package:crypt/crypt.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileManipulation {
+import 'api_service.dart';
+
+class ProfileService {
   static Account account;
   static User user;
 
   static Future<Account> getAccount(Account account) async {
     Account accountBD;
 
-    await WebApiServices.fetchAccounts().then((response) {
+    await ApiService.fetchAccounts().then((response) {
       var accountData = accountFromJson(response.data);
       accountBD = accountData.firstWhere(
           (element) => element.login == account.login && element.role == "user",
@@ -32,7 +33,7 @@ class ProfileManipulation {
     if (accountBD == null) return null;
 
     User user;
-    await WebApiServices.fetchUsers().then((response) {
+    await ApiService.fetchUsers().then((response) {
       var userData = userFromJson(response.data);
       user =
           userData.firstWhere((element) => element.accountId == accountBD.id);
@@ -54,7 +55,7 @@ class ProfileManipulation {
     account.role = "user";
     List<Account> _accounts = [];
 
-    await WebApiServices.fetchAccounts().then((response) {
+    await ApiService.fetchAccounts().then((response) {
       var accountData = accountFromJson(response.data);
       _accounts = accountData.toList();
     });
@@ -63,14 +64,14 @@ class ProfileManipulation {
       if (item.login == account.login) return false;
     }
 
-    await WebApiServices.postAccount(account);
-    await WebApiServices.fetchAccounts().then((response) {
+    await ApiService.postAccount(account);
+    await ApiService.fetchAccounts().then((response) {
       var accountData = accountFromJson(response.data);
       _accounts = accountData.toList();
     });
 
     user.accountId = _accounts.toList().last.id;
-    await WebApiServices.postUser(user);
+    await ApiService.postUser(user);
     return true;
   }
 }

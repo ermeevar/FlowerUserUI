@@ -1,14 +1,14 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/circleProgressBar.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
+import 'package:flower_user_ui/presentation/common_widgets/circle_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'account/account.main.dart';
-import 'main.menu/main.menu.content.dart';
-import 'orders.observe/orders.observe.main.dart';
+import 'account/account_main.dart';
+import 'main.menu/main_menu_content.dart';
+import 'orders_observe/orders.observe.main.dart';
 
 class NavigationMenu extends StatefulWidget {
   @override
@@ -40,15 +40,15 @@ class NavigationMenuState extends State<NavigationMenu>
   getProfile() async {
     final SharedPreferences prefs = await _prefs;
 
-    await WebApiServices.fetchAccounts().then((response) {
+    await ApiService.fetchAccounts().then((response) {
       var accountData = accountFromJson(response.data);
-      ProfileManipulation.account = accountData
+      ProfileService.account = accountData
           .firstWhere((element) => element.id == prefs.getInt('AccountId'));
     });
 
-    await WebApiServices.fetchUsers().then((response) {
+    await ApiService.fetchUsers().then((response) {
       var userData = userFromJson(response.data);
-      ProfileManipulation.user = userData
+      ProfileService.user = userData
           .firstWhere((element) => element.id == prefs.getInt('UserId'));
     });
   }

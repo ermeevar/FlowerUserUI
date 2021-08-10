@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:flower_user_ui/presentation/screens/authorization.widgets/authorization.main.menu.dart';
-import 'package:flower_user_ui/presentation/screens/navigation.menu.dart';
+import 'package:flower_user_ui/presentation/screens/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'internal/utils/certificate.dart';
+import 'presentation/screens/authorization_widgets/authorization_main_menu.dart';
 
 void main() {
   HttpOverrides.global = new Certificate();

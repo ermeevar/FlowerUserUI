@@ -1,34 +1,27 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/nullContainer.dart';
-import 'package:flower_user_ui/internal/utils/profile.manipulation.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
-import 'package:flower_user_ui/presentation/screens/registration.widgets/registration.main.menu.dart';
+import 'package:flower_user_ui/domain/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../navigation.menu.dart';
 
-class AuthorizationMainMenu extends StatefulWidget {
-  AuthorizationMainMenuState createState() => AuthorizationMainMenuState();
+class RegistrationMainMenu extends StatefulWidget {
+  RegistrationMainMenuState createState() => RegistrationMainMenuState();
 }
 
-class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
+class RegistrationMainMenuState extends State<RegistrationMainMenu> {
+  User _user = User();
   Account _account = Account();
-  bool isWrong = false;
+  List<Account> _accounts = [];
 
-  AuthorizationMainMenuState() {
+  RegistrationMainMenuState() {
     getAccounts();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
-  }
-
   getAccounts() async {
-    await WebApiServices.fetchAccounts().then((response) {
-      setState(() {});
+    await ApiService.fetchAccounts().then((response) {
+      var accountData = accountFromJson(response.data);
+      setState(() {
+        _accounts = accountData.toList();
+      });
     });
   }
 
@@ -40,7 +33,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
         clipBehavior: Clip.antiAlias,
         children: [
           drawBackgroundGradient(context),
-          drawBackgroundCircles(),
+          drawBackgroundCircles(context),
           buildContent(context),
         ],
       ),
@@ -56,52 +49,33 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
         children: [
           Spacer(),
           Text(
-            "Вход",
+            "Регистрация",
             style: Theme.of(context).textTheme.headline6,
           ),
+          getFirstName(context),
+          getName(context),
+          getPhone(context),
           getLogin(context),
           getPassword(context),
-          getWrongAccountError(context),
-          signIn(context),
-          signUp(context),
+          getSaveButton(context),
           Spacer(),
         ],
       ),
     );
   }
 
-  Container signUp(BuildContext context) {
+  Container getSaveButton(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 50),
       child: TextButton(
         onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => RegistrationMainMenu()),
-          );
-        },
-        child: new Text(
-          "Зарегистрироваться",
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-      ),
-    );
-  }
-
-  Container signIn(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 80),
-      child: TextButton(
-        onPressed: () async {
-          User accUser = await ProfileManipulation.getUser(_account);
-
-          if (accUser == null) {
+          if (await ProfileService.addUser(_account, _user) == true)
+            Navigator.pop(context);
+          else
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  "Пользователь не найден",
+                  "Произошла ошибка",
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 action: SnackBarAction(
@@ -112,25 +86,14 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
                 ),
               ),
             );
-            return;
-          }
-
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => NavigationMenu(),
-              ),
-              (Route<dynamic> route) => false);
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 90),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
-          ),
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(40))),
           child: new Text(
-            "ВОЙТИ",
+            "СОХРАНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: Color.fromRGBO(110, 53, 76, 1),
                 ),
@@ -140,21 +103,9 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     );
   }
 
-  Padding getWrongAccountError(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 30),
-      child: isWrong
-          ? Text(
-              "Пароль или логин введен неправильно",
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          : nullContainer(),
-    );
-  }
-
   Padding getPassword(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 30),
+      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
         obscureText: true,
         onChanged: (password) {
@@ -178,7 +129,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   Padding getLogin(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 40, left: 40, top: 40),
+      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
       child: TextFormField(
         onChanged: (login) {
           setState(() {
@@ -197,10 +148,76 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
       ),
     );
   }
+
+  Padding getPhone(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
+      child: TextFormField(
+        onChanged: (phone) {
+          setState(() {
+            this._user.phone = phone;
+          });
+        },
+        cursorColor: Colors.white,
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(
+            color: Colors.white,
+          ),
+          labelText: "Телефон",
+          focusColor: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Padding getName(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 40, left: 40, top: 20),
+      child: TextFormField(
+        onChanged: (name) {
+          setState(() {
+            this._user.name = name;
+          });
+        },
+        cursorColor: Colors.white,
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(
+            color: Colors.white,
+          ),
+          labelText: "Имя",
+          focusColor: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Padding getFirstName(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 40, left: 40, top: 40),
+      child: TextFormField(
+        onChanged: (surname) {
+          setState(() {
+            this._user.surname = surname;
+          });
+        },
+        cursorColor: Colors.white,
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(
+            color: Colors.white,
+          ),
+          labelText: "Фамилия",
+          focusColor: Colors.white,
+        ),
+      ),
+    );
+  }
   //#endregion
 
   //#region Background
-  Stack drawBackgroundCircles() {
+  Stack drawBackgroundCircles(BuildContext context) {
     return Stack(
       children: [
         Positioned(
@@ -249,6 +266,17 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
               shape: BoxShape.circle,
               color: Colors.white54,
             ),
+          ),
+        ),
+        Positioned(
+          top: 80,
+          left: 30,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         Positioned(

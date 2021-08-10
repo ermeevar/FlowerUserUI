@@ -1,8 +1,8 @@
 import 'package:flower_user_ui/data/models/api_modes.dart';
-import 'package:flower_user_ui/internal/utils/web.api.services.dart';
+import 'package:flower_user_ui/domain/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'bouquet.main.dart';
+import 'bouquet_main.dart';
 
 class StoreSelection extends StatefulWidget {
   @override
@@ -17,7 +17,7 @@ class StoreSelectionState extends State<StoreSelection> {
   }
 
   _getStores() {
-    WebApiServices.fetchStores().then((response) {
+    ApiService.fetchStores().then((response) {
       var storesData = storeFromJson(response.data);
       setState(() {
         _stores = storesData;
