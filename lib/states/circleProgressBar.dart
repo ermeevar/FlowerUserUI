@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget vinousCircleProgressBarScaffold(TickerProvider tickerProvider){
+Widget vinousCircleProgressBarScaffold(TickerProvider tickerProvider) {
   return Scaffold(
     body: Padding(
       padding: EdgeInsets.all(10),
@@ -10,9 +10,9 @@ Widget vinousCircleProgressBarScaffold(TickerProvider tickerProvider){
           width: 50,
           height: 50,
           child: CircularProgressIndicator(
-            valueColor:
-            ColorTween(begin:Color.fromRGBO(110, 53, 76, 1),
-                end: Color.fromRGBO(130, 147, 153, 1))
+            valueColor: ColorTween(
+                    begin: Color.fromRGBO(110, 53, 76, 1),
+                    end: Color.fromRGBO(130, 147, 153, 1))
                 .animate(
               AnimationController(
                   duration: const Duration(microseconds: 10),

@@ -94,9 +94,8 @@ class OrdersListState extends State<OrdersList>
     return Container(
       padding: EdgeInsets.only(top: 20),
       color: Colors.white,
-      child: _orders.length == 0
-        ? showNullOrderError(context)
-        : buildOrderList(),
+      child:
+          _orders.length == 0 ? showNullOrderError(context) : buildOrderList(),
     );
   }
 

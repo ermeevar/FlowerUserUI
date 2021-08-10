@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
-List<Product> productFromJson(String str) => List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+List<Product> productFromJson(String str) =>
+    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 
-String productToJson(List<Product> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String productToJson(List<Product> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Product {
   Product({
@@ -24,28 +26,30 @@ class Product {
   int storeId;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json["id"],
-    name: json["name"].toString(),
-    picture: json["picture"]!= null? base64.decode(json["picture"]) : json["picture"],
-    cost: json["cost"].toDouble(),
-    productCategoryId: json["productCategoryId"],
-    storeId: json["storeId"],
-  );
+        id: json["id"],
+        name: json["name"].toString(),
+        picture: json["picture"] != null
+            ? base64.decode(json["picture"])
+            : json["picture"],
+        cost: json["cost"].toDouble(),
+        productCategoryId: json["productCategoryId"],
+        storeId: json["storeId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "picture": picture != null? base64.encode(picture) : null,
-    "cost": cost,
-    "productCategoryId": productCategoryId,
-    "storeId": storeId,
-  };
+        "name": name,
+        "picture": picture != null ? base64.encode(picture) : null,
+        "cost": cost,
+        "productCategoryId": productCategoryId,
+        "storeId": storeId,
+      };
 
   Map<String, dynamic> toJsonUpdate() => {
-    "id": id,
-    "name": name,
-    "picture": picture != null? base64.encode(picture) : null,
-    "cost": cost,
-    "productCategoryId": productCategoryId,
-    "storeId": storeId,
-  };
+        "id": id,
+        "name": name,
+        "picture": picture != null ? base64.encode(picture) : null,
+        "cost": cost,
+        "productCategoryId": productCategoryId,
+        "storeId": storeId,
+      };
 }

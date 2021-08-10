@@ -193,7 +193,8 @@ class AccountInformationState extends State<AccountInformation>
                 setState(() async {
                   ProfileManipulation.user.picture = pickedImage;
                   await WebApiServices.putUser(ProfileManipulation.user);
-                  await ProfileManipulation.getUser(ProfileManipulation.account);
+                  await ProfileManipulation.getUser(
+                      ProfileManipulation.account);
                 });
               }
             },
@@ -207,10 +208,11 @@ class AccountInformationState extends State<AccountInformation>
               Navigator.of(context).pop();
               var pickedImage = await ImageController.getImageFromCamera();
               if (pickedImage != null) {
-                setState(() async{
+                setState(() async {
                   ProfileManipulation.user.picture = pickedImage;
                   await WebApiServices.putUser(ProfileManipulation.user);
-                  await ProfileManipulation.getUser(ProfileManipulation.account);
+                  await ProfileManipulation.getUser(
+                      ProfileManipulation.account);
                 });
               }
             },
@@ -246,7 +248,7 @@ class AccountInformationState extends State<AccountInformation>
         Container(
           padding: EdgeInsets.only(top: 20, bottom: 2),
           child: FlatButton(
-            onPressed: () async{
+            onPressed: () async {
               _taped();
               await WebApiServices.putUser(ProfileManipulation.user);
               await ProfileManipulation.getUser(ProfileManipulation.account);
@@ -349,7 +351,7 @@ class AccountInformationState extends State<AccountInformation>
             icon: Icon(Icons.navigate_next, size: 30),
             padding: EdgeInsets.zero,
             color: Color.fromRGBO(130, 147, 153, 1),
-            onPressed: () async{
+            onPressed: () async {
               _taped();
               await ProfileManipulation.getUser(ProfileManipulation.account);
             }),

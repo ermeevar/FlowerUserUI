@@ -13,8 +13,9 @@ class ProfileManipulation {
 
     await WebApiServices.fetchAccounts().then((response) {
       var accountData = accountFromJson(response.data);
-      accountBD = accountData.firstWhere((element) =>
-      element.login == account.login && element.role == "user", orElse: ()=>null);
+      accountBD = accountData.firstWhere(
+          (element) => element.login == account.login && element.role == "user",
+          orElse: () => null);
     });
     if (accountBD == null) return null;
 
@@ -34,8 +35,8 @@ class ProfileManipulation {
     User user;
     await WebApiServices.fetchUsers().then((response) {
       var userData = userFromJson(response.data);
-      user = userData
-          .firstWhere((element) => element.accountId == accountBD.id);
+      user =
+          userData.firstWhere((element) => element.accountId == accountBD.id);
     });
 
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -43,7 +44,6 @@ class ProfileManipulation {
 
     prefs.setInt("AccountId", accountBD.id);
     prefs.setInt("UserId", user.id);
-
 
     return user;
   }

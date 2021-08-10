@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-Widget nullContainer(){
+Widget nullContainer() {
   return Container(
     height: 0,
     width: 0,

@@ -37,7 +37,8 @@ class WebApiServices {
 
   WebApiServices() {
     dio.interceptors.add(
-        DioCacheManager(CacheConfig(baseUrl: "http://1185.246.67.169")).interceptor);
+        DioCacheManager(CacheConfig(baseUrl: "http://1185.246.67.169"))
+            .interceptor);
   }
 
   static Map<String, String> header = {
@@ -253,8 +254,10 @@ class WebApiServices {
   static Future putBouquetProduct(BouquetProduct bouquetProduct) async {
     var reverseBouquetProduct = bouquetProduct.toJsonUpdate();
     var bouquetProductJson = json.encode(reverseBouquetProduct);
-    var response = await dio.put(_bouquetProductUrl + bouquetProduct.id.toString(),
-        queryParameters: header, data: bouquetProductJson);
+    var response = await dio.put(
+        _bouquetProductUrl + bouquetProduct.id.toString(),
+        queryParameters: header,
+        data: bouquetProductJson);
     return response.statusCode;
   }
 

@@ -431,8 +431,7 @@ class BouquetOrderState extends State<BouquetOrder> {
               CustomSnackBar.info(
                 icon: null,
                 backgroundColor: Color.fromRGBO(110, 53, 76, 1),
-                message:
-                "Заказ оформлен",
+                message: "Заказ оформлен",
               ),
             );
 

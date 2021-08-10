@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-List<Shop> shopFromJson(String str) => List<Shop>.from(json.decode(str).map((x) => Shop.fromJson(x)));
+List<Shop> shopFromJson(String str) =>
+    List<Shop>.from(json.decode(str).map((x) => Shop.fromJson(x)));
 
-String shopToJson(List<Shop> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String shopToJson(List<Shop> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Shop {
   Shop({
@@ -18,22 +20,22 @@ class Shop {
   int accountId;
 
   factory Shop.fromJson(Map<String, dynamic> json) => Shop(
-    id: json["id"],
-    address: json["address"],
-    storeId: json["storeId"],
-    accountId: json["accountId"],
-  );
+        id: json["id"],
+        address: json["address"],
+        storeId: json["storeId"],
+        accountId: json["accountId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "address": address,
-    "storeId": storeId,
-    "accountId": accountId,
-  };
+        "address": address,
+        "storeId": storeId,
+        "accountId": accountId,
+      };
 
   Map<String, dynamic> toJsonUpdate() => {
-    "id": id,
-    "address": address,
-    "storeId": storeId,
-    "accountId": accountId,
-  };
+        "id": id,
+        "address": address,
+        "storeId": storeId,
+        "accountId": accountId,
+      };
 }

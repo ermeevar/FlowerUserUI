@@ -45,22 +45,18 @@ class MyApp extends StatelessWidget {
           ),
           inputDecorationTheme: InputDecorationTheme(
               labelStyle: TextStyle(
-                color:Color.fromRGBO(130, 147, 153, 1),
+                color: Color.fromRGBO(130, 147, 153, 1),
               ),
               contentPadding: EdgeInsets.zero,
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Color.fromRGBO(130, 147, 153, 1),
-                  )
-              )
-          ),
+                color: Color.fromRGBO(130, 147, 153, 1),
+              ))),
           bottomSheetTheme: BottomSheetThemeData(
               backgroundColor: Color.fromRGBO(130, 147, 153, 1),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30))
-              )
-          )
-      ),
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(30))))),
       home: FutureBuilder<bool>(
           future: isAuthorized(),
           builder: (context, snapshot) {
@@ -68,11 +64,16 @@ class MyApp extends StatelessWidget {
               case ConnectionState.waiting:
                 return Scaffold(
                   body: Center(
-                    child: Text("Загрузка...", style: Theme.of(context).textTheme.body1,),
+                    child: Text(
+                      "Загрузка...",
+                      style: Theme.of(context).textTheme.body1,
+                    ),
                   ),
                 );
               case ConnectionState.done:
-                return snapshot.data ? NavigationMenu() : AuthorizationMainMenu();
+                return snapshot.data
+                    ? NavigationMenu()
+                    : AuthorizationMainMenu();
             }
           }),
     );
@@ -82,8 +83,7 @@ class MyApp extends StatelessWidget {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
 
-    if (prefs.getInt('AccountId') == null
-        || prefs.getInt('AccountId') == 0)
+    if (prefs.getInt('AccountId') == null || prefs.getInt('AccountId') == 0)
       return false;
     else
       return true;

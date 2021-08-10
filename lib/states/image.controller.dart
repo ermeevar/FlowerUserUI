@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 
-class ImageController{
+class ImageController {
   static final _picker = ImagePicker();
 
   static Future<Uint8List> getImageFromGallery() async {

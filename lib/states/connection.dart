@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
-class Connection{
+class Connection {
   static checkConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.mobile &&
@@ -35,8 +35,8 @@ class Connection{
                 child: new Text(
                   "Закрыть",
                   style: Theme.of(context).textTheme.body1.copyWith(
-                    color: Color.fromRGBO(130, 147, 153, 1),
-                  ),
+                        color: Color.fromRGBO(130, 147, 153, 1),
+                      ),
                 ),
               ),
             ),

@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 
-List<Store> storeFromJson(String str) => List<Store>.from(json.decode(str).map((x) => Store.fromJson(x)));
+List<Store> storeFromJson(String str) =>
+    List<Store>.from(json.decode(str).map((x) => Store.fromJson(x)));
 
-String storeToJson(List<Store> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String storeToJson(List<Store> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Store {
   Store({
     this.id,
@@ -25,31 +28,33 @@ class Store {
   int accountId;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-    id: json["id"],
-    name: json["name"],
-    description: json["description"].toString(),
-    picture: json["picture"] != null? base64.decode(json["picture"]) : json["picture"],
-    firstPhone: json["firstPhone"],
-    secondPhone: json["secondPhone"],
-    accountId: json["accountId"],
-  );
+        id: json["id"],
+        name: json["name"],
+        description: json["description"].toString(),
+        picture: json["picture"] != null
+            ? base64.decode(json["picture"])
+            : json["picture"],
+        firstPhone: json["firstPhone"],
+        secondPhone: json["secondPhone"],
+        accountId: json["accountId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "description": description.toString(),
-    "picture": picture,
-    "firstPhone": firstPhone,
-    "secondPhone": secondPhone,
-    "accountId": accountId,
-  };
+        "name": name,
+        "description": description.toString(),
+        "picture": picture,
+        "firstPhone": firstPhone,
+        "secondPhone": secondPhone,
+        "accountId": accountId,
+      };
 
   Map<String, dynamic> toJsonUpdate() => {
-    "id": id,
-    "name": name,
-    "description": description.toString(),
-    "picture": picture != null? base64.encode(picture) : null,
-    "firstPhone": firstPhone,
-    "secondPhone": secondPhone,
-    "accountId": accountId,
-  };
+        "id": id,
+        "name": name,
+        "description": description.toString(),
+        "picture": picture != null ? base64.encode(picture) : null,
+        "firstPhone": firstPhone,
+        "secondPhone": secondPhone,
+        "accountId": accountId,
+      };
 }

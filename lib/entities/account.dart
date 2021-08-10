@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+List<Account> accountFromJson(String str) =>
+    List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
 
-List<Account> accountFromJson(String str) => List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
-
-String accountToJson(List<Account> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String accountToJson(List<Account> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Account {
   Account({
@@ -21,25 +22,25 @@ class Account {
   String role;
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
-    id: json["id"],
-    login: json["login"],
-    passwordHash: json["passwordHash"],
-    salt: json["salt"],
-    role: json["role"],
-  );
+        id: json["id"],
+        login: json["login"],
+        passwordHash: json["passwordHash"],
+        salt: json["salt"],
+        role: json["role"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "login": login,
-    "passwordHash": passwordHash,
-    "salt": salt,
-    "role": role,
-  };
+        "login": login,
+        "passwordHash": passwordHash,
+        "salt": salt,
+        "role": role,
+      };
 
   Map<String, dynamic> toJsonUpdate() => {
-    "id": id,
-    "login": login,
-    "passwordHash": passwordHash,
-    "salt": salt,
-    "role": role,
-  };
+        "id": id,
+        "login": login,
+        "passwordHash": passwordHash,
+        "salt": salt,
+        "role": role,
+      };
 }

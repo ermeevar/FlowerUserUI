@@ -244,7 +244,8 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               products
                       .where((element) => element.productCategoryId == 1)
                       .length ==
-                  0 || newBouquet.name == null) {
+                  0 ||
+              newBouquet.name == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Букет не собран"),
@@ -309,7 +310,8 @@ class BouquetMainMenuState extends State<BouquetMainMenu> {
               products
                       .where((element) => element.productCategoryId == 1)
                       .length ==
-                  0|| newBouquet.name == null) {
+                  0 ||
+              newBouquet.name == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Букет не собран"),

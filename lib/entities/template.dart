@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-List<Template> templateFromJson(String str) => List<Template>.from(json.decode(str).map((x) => Template.fromJson(x)));
+List<Template> templateFromJson(String str) =>
+    List<Template>.from(json.decode(str).map((x) => Template.fromJson(x)));
 
-String templateToJson(List<Template> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String templateToJson(List<Template> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Template {
   Template({
@@ -22,19 +24,21 @@ class Template {
   double cost;
 
   factory Template.fromJson(Map<String, dynamic> json) => Template(
-    id: json["id"],
-    name: json["name"],
-    templateCategoryId: json["templateCategoryId"],
-    storeId: json["storeId"],
-    picture: json["picture"] != null? base64.decode(json["picture"]) : json["picture"],
-    cost: json["cost"].toDouble(),
-  );
+        id: json["id"],
+        name: json["name"],
+        templateCategoryId: json["templateCategoryId"],
+        storeId: json["storeId"],
+        picture: json["picture"] != null
+            ? base64.decode(json["picture"])
+            : json["picture"],
+        cost: json["cost"].toDouble(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "templateCategoryId": templateCategoryId,
-    "storeId": storeId,
-    "picture": picture != null? base64.encode(picture) : null,
-    "cost": cost,
-  };
+        "name": name,
+        "templateCategoryId": templateCategoryId,
+        "storeId": storeId,
+        "picture": picture != null ? base64.encode(picture) : null,
+        "cost": cost,
+      };
 }
