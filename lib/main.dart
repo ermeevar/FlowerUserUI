@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:flower_user_ui/screens/authorization.widgets/authorization.main.menu.dart';
-import 'package:flower_user_ui/screens/navigation.menu.dart';
-import 'package:flower_user_ui/states/certificate.dart';
+import 'package:flower_user_ui/presentation/screens/authorization.widgets/authorization.main.menu.dart';
+import 'package:flower_user_ui/presentation/screens/navigation.menu.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'internal/utils/certificate.dart';
 
 void main() {
   HttpOverrides.global = new Certificate();
@@ -11,6 +12,16 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  Future<bool> isAuthorized() async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+
+    if (prefs.getInt('AccountId') == null || prefs.getInt('AccountId') == 0)
+      return false;
+    else
+      return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -95,15 +106,5 @@ class MyApp extends StatelessWidget {
             }
           }),
     );
-  }
-
-  Future<bool> isAuthorized() async {
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    final SharedPreferences prefs = await _prefs;
-
-    if (prefs.getInt('AccountId') == null || prefs.getInt('AccountId') == 0)
-      return false;
-    else
-      return true;
   }
 }
