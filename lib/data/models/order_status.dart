@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-List<OrderStatus> orderStatusFromJson(String str) => List<OrderStatus>.from(
-    json.decode(str).map((x) => OrderStatus.fromJson(x)));
+import 'package:flower_user_ui/internal/utils/json.dart';
+
+List<OrderStatus> orderStatusFromJson(String str) =>
+    Json.jsonListFromString(str).map((e) => OrderStatus.fromJson(e)).toList();
 
 String orderStatusToJson(List<OrderStatus> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -16,8 +18,8 @@ class OrderStatus {
   String? name;
 
   factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
-        id: json["id"],
-        name: json["name"],
+        id: json["id"] as int?,
+        name: json["name"] as String?,
       );
 
   Map<String, dynamic> toJson() => {

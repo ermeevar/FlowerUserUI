@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:flower_user_ui/internal/utils/json.dart';
+
 List<BouquetProduct> bouquetProductFromJson(String str) =>
-    List<BouquetProduct>.from(
-        json.decode(str).map((x) => BouquetProduct.fromJson(x)));
+    Json.jsonListFromString(str)
+        .map((e) => BouquetProduct.fromJson(e))
+        .toList();
 
 String bouquetProductToJson(List<BouquetProduct> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -19,9 +22,9 @@ class BouquetProduct {
   int? bouquetId;
 
   factory BouquetProduct.fromJson(Map<String, dynamic> json) => BouquetProduct(
-        id: json["id"],
-        productId: json["productId"],
-        bouquetId: json["bouquetId"],
+        id: json["id"] as int?,
+        productId: json["productId"] as int?,
+        bouquetId: json["bouquetId"] as int?,
       );
 
   Map<String, dynamic> toJson() => {

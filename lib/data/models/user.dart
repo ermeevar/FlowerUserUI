@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flower_user_ui/internal/utils/json.dart';
+
 List<User> userFromJson(String str) =>
-    List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
+    List<User>.from(Json.jsonListFromString(str).map((e) => User.fromJson(e)));
 
 String userToJson(List<User> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -24,14 +26,14 @@ class User {
   int? accountId;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        surname: json["surname"],
-        name: json["name"],
-        phone: json["phone"],
+        id: json["id"] as int?,
+        surname: json["surname"] as String?,
+        name: json["name"] as String?,
+        phone: json["phone"] as String?,
         picture: json["picture"] != null
-            ? base64.decode(json["picture"])
+            ? base64.decode(json["picture"] as String)
             : json["picture"],
-        accountId: json["accountId"],
+        accountId: json["accountId"] as int?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +49,7 @@ class User {
         "surname": surname,
         "name": name,
         "phone": phone,
-        "picture": picture != null ? base64.encode(picture) : null,
+        "picture": picture != null ? base64.encode(picture as List<int>) : null,
         "accountId": accountId,
       };
 }

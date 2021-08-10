@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flower_user_ui/internal/utils/json.dart';
+
 List<Order> orderFromJson(String str) =>
-    List<Order>.from(json.decode(str).map((x) => Order.fromJson(x)));
+    Json.jsonListFromString(str).map((e) => Order.fromJson(e)).toList();
 String orderToJson(List<Order> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -33,17 +35,17 @@ class Order {
   int? shopId;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
-        id: json["id"],
-        start: DateTime.parse(json["start"]),
-        finish: DateTime.parse(json["finish"]),
-        isRandom: json["isRandom"],
-        orderStatusId: json["orderStatusId"],
-        userId: json["userId"],
-        bouquetId: json["bouquetId"],
-        templateId: json["templateId"],
-        shopId: json["shopId"],
-        card: json["card"],
-        cost: json["cost"].toDouble(),
+        id: json["id"] as int?,
+        start: DateTime.parse(json["start"] as String),
+        finish: DateTime.parse(json["finish"] as String),
+        isRandom: json["isRandom"] as bool?,
+        orderStatusId: json["orderStatusId"] as int?,
+        userId: json["userId"] as int?,
+        bouquetId: json["bouquetId"] as int?,
+        templateId: json["templateId"] as int?,
+        shopId: json["shopId"] as int?,
+        card: json["card"] as String?,
+        cost: json["cost"] as double?,
       );
 
   Map<String, dynamic> toJson() => {

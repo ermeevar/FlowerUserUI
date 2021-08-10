@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flower_user_ui/internal/utils/byte_list.dart';
+import 'package:flower_user_ui/internal/utils/json.dart';
+
 List<Store> storeFromJson(String str) =>
-    List<Store>.from(json.decode(str).map((x) => Store.fromJson(x)));
+    Json.jsonListFromString(str).map((e) => Store.fromJson(e)).toList();
 
 String storeToJson(List<Store> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -27,15 +30,13 @@ class Store {
   int? accountId;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-        id: json["id"],
-        name: json["name"],
+        id: json["id"] as int?,
+        name: json["name"] as String?,
         description: json["description"].toString(),
-        picture: json["picture"] != null
-            ? base64.decode(json["picture"])
-            : json["picture"],
-        firstPhone: json["firstPhone"],
-        secondPhone: json["secondPhone"],
-        accountId: json["accountId"],
+        picture: ByteList.from(json["picture"]),
+        firstPhone: json["firstPhone"] as String?,
+        secondPhone: json["secondPhone"] as String?,
+        accountId: json["accountId"] as int?,
       );
 
   Map<String, dynamic> toJson() => {

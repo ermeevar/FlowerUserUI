@@ -16,17 +16,17 @@ class TemplateBouquetOrder extends StatefulWidget {
   const TemplateBouquetOrder(this._template);
 
   @override
-  TemplateBouquetOrderState createState() =>
-      TemplateBouquetOrderState(_template);
+  TemplateBouquetOrderState createState() => TemplateBouquetOrderState();
 }
 
 class TemplateBouquetOrderState extends State<TemplateBouquetOrder> {
   Order order = Order();
   bool isSelectedCard = false;
-  final Template _template;
+  late final Template _template;
   List<Shop> _shops = [];
 
-  TemplateBouquetOrderState(this._template) {
+  TemplateBouquetOrderState() {
+    _template = widget._template;
     _setOrderInitialData();
   }
 

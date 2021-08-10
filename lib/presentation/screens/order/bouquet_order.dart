@@ -17,7 +17,7 @@ class BouquetOrder extends StatefulWidget {
   const BouquetOrder(this._bouquet);
 
   @override
-  BouquetOrderState createState() => BouquetOrderState(_bouquet);
+  BouquetOrderState createState() => BouquetOrderState();
 }
 
 class BouquetOrderState extends State<BouquetOrder> {
@@ -26,7 +26,8 @@ class BouquetOrderState extends State<BouquetOrder> {
   late final Bouquet? _bouquet;
   List<Shop> _shops = [];
 
-  BouquetOrderState(this._bouquet) {
+  BouquetOrderState() {
+    _bouquet = widget._bouquet;
     _setOrderInitialData();
   }
 

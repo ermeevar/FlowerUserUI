@@ -10,14 +10,15 @@ class ProductsList extends StatefulWidget {
   const ProductsList(this.bouquetId);
 
   @override
-  ProductsListState createState() => ProductsListState(this.bouquetId);
+  ProductsListState createState() => ProductsListState();
 }
 
 class ProductsListState extends State<ProductsList> {
   List<Product> _products = [];
-  int? bouquetId;
+  late int? bouquetId;
 
-  ProductsListState(this.bouquetId) {
+  ProductsListState() {
+    bouquetId = widget.bouquetId;
     _getProducts();
   }
 

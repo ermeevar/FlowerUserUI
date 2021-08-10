@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:flower_user_ui/internal/utils/json.dart';
+
 List<TemplateCategory> templateCategoryFromJson(String str) =>
-    List<TemplateCategory>.from(
-        json.decode(str).map((x) => TemplateCategory.fromJson(x)));
+    Json.jsonListFromString(str)
+        .map((e) => TemplateCategory.fromJson(e))
+        .toList();
 
 String templateCategoryToJson(List<TemplateCategory> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -18,8 +21,8 @@ class TemplateCategory {
 
   factory TemplateCategory.fromJson(Map<String, dynamic> json) =>
       TemplateCategory(
-        id: json["id"],
-        name: json["name"],
+        id: json["id"] as int?,
+        name: json["name"] as String?,
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:flower_user_ui/internal/utils/byte_list.dart';
+import 'package:flower_user_ui/internal/utils/json.dart';
 
 List<Template> templateFromJson(String str) =>
-    List<Template>.from(json.decode(str).map((x) => Template.fromJson(x)));
+    Json.jsonListFromString(str).map((e) => Template.fromJson(e)).toList();
 
 String templateToJson(List<Template> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -20,18 +24,16 @@ class Template {
   String? name;
   int? templateCategoryId;
   int? storeId;
-  List<int>? picture;
+  Uint8List? picture;
   double? cost;
 
   factory Template.fromJson(Map<String, dynamic> json) => Template(
-        id: json["id"],
-        name: json["name"],
-        templateCategoryId: json["templateCategoryId"],
-        storeId: json["storeId"],
-        picture: json["picture"] != null
-            ? base64.decode(json["picture"])
-            : json["picture"],
-        cost: json["cost"].toDouble(),
+        id: json["id"] as int?,
+        name: json["name"] as String?,
+        templateCategoryId: json["templateCategoryId"] as int?,
+        storeId: json["storeId"] as int?,
+        picture: ByteList.from(json["picture"]),
+        cost: json["cost"] as double?,
       );
 
   Map<String, dynamic> toJson() => {
