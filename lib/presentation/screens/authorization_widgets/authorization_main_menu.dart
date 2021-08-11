@@ -34,16 +34,13 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        clipBehavior: Clip.antiAlias,
-        children: [
-          drawBackgroundGradient(context),
-          drawBackgroundCircles(),
-          buildContent(context),
-        ],
-      ),
+    return Stack(
+      clipBehavior: Clip.antiAlias,
+      children: [
+        drawBackgroundGradient(context),
+        drawBackgroundCircles(),
+        buildContent(context),
+      ],
     );
   }
 

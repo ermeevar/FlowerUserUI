@@ -15,43 +15,63 @@ class Application extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeService.light,
-      home: FutureBuilder<bool>(
-        future: authorizationService.isAuthorized(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Scaffold(
-                body: Center(
-                  child: Text(
-                    "Загрузка...",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-              );
-            case ConnectionState.done:
-              return snapshot.data!
-                  ? NavigationMenu()
-                  : AuthorizationMainMenu();
-            case ConnectionState.none:
-              return Scaffold(
-                body: Center(
-                  child: Text(
-                    "Нет сети",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-              );
-            case ConnectionState.active:
-              return Scaffold(
-                body: Center(
-                  child: Text(
-                    "Загрузка...",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-              );
-          }
-        },
+      home: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: FutureBuilder<bool>(
+          future: authorizationService.isAuthorized(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return const LoadingView();
+              case ConnectionState.done:
+                return snapshot.data!
+                    ? NavigationMenu()
+                    : AuthorizationMainMenu();
+              case ConnectionState.none:
+                return const NoConnectionView();
+              case ConnectionState.active:
+                return const LoadingView();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class NoConnectionView extends StatelessWidget {
+  const NoConnectionView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Нет сети",
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+    );
+  }
+}
+
+class LoadingView extends StatelessWidget {
+  const LoadingView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CircularProgressIndicator.adaptive(),
+          Text(
+            "Загрузка...",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ],
       ),
     );
   }
