@@ -25,7 +25,7 @@ class NavigationMenuState extends State<NavigationMenu>
 
   NavigationMenuState() {
     _pages = <Widget>[
-      const MainMenuContent(),
+      MainMenuContent(),
       const OrdersObserveMain(),
       AccountObserve(),
     ];

@@ -1,16 +1,17 @@
 import 'dart:typed_data';
 
+import 'package:flower_user_ui/app/locator.dart';
+import 'package:flower_user_ui/app/router.gr.dart';
 import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/slider_shape.dart';
-import 'package:flower_user_ui/presentation/screens/bouquet/bouquet_main.dart';
-import 'package:flower_user_ui/presentation/screens/order/random_bouquet_order.dart';
-import 'package:flower_user_ui/presentation/screens/template/template_category_selection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
 
 class MainMenuContent extends StatelessWidget {
-  const MainMenuContent();
+  MainMenuContent();
+
+  final AppRouter router = locator.get();
 
   @override
   Widget build(BuildContext context) {
@@ -155,10 +156,7 @@ class MainMenuContent extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: OutlinedButton(
                 onPressed: () async {
-                  await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TemplateCategorySelection()));
+                  await router.push(const TemplateCategorySelectionRoute());
                 },
                 child: Text('Выбрать',
                     style: Theme.of(context).textTheme.bodyText2),
@@ -197,10 +195,7 @@ class MainMenuContent extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: OutlinedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BouquetMainMenu()));
+                  router.push(const BouquetMainMenuRoute());
                 },
                 child: Text('Создать',
                     style: Theme.of(context).textTheme.bodyText2),
@@ -274,11 +269,7 @@ class MainMenuContent extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: TextButton(
                     onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RandomBouquetOrder(_cost)));
-                      Navigator.pop(context);
+                      await router.push(RandomBouquetOrderRoute(cost: _cost));
                     },
                     child: Text(
                       "Заказать",

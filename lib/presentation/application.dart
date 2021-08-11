@@ -1,6 +1,6 @@
 import 'package:flower_user_ui/app/router.gr.dart';
 import 'package:flower_user_ui/presentation/viewmodels/application_viewmodel.dart';
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class ApplicationView extends StatelessWidget {
@@ -11,13 +11,13 @@ class ApplicationView extends StatelessWidget {
       builder: (context, viewModel, child) => FutureBuilder(
         future: viewModel.initialise(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingView();
-          } else {
-            return AppRouter(
+          if (snapshot.connectionState != ConnectionState.waiting) {
+            return MaterialRouter(
               router: viewModel.router,
               theme: viewModel.themeService.light,
             );
+          } else {
+            return const LoadingView();
           }
         },
       ),
@@ -25,11 +25,11 @@ class ApplicationView extends StatelessWidget {
   }
 }
 
-class AppRouter extends StatelessWidget {
-  const AppRouter({Key? key, required this.router, required this.theme})
+class MaterialRouter extends StatelessWidget {
+  const MaterialRouter({Key? key, required this.router, required this.theme})
       : super(key: key);
 
-  final Router router;
+  final AppRouter router;
   final ThemeData theme;
 
   @override
@@ -66,16 +66,20 @@ class LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator.adaptive(),
-          Text(
-            "Загрузка...",
-            style: Theme.of(context).textTheme.bodyText1,
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator.adaptive(),
+              Text(
+                "Загрузка...",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

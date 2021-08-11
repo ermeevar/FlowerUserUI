@@ -1,6 +1,7 @@
+import 'package:flower_user_ui/app/locator.dart';
+import 'package:flower_user_ui/app/router.gr.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/data/services/services.dart';
-import 'package:flower_user_ui/presentation/screens/template/template_selection.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCategorySelection extends StatefulWidget {
@@ -12,6 +13,8 @@ class TemplateCategorySelection extends StatefulWidget {
 class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
   List<TemplateCategory> _templateCategories = [];
   List<Template> _templates = [];
+
+  final AppRouter router = locator.get();
 
   TemplateCategorySelectionState() {
     _getTemplateCategories();
@@ -83,11 +86,8 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () async {
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TemplateSelection(_templateCategories[index])));
+                await router.push(TemplateSelectionRoute(
+                    templateCategory: _templateCategories[index]));
               },
               child: buildTemplateCategoryItem(index, context),
             );

@@ -1,7 +1,8 @@
+import 'package:flower_user_ui/app/locator.dart';
+import 'package:flower_user_ui/app/router.gr.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/screens/navigation_menu.dart';
-import 'package:flower_user_ui/presentation/screens/order/bouquet_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flower_user_ui/internal/extensions/double_extensions.dart';
@@ -13,6 +14,7 @@ class AccountBouquets extends StatefulWidget {
 
 class AccountBouquetsState extends State<AccountBouquets> {
   List<Bouquet> _bouquets = [];
+  final AppRouter router = locator.get();
 
   AccountBouquetsState() {
     getBouquets();
@@ -113,13 +115,8 @@ class AccountBouquetsState extends State<AccountBouquets> {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: OutlinedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BouquetOrder(_bouquets[index]),
-            ),
-          );
+        onPressed: () async {
+          await router.push(BouquetOrderRoute(bouquet: _bouquets[index]));
         },
         child: Text('Заказать', style: Theme.of(context).textTheme.bodyText2),
         // : BorderSide(color: Colors.white),
