@@ -1,11 +1,16 @@
+import 'dart:developer';
+
+import 'package:flower_user_ui/app/locator.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/data/services/services.dart';
 import 'package:flower_user_ui/presentation/common_widgets/null_container.dart';
 import 'package:flower_user_ui/presentation/screens/registration_widgets/registration_main_menu.dart';
+import 'package:flower_user_ui/presentation/services/theme_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../navigation_menu.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class AuthorizationMainMenu extends StatefulWidget {
   @override
@@ -15,6 +20,7 @@ class AuthorizationMainMenu extends StatefulWidget {
 class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   final Account _account = Account();
   bool isWrong = false;
+  final ThemeService themeService = locator.get();
 
   AuthorizationMainMenuState() {
     getAccounts();
@@ -34,13 +40,15 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.antiAlias,
-      children: [
-        drawBackgroundGradient(context),
-        drawBackgroundCircles(),
-        buildContent(context),
-      ],
+    return Scaffold(
+      body: Stack(
+        clipBehavior: Clip.antiAlias,
+        children: [
+          drawBackgroundGradient(context),
+          drawBackgroundCircles(),
+          buildContent(context),
+        ],
+      ),
     );
   }
 
@@ -54,7 +62,10 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
           Text(
             "Вход",
             style: Theme.of(context).textTheme.headline6,
-          ),
+          ).box.margin(EdgeInsets.all(20)).make().onTap(() {
+            themeService.swapTheme();
+            log(themeService.isDark.toString());
+          }),
           getLogin(context),
           getPassword(context),
           getWrongAccountError(context),

@@ -7,10 +7,10 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'data/services/api_service.dart' as _i4;
-import 'data/services/profile_service.dart' as _i5;
-import 'presentation/services/authorization_service.dart' as _i3;
-import 'presentation/services/theme_service.dart'
+import '../data/services/api_service.dart' as _i4;
+import '../data/services/profile_service.dart' as _i5;
+import '../presentation/services/authorization_service.dart' as _i3;
+import '../presentation/services/theme_service.dart'
     as _i6; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars

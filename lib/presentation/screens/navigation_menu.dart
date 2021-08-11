@@ -55,20 +55,22 @@ class NavigationMenuState extends State<NavigationMenu>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: loadProfile(),
-        builder: (context, AsyncSnapshot snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return vinousCircleProgressBarScaffold(this);
-            case ConnectionState.done:
-              return buildNavigationMenu();
-            case ConnectionState.none:
-              return const Text("No connection");
-            case ConnectionState.active:
-              return vinousCircleProgressBarScaffold(this);
-          }
-        });
+    return Scaffold(
+      body: FutureBuilder(
+          future: loadProfile(),
+          builder: (context, AsyncSnapshot snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return vinousCircleProgressBarScaffold(this);
+              case ConnectionState.done:
+                return buildNavigationMenu();
+              case ConnectionState.none:
+                return const Text("No connection");
+              case ConnectionState.active:
+                return vinousCircleProgressBarScaffold(this);
+            }
+          }),
+    );
   }
 
   //#region NavigationMenu

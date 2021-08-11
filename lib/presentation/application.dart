@@ -1,40 +1,44 @@
-import 'package:flower_user_ui/dependency_injection.dart';
-import 'package:flower_user_ui/presentation/screens/navigation_menu.dart';
-import 'package:flower_user_ui/presentation/services/authorization_service.dart';
-import 'package:flower_user_ui/presentation/services/theme_service.dart';
-import 'package:flutter/material.dart';
+import 'package:flower_user_ui/app/router.gr.dart';
+import 'package:flower_user_ui/presentation/viewmodels/application_viewmodel.dart';
+import 'package:flutter/material.dart' hide Router;
+import 'package:stacked/stacked.dart';
 
-import 'screens/authorization_widgets/authorization_main_menu.dart';
+class ApplicationView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<ApplicationViewModel>.nonReactive(
+      viewModelBuilder: () => ApplicationViewModel(),
+      builder: (context, viewModel, child) => FutureBuilder(
+        future: viewModel.initialise(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingView();
+          } else {
+            return AppRouter(
+              router: viewModel.router,
+              theme: viewModel.themeService.light,
+            );
+          }
+        },
+      ),
+    );
+  }
+}
 
-class Application extends StatelessWidget {
-  final ThemeService themeService = getIt.get();
-  final AuthorizationService authorizationService = getIt.get();
+class AppRouter extends StatelessWidget {
+  const AppRouter({Key? key, required this.router, required this.theme})
+      : super(key: key);
+
+  final Router router;
+  final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerDelegate: router.delegate(),
+      routeInformationParser: router.defaultRouteParser(),
+      theme: theme,
       debugShowCheckedModeBanner: false,
-      theme: themeService.light,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: FutureBuilder<bool>(
-          future: authorizationService.isAuthorized(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return const LoadingView();
-              case ConnectionState.done:
-                return snapshot.data!
-                    ? NavigationMenu()
-                    : AuthorizationMainMenu();
-              case ConnectionState.none:
-                return const NoConnectionView();
-              case ConnectionState.active:
-                return const LoadingView();
-            }
-          },
-        ),
-      ),
     );
   }
 }
