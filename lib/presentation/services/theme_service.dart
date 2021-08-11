@@ -1,7 +1,9 @@
 import 'package:flower_user_ui/presentation/utils/assets.gen.dart';
 import 'package:flower_user_ui/internal/utils/path.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class ThemeService {
   ThemeData get light => ThemeData(
         textTheme: TextTheme(

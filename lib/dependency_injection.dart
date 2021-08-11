@@ -1,10 +1,9 @@
-import 'package:flower_user_ui/presentation/services/authorization_service.dart';
-import 'package:flower_user_ui/presentation/services/theme_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 
-class DependencyInjection {
-  static void init() {
-    GetIt.I.registerSingleton(ThemeService());
-    GetIt.I.registerLazySingleton(() => AuthorizationService());
-  }
-}
+import 'dependency_injection.config.dart';
+
+final getIt = GetIt.instance;
+
+@InjectableInit()
+void configureDependencies() => $initGetIt(getIt);

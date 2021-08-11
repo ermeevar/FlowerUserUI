@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 import 'presentation/application.dart';
 
 void main() {
-  DependencyInjection.init();
+  configureDependencies();
   runApp(Application());
 }

@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:crypt/crypt.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_service.dart';
 
+@singleton
 class ProfileService {
   static Account? account;
   static late User user;

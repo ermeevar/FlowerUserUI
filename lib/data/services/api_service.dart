@@ -4,8 +4,11 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/data/utils/certificate.dart';
+import 'package:injectable/injectable.dart';
 
 // TODO: Тут весь класс нужно разбить на мелкие контроллеры с общим кодом, сделать нормальную поддержку тестовых сред и смены ip, таймаут
+
+@singleton
 class ApiService {
   static Dio dio = Dio();
 
