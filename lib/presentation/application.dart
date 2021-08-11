@@ -4,7 +4,7 @@ import 'package:flower_user_ui/presentation/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'presentation/screens/authorization_widgets/authorization_main_menu.dart';
+import 'screens/authorization_widgets/authorization_main_menu.dart';
 
 class Application extends StatelessWidget {
   final ThemeService themeService = GetIt.I.get();
