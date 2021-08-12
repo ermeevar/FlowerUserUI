@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flower_user_ui/app/locator.dart';
 import 'package:flower_user_ui/app/router.gr.dart';
 import 'package:flower_user_ui/presentation/services/authorization_service.dart';
@@ -10,11 +12,13 @@ class ApplicationViewModel extends ChangeNotifier {
   final AppRouter router = locator.get();
 
   Future<void> initialise() async {
+    log("init");
     final isAuthorized = await authorizationService.isAuthorized();
     if (isAuthorized) {
-      await router.push(const NavigationMenuRoute());
+      router.push(const NavigationMenuRoute());
     } else {
-      await router.push(const AuthorizationMainMenuRoute());
+      log("push");
+      router.push(const AuthorizationMainMenuRoute());
     }
   }
 }

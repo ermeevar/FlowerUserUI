@@ -64,7 +64,7 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   Widget signUp(BuildContext context) {
     return TextButton(
       onPressed: () async {
-        await router.push(const RegistrationMainMenuRoute());
+        router.push(const RegistrationMainMenuRoute());
       },
       child: "Зарегистрироваться"
           .text
