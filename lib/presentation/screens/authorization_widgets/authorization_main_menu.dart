@@ -2,7 +2,7 @@ import 'package:flower_user_ui/app/locator.dart';
 import 'package:flower_user_ui/app/router.gr.dart';
 import 'package:flower_user_ui/data/models/api_modes.dart';
 import 'package:flower_user_ui/data/services/services.dart';
-import 'package:flower_user_ui/presentation/common_widgets/null_container.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,20 +19,10 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
   bool isWrong = false;
   final AppRouter router = locator.get();
 
-  AuthorizationMainMenuState() {
-    getAccounts();
-  }
-
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([]);
-  }
-
-  Future<void> getAccounts() async {
-    await ApiService.fetchAccounts().then((response) {
-      setState(() {});
-    });
   }
 
   @override
@@ -56,13 +46,10 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(),
-          Text(
-            "Вход",
-            style: Theme.of(context).textTheme.headline6,
-          ),
+          signInText(context),
           getLogin(context),
           getPassword(context),
-          getWrongAccountError(context),
+          if (isWrong) invalidLoginOrPasswordText(context),
           signIn(context),
           signUp(context),
           const Spacer(),
@@ -71,54 +58,29 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     );
   }
 
-  Container signUp(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: TextButton(
-        onPressed: () async {
-          await router.push(const RegistrationMainMenuRoute());
-        },
-        child: Text(
-          "Зарегистрироваться",
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-      ),
-    );
+  Widget signInText(BuildContext context) =>
+      "Вход".text.textStyle(context.theme.textTheme.headline6!).make();
+
+  Widget signUp(BuildContext context) {
+    return TextButton(
+      onPressed: () async {
+        await router.push(const RegistrationMainMenuRoute());
+      },
+      child: "Зарегистрироваться"
+          .text
+          .textStyle(Theme.of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(fontWeight: FontWeight.bold))
+          .make(),
+    ).box.margin(const EdgeInsets.only(top: 20)).make();
   }
 
   Container signIn(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 80),
       child: TextButton(
-        onPressed: () async {
-          final User? accUser = await ProfileService.getUser(_account);
-
-          if (accUser == null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Пользователь не найден",
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                action: SnackBarAction(
-                  label: "Понятно",
-                  onPressed: () {
-                    // Code to execute.
-                  },
-                ),
-              ),
-            );
-            return;
-          }
-
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => NavigationMenu(),
-              ),
-              (Route<dynamic> route) => false);
-        },
+        onPressed: () => loginAccount(account: _account, context: context),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 90),
           decoration: const BoxDecoration(
@@ -138,16 +100,14 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     );
   }
 
-  Padding getWrongAccountError(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: isWrong
-          ? Text(
-              "Пароль или логин введен неправильно",
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          : nullContainer(),
-    );
+  Widget invalidLoginOrPasswordText(BuildContext context) {
+    return "Пароль или логин введен неправильно"
+        .text
+        .textStyle(context.theme.textTheme.bodyText2!)
+        .make()
+        .box
+        .padding(const EdgeInsets.only(top: 30))
+        .make();
   }
 
   Padding getPassword(BuildContext context) {
@@ -294,4 +254,36 @@ class AuthorizationMainMenuState extends State<AuthorizationMainMenu> {
     );
   }
   //#endregion
+}
+
+Future<void> loginAccount(
+    {required BuildContext context, required Account account}) async {
+  final User? accUser = await ProfileService.getUser(account);
+
+  if (accUser == null) {
+    showUserNotFoundedMessage(context);
+  }
+
+  Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => NavigationMenu(),
+      ),
+      (Route<dynamic> route) => false);
+}
+
+void showUserNotFoundedMessage(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        "Пользователь не найден",
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
+      action: SnackBarAction(
+        label: "Понятно",
+        onPressed: () {
+          // Code to execute.
+        },
+      ),
+    ),
+  );
 }
