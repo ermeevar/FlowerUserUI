@@ -31,11 +31,12 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return _i3.NavigationMenu();
         }),
-    AuthorizationMainMenuRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i4.AuthorizationMainMenu();
-        }),
+    AuthorizationMainMenuViewRoute.name: (routeData) =>
+        _i1.MaterialPageX<dynamic>(
+            routeData: routeData,
+            builder: (_) {
+              return _i4.AuthorizationMainMenuView();
+            }),
     RegistrationMainMenuRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
@@ -75,8 +76,8 @@ class AppRouter extends _i1.RootStackRouter {
   @override
   List<_i1.RouteConfig> get routes => [
         _i1.RouteConfig(NavigationMenuRoute.name, path: '/'),
-        _i1.RouteConfig(AuthorizationMainMenuRoute.name,
-            path: '/authorization-main-menu'),
+        _i1.RouteConfig(AuthorizationMainMenuViewRoute.name,
+            path: '/authorization-main-menu-view'),
         _i1.RouteConfig(RegistrationMainMenuRoute.name,
             path: '/registration-main-menu'),
         _i1.RouteConfig(BouquetOrderRoute.name, path: '/bouquet-order'),
@@ -96,11 +97,11 @@ class NavigationMenuRoute extends _i1.PageRouteInfo {
   static const String name = 'NavigationMenuRoute';
 }
 
-class AuthorizationMainMenuRoute extends _i1.PageRouteInfo {
-  const AuthorizationMainMenuRoute()
-      : super(name, path: '/authorization-main-menu');
+class AuthorizationMainMenuViewRoute extends _i1.PageRouteInfo {
+  const AuthorizationMainMenuViewRoute()
+      : super(name, path: '/authorization-main-menu-view');
 
-  static const String name = 'AuthorizationMainMenuRoute';
+  static const String name = 'AuthorizationMainMenuViewRoute';
 }
 
 class RegistrationMainMenuRoute extends _i1.PageRouteInfo {
