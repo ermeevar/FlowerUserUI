@@ -116,7 +116,7 @@ class AccountBouquetsState extends State<AccountBouquets> {
       padding: const EdgeInsets.only(top: 15),
       child: OutlinedButton(
         onPressed: () async {
-          await router.push(BouquetOrderRoute(bouquet: _bouquets[index]));
+          router.push(BouquetOrderRoute(bouquet: _bouquets[index]));
         },
         child: Text('Заказать', style: Theme.of(context).textTheme.bodyText2),
         // : BorderSide(color: Colors.white),

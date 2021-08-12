@@ -156,7 +156,7 @@ class MainMenuContent extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: OutlinedButton(
                 onPressed: () async {
-                  await router.push(const TemplateCategorySelectionRoute());
+                  router.push(const TemplateCategorySelectionRoute());
                 },
                 child: Text('Выбрать',
                     style: Theme.of(context).textTheme.bodyText2),
@@ -269,7 +269,7 @@ class MainMenuContent extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: TextButton(
                     onPressed: () async {
-                      await router.push(RandomBouquetOrderRoute(cost: _cost));
+                      router.push(RandomBouquetOrderRoute(cost: _cost));
                     },
                     child: Text(
                       "Заказать",

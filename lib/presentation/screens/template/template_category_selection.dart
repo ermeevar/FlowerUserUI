@@ -86,7 +86,7 @@ class TemplateCategorySelectionState extends State<TemplateCategorySelection> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () async {
-                await router.push(TemplateSelectionRoute(
+                router.push(TemplateSelectionRoute(
                     templateCategory: _templateCategories[index]));
               },
               child: buildTemplateCategoryItem(index, context),
