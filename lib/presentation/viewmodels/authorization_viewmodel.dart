@@ -1,10 +1,13 @@
 import 'package:flower_user_ui/app/locator.dart';
 import 'package:flower_user_ui/app/router.gr.dart';
+import 'package:flower_user_ui/domain/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AuthorizationViewModel extends ChangeNotifier {
   final AppRouter router = locator.get();
+
+  final AuthService authService = locator.get();
 
   String _login = "";
   String _password = "";
@@ -48,10 +51,11 @@ class AuthorizationViewModel extends ChangeNotifier {
       );
     }
 
-    // if (UserService.signin(login, password)) {
-    //   NavigationMenu();
-    // } else
-    showUserNotFoundedMessage(context);
+    if (authService.signin(login: login, password: password)) {
+      // NavigationMenu();
+    } else {
+      showUserNotFoundedMessage(context);
+    }
   }
 
   void signup() {
