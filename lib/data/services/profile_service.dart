@@ -31,7 +31,7 @@ class ProfileService {
     }
   }
 
-  static Future<User?> getUser(Account? account) async {
+  static Future<User?> getUser({required String login}) async {
     final Account? accountBD = await getAccount(account);
 
     if (accountBD == null) return null;

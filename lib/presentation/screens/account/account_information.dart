@@ -186,7 +186,8 @@ class AccountInformationState extends State<AccountInformation>
                 setState(() async {
                   ProfileService.user.picture = pickedImage;
                   await ApiService.putUser(ProfileService.user);
-                  await ProfileService.getUser(ProfileService.account);
+                  await ProfileService.getUser(
+                      login: ProfileService.account!.login!);
                 });
               }
             },
@@ -204,7 +205,8 @@ class AccountInformationState extends State<AccountInformation>
                 setState(() async {
                   ProfileService.user.picture = pickedImage;
                   await ApiService.putUser(ProfileService.user);
-                  await ProfileService.getUser(ProfileService.account);
+                  await ProfileService.getUser(
+                      login: ProfileService.account!.login!);
                 });
               }
             },
@@ -247,7 +249,8 @@ class AccountInformationState extends State<AccountInformation>
             onPressed: () async {
               _taped();
               await ApiService.putUser(ProfileService.user);
-              await ProfileService.getUser(ProfileService.account);
+              await ProfileService.getUser(
+                  login: ProfileService.account!.login!);
             },
             child: Container(
               padding: const EdgeInsets.all(10),
@@ -342,7 +345,8 @@ class AccountInformationState extends State<AccountInformation>
             color: const Color.fromRGBO(130, 147, 153, 1),
             onPressed: () async {
               _taped();
-              await ProfileService.getUser(ProfileService.account);
+              await ProfileService.getUser(
+                  login: ProfileService.account!.login!);
             }),
       ],
     );
@@ -356,6 +360,6 @@ class AccountInformationState extends State<AccountInformation>
     prefs.setInt("AccountId", 0);
     prefs.setInt("UserId", 0);
 
-    router.popAndPush(const AuthorizationMainMenuRoute());
+    router.popAndPush(const AuthorizationMainMenuViewRoute());
   }
 }

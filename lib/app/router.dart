@@ -11,7 +11,7 @@ import 'package:flower_user_ui/presentation/screens/template/template_selection.
 
 @MaterialAutoRouter(routes: [
   auto_route.MaterialRoute(page: NavigationMenu, initial: true),
-  auto_route.MaterialRoute(page: AuthorizationMainMenu),
+  auto_route.MaterialRoute(page: AuthorizationMainMenuView),
   auto_route.MaterialRoute(page: RegistrationMainMenu),
   auto_route.MaterialRoute(page: BouquetOrder),
   auto_route.MaterialRoute(page: TemplateCategorySelection),
